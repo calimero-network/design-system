@@ -1,16 +1,15 @@
 {
   "name": "@calimero/tokens",
   "version": "0.0.0",
-  "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": ["dist"],
   "scripts": {
-    "build": "echo 'tokens build placeholder'",
+    "build": "style-dictionary build --config style-dictionary.config.json && tsup src/index.ts --dts --format esm,cjs",
     "dev": "pnpm build",
-    "lint": "echo 'lint placeholder'",
-    "typecheck": "echo 'typecheck placeholder'"
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
     "style-dictionary": "^4.0.0",
