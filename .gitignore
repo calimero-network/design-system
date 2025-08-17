@@ -1,0 +1,6 @@
+node_modules
+dist
+.next
+.storybook-out
+.storybook-cache
+pnpm-lock.yaml 

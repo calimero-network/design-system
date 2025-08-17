@@ -1,0 +1,20 @@
+{
+  "name": "@calimero/tokens",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "echo 'tokens build placeholder'",
+    "dev": "pnpm build",
+    "lint": "echo 'lint placeholder'",
+    "typecheck": "echo 'typecheck placeholder'"
+  },
+  "devDependencies": {
+    "style-dictionary": "^4.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0"
+  }
+} 
