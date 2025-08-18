@@ -1,2 +1,4 @@
 export * from "./IconBase";
-export { Chunky } from "./Chunky";
+export { Clock } from "./Clock";
+export { ClockAlert } from "./ClockAlert";
+export { ClockX } from "./ClockX";

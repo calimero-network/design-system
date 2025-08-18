@@ -1,0 +1,28 @@
+
+
+> @calimero/icons@0.0.0 prebuild /Users/xilosada/dev/calimero/design-system/packages/icons
+> pnpm -w build:icons
+
+
+> calimero-design-system@ build:icons /Users/xilosada/dev/calimero/design-system
+> node tools/scripts/build-icons.mjs
+
+Generated 3 icons.
+
+> @calimero/icons@0.0.0 build /Users/xilosada/dev/calimero/design-system/packages/icons
+> tsup src/index.ts --dts --format esm,cjs
+
+[34mCLI[39m Building entry: src/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v8.5.0
+[34mCLI[39m Target: es2022
+[34mESM[39m Build start
+[34mCJS[39m Build start
+[32mCJS[39m [1mdist/index.cjs [22m[32m6.61 KB[39m
+[32mCJS[39m ⚡️ Build success in 12ms
+[32mESM[39m [1mdist/index.js [22m[32m4.62 KB[39m
+[32mESM[39m ⚡️ Build success in 12ms
+DTS Build start
+DTS ⚡️ Build success in 349ms
+DTS dist/index.d.ts  707.00 B
+DTS dist/index.d.cts 707.00 B
