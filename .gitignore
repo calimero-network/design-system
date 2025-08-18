@@ -4,3 +4,5 @@ dist
 .storybook-out
 .storybook-cache
 pnpm-lock.yaml 
+*storybook.log
+storybook-static
