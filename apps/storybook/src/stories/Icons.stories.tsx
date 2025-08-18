@@ -1,6 +1,28 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Clock, ClockAlert, ClockX, IconBase } from '@calimero/icons';
+import { 
+  Clock, 
+  ClockAlert, 
+  ClockX, 
+  Target, 
+  Box,
+  Refresh,
+  ExternalLink,
+  ArrowUpRight,
+  ArrowUpLeft,
+  ArrowDownRight,
+  ArrowDownLeft,
+  ArrowsUpDown,
+  ArrowsDownUp,
+  ArrowUp,
+  ArrowRight,
+  ArrowLeft,
+  ArrowDown,
+  Download,
+  Upload,
+  Star,
+  IconBase 
+} from '@calimero/icons';
 
 const meta: Meta = {
   title: 'Design System/Icons',
@@ -21,7 +43,24 @@ type Story = StoryObj;
 const allIcons = [
   { name: 'Clock', component: Clock },
   { name: 'ClockAlert', component: ClockAlert },
-  { name: 'ClockX', component: ClockX }
+  { name: 'ClockX', component: ClockX },
+  { name: 'Target', component: Target },
+  { name: 'Box', component: Box },
+  { name: 'Refresh', component: Refresh },
+  { name: 'ExternalLink', component: ExternalLink },
+  { name: 'ArrowUpRight', component: ArrowUpRight },
+  { name: 'ArrowUpLeft', component: ArrowUpLeft },
+  { name: 'ArrowDownRight', component: ArrowDownRight },
+  { name: 'ArrowDownLeft', component: ArrowDownLeft },
+  { name: 'ArrowsUpDown', component: ArrowsUpDown },
+  { name: 'ArrowsDownUp', component: ArrowsDownUp },
+  { name: 'ArrowUp', component: ArrowUp },
+  { name: 'ArrowRight', component: ArrowRight },
+  { name: 'ArrowLeft', component: ArrowLeft },
+  { name: 'ArrowDown', component: ArrowDown },
+  { name: 'Download', component: Download },
+  { name: 'Upload', component: Upload },
+  { name: 'Star', component: Star }
 ];
 
 // Lucide-style icon showcase with shared controls

@@ -5,7 +5,6 @@
   "exports": { ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" } },
   "files": ["dist"],
   "scripts": {
-    "prebuild": "pnpm -w build:icons",
     "build": "tsup src/index.ts --dts --format esm,cjs",
     "dev": "pnpm build",
     "lint": "eslint .",

@@ -11,7 +11,7 @@
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "turbo run build && changeset publish",
-    "build:icons": "node tools/scripts/build-icons.mjs",
+
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
