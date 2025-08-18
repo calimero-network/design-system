@@ -15,6 +15,19 @@ const preview: Preview = {
         date: /Date$/,
       },
     },
+    backgrounds: {
+      options: {
+        // 👇 Default options
+        primary: { name: 'Primary', value: 'var(--color-background-primary)' },
+        secondary: { name: 'Secondary', value: 'var(--color-background-secondary)' },
+        tertiary: { name: 'Tertiary', value: 'var(--color-background-tertiary)' },
+        brand: { name: 'Brand', value: 'var(--color-background-brand)' },
+        light: { name: 'Light', value: '#FFFFFF' },
+      },
+    }
+  },
+  initialGlobals: {
+    backgrounds: { value: 'primary' },
   },
 };
 
