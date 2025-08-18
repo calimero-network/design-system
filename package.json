@@ -12,8 +12,8 @@
     "version-packages": "changeset version",
     "release": "turbo run build && changeset publish",
 
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "storybook": "storybook dev -p 6006 --config-dir apps/storybook/.storybook",
+    "build-storybook": "storybook build --config-dir apps/storybook/.storybook"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.0",
