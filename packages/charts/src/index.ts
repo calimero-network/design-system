@@ -1,16 +1,17 @@
-// Card primitives
-export { Card, CardHeader, CardTitle, CardContent } from "./Card";
-
 // Gauge chart
-export { Gauge, GaugeCard } from "./Gauge";
+export { Gauge } from "./Gauge";
 export type { GaugeProps, Thresholds } from "./Gauge";
 
 // Time series chart
-export { SeriesCard } from "./TimeSeries";
+export { TimeSeries, calculateMean, calculateLast, calculateMax } from "./TimeSeries";
 export type { Series, Point } from "./TimeSeries";
 
 // Vector table
-export { VectorTable } from "./VectorTable";
-export type { PromVectorResult } from "./VectorTable";
+export { VectorTableRaw } from "./VectorTable";
+export type { VectorRow, VectorTableProps, ColumnConfig } from "./VectorTable";
+
+// Combined chart
+export { CombinedChart } from "./CombinedChart";
+export type { CombinedChartProps, ColumnConfig as CombinedChartColumnConfig } from "./CombinedChart";
 
 

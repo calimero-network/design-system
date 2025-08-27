@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Gauge, GaugeCard } from "../../../packages/charts/src/Gauge";
+import { Gauge } from "../../../packages/charts/src/Gauge";
+import { Card, CardHeader, CardTitle, CardContent } from "@calimero/ui";
 
 const meta: Meta<typeof Gauge> = {
   title: "CHARTS/Gauge",
@@ -12,7 +13,7 @@ const meta: Meta<typeof Gauge> = {
 
 export default meta;
 
-export const GaugeExample: StoryObj<typeof GaugeCard> = {
+export const GaugeExample: StoryObj<typeof Gauge> = {
   render: (args) => {
     // Update value if it's outside the min/max range
     const adjustedValue = Math.max(args.min || 0, Math.min(args.max || 100, args.value));
@@ -20,7 +21,14 @@ export const GaugeExample: StoryObj<typeof GaugeCard> = {
     return (
       <div style={{ padding: '16px' }}>
         <div style={{ maxWidth: '400px', margin: '0 auto' }}>
-          <GaugeCard {...args} value={adjustedValue} />
+          <Card>
+            <CardHeader>
+              <CardTitle>CPU Usage</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Gauge {...args} value={adjustedValue} />
+            </CardContent>
+          </Card>
         </div>
         {/* Show current range info */}
         <div style={{ marginTop: '16px', fontSize: '14px', color: '#9ca3af', textAlign: 'center' }}>
@@ -31,12 +39,11 @@ export const GaugeExample: StoryObj<typeof GaugeCard> = {
     );
   },
   args: {
-    title: "CPU Usage",
     value: 66.8,
     min: 0,
     max: 100,
     thresholds: { warning: 60, danger: 80 },
-    suffix: "%",
+    label: "%",
     decimals: 1
   },
   argTypes: {
@@ -52,13 +59,9 @@ export const GaugeExample: StoryObj<typeof GaugeCard> = {
       control: 'text',
       description: 'Maximum value'
     },
-    title: {
+    label: {
       control: 'text',
-      description: 'Card title'
-    },
-    suffix: {
-      control: 'text',
-      description: 'Value suffix (e.g., "%")'
+      description: 'Value label (e.g., "%")'
     },
     decimals: {
       control: 'text',
@@ -80,19 +83,47 @@ export const GaugeAllProps: StoryObj<typeof Gauge> = {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>Small</p>
-              <GaugeCard value={75} title="CPU Usage" suffix="%" />
+              <Card>
+                <CardHeader>
+                  <CardTitle>CPU Usage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={75} label="%" />
+                </CardContent>
+              </Card>
             </div>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>Medium (default)</p>
-              <GaugeCard value={75} title="CPU Usage" suffix="%" />
+              <Card>
+                <CardHeader>
+                  <CardTitle>CPU Usage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={75} label="%" />
+                </CardContent>
+              </Card>
             </div>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>Large</p>
-              <GaugeCard value={75} title="CPU Usage" suffix="%" />
+              <Card>
+                <CardHeader>
+                  <CardTitle>CPU Usage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={75} label="%" />
+                </CardContent>
+              </Card>
             </div>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>Extra Large</p>
-              <GaugeCard value={75} title="CPU Usage" suffix="%" />
+              <Card>
+                <CardHeader>
+                  <CardTitle>CPU Usage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={75} label="%" />
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
@@ -103,15 +134,36 @@ export const GaugeAllProps: StoryObj<typeof Gauge> = {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px' }}>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>Good (&le;60%)</p>
-              <GaugeCard value={45} title="Memory Usage" suffix="%" thresholds={{ warning: 60, danger: 80 }} />
+              <Card>
+                <CardHeader>
+                  <CardTitle>Memory Usage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={45} label="%" thresholds={{ warning: 60, danger: 80 }} />
+                </CardContent>
+              </Card>
             </div>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>Warning (&le;80%)</p>
-              <GaugeCard value={70} title="Memory Usage" suffix="%" thresholds={{ warning: 60, danger: 80 }} />
+              <Card>
+                <CardHeader>
+                  <CardTitle>Memory Usage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={70} label="%" thresholds={{ warning: 60, danger: 80 }} />
+                </CardContent>
+              </Card>
             </div>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>Danger (&gt;80%)</p>
-              <GaugeCard value={95} title="Memory Usage" suffix="%" thresholds={{ warning: 60, danger: 80 }} />
+              <Card>
+                <CardHeader>
+                  <CardTitle>Memory Usage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={95} label="%" thresholds={{ warning: 60, danger: 80 }} />
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
@@ -122,15 +174,36 @@ export const GaugeAllProps: StoryObj<typeof Gauge> = {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px' }}>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>0-100 (default)</p>
-              <GaugeCard value={75} title="CPU Usage" suffix="%" min={0} max={100} />
+              <Card>
+                <CardHeader>
+                  <CardTitle>CPU Usage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={75} label="%" min={0} max={100} />
+                </CardContent>
+              </Card>
             </div>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>-10 to 10</p>
-              <GaugeCard value={3} title="Temperature" suffix="°C" min={-10} max={10} />
+              <Card>
+                <CardHeader>
+                  <CardTitle>Temperature</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={3} label="°C" min={-10} max={10} />
+                </CardContent>
+              </Card>
             </div>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>0 to 1000</p>
-              <GaugeCard value={750} title="Requests/sec" suffix="req/s" min={0} max={1000} />
+              <Card>
+                <CardHeader>
+                  <CardTitle>Requests/sec</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={750} label="req/s" min={0} max={1000} />
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
@@ -141,19 +214,47 @@ export const GaugeAllProps: StoryObj<typeof Gauge> = {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>0 decimals</p>
-              <GaugeCard value={75.6} title="CPU Usage" suffix="%" decimals={0} />
+              <Card>
+                <CardHeader>
+                  <CardTitle>CPU Usage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={75.6} label="%" decimals={0} />
+                </CardContent>
+              </Card>
             </div>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>1 decimal (default)</p>
-              <GaugeCard value={75.6} title="CPU Usage" suffix="%" decimals={1} />
+              <Card>
+                <CardHeader>
+                  <CardTitle>CPU Usage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={75.6} label="%" decimals={1} />
+                </CardContent>
+              </Card>
             </div>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>2 decimals</p>
-              <GaugeCard value={75.6} title="CPU Usage" suffix="%" decimals={2} />
+              <Card>
+                <CardHeader>
+                  <CardTitle>CPU Usage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={75.6} label="%" decimals={2} />
+                </CardContent>
+              </Card>
             </div>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>3 decimals</p>
-              <GaugeCard value={75.6} title="CPU Usage" suffix="%" decimals={3} />
+              <Card>
+                <CardHeader>
+                  <CardTitle>CPU Usage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={75.6} label="%" decimals={3} />
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
@@ -164,15 +265,36 @@ export const GaugeAllProps: StoryObj<typeof Gauge> = {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px' }}>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>Conservative (30/70)</p>
-              <GaugeCard value={50} title="Disk Usage" suffix="%" thresholds={{ warning: 30, danger: 70 }} />
+              <Card>
+                <CardHeader>
+                  <CardTitle>Disk Usage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={50} label="%" thresholds={{ warning: 30, danger: 70 }} />
+                </CardContent>
+              </Card>
             </div>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>Standard (60/80)</p>
-              <GaugeCard value={50} title="Disk Usage" suffix="%" thresholds={{ warning: 60, danger: 80 }} />
+              <Card>
+                <CardHeader>
+                  <CardTitle>Disk Usage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={50} label="%" thresholds={{ warning: 60, danger: 80 }} />
+                </CardContent>
+              </Card>
             </div>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>Aggressive (80/95)</p>
-              <GaugeCard value={50} title="Disk Usage" suffix="%" thresholds={{ warning: 80, danger: 95 }} />
+              <Card>
+                <CardHeader>
+                  <CardTitle>Disk Usage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={50} label="%" thresholds={{ warning: 80, danger: 95 }} />
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
@@ -183,11 +305,25 @@ export const GaugeAllProps: StoryObj<typeof Gauge> = {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>Very Long Title</p>
-              <GaugeCard value={75} title="This is a very long title that should be truncated with ellipsis when it exceeds the available space" suffix="%" />
+              <Card>
+                <CardHeader>
+                  <CardTitle>This is a very long title that should be truncated with ellipsis when it exceeds the available space</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={75} label="%" />
+                </CardContent>
+              </Card>
             </div>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '14px', color: '#9ca3af', marginBottom: '8px' }}>Short Title</p>
-              <GaugeCard value={75} title="Short" suffix="%" />
+              <Card>
+                <CardHeader>
+                  <CardTitle>Short</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Gauge value={75} label="%" />
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>

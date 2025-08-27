@@ -1,26 +1,61 @@
+// @ts-nocheck - React 19 compatibility issue with recharts
 import React, { useMemo } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
-import { Card, CardHeader, CardTitle, CardContent } from "./Card";
-
-// ---------------------- Time‑series ----------------------
 
 export type Point = { t: number | string; y: number };
 
 export type Series = { name: string; data: Point[] };
+
+// Calculation functions for time series data
+export function calculateMean(series: Series): number {
+  if (!series.data.length) return 0;
+  const sum = series.data.reduce((acc, point) => acc + point.y, 0);
+  return sum / series.data.length;
+}
+
+export function calculateLast(series: Series): number {
+  if (!series.data.length) return 0;
+  return series.data[series.data.length - 1].y;
+}
+
+export function calculateMax(series: Series): number {
+  if (!series.data.length) return 0;
+  return Math.max(...series.data.map(point => point.y));
+}
 
 function formatTime(ts: number | string) {
   const d = typeof ts === 'number' ? new Date(ts) : new Date(ts);
   return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
-export function SeriesCard({ 
-  title, 
+// Auto-generate colors if not provided
+const generateColors = (count: number): string[] => {
+  const baseColors = [
+    '#A5FF11', // Calimero green
+    '#fbbf24', // Amber
+    '#f59e0b', // Orange
+    '#3b82f6', // Blue
+    '#8b5cf6', // Purple
+    '#ec4899', // Pink
+    '#06b6d4', // Cyan
+    '#10b981', // Emerald
+    '#f97316', // Orange
+    '#ef4444'  // Red
+  ];
+  
+  return Array.from({ length: count }, (_, i) => baseColors[i % baseColors.length]);
+};
+
+export function TimeSeries({ 
   series, 
-  yLabel 
+  yLabel,
+  colors,
+  showLegend = true
 }: { 
-  title: string; 
   series: Series[]; 
   yLabel?: string; 
+  colors?: string[];
+  showLegend?: boolean;
 }) {
   const flat = series.flatMap(s => s.data);
   const domainY = useMemo(() => {
@@ -41,24 +76,29 @@ export function SeriesCard({
     });
   }, [series]);
 
+  // Auto-generate colors if not provided
+  const finalColors = colors || generateColors(series.length);
+
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm text-white/90 truncate">{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="h-[240px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={rows} margin={{ left: 12, right: 12, top: 5, bottom: 5 }}>
-            <XAxis dataKey="t" tickFormatter={formatTime} minTickGap={32}/>
-            <YAxis domain={domainY as [number, number]} tickFormatter={(v) => `${v}`}/>
-            <Tooltip labelFormatter={(l) => `Time: ${formatTime(l as any)}`} formatter={(v) => [v as number, yLabel ?? "value"]}/>
-            <Legend />
-            {series.map((s) => (
-              <Line key={s.name} type="monotone" dataKey={s.name} dot={false} strokeWidth={2} />
-            ))}
-          </LineChart>
-        </ResponsiveContainer>
-      </CardContent>
-    </Card>
+    <div style={{ width: '100%', height: '100%' }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={rows} margin={{ left: 12, right: 12, top: 5, bottom: 5 }}>
+          <XAxis dataKey="t" tickFormatter={formatTime} minTickGap={32}/>
+          <YAxis domain={domainY as [number, number]} tickFormatter={(v) => `${v}`}/>
+          <Tooltip labelFormatter={(l) => `Time: ${formatTime(l as any)}`} formatter={(v) => [v as number, yLabel ?? "value"]}/>
+          {showLegend && <Legend />}
+          {series.map((s, index) => (
+            <Line 
+              key={s.name} 
+              type="monotone" 
+              dataKey={s.name} 
+              dot={false} 
+              strokeWidth={2}
+              stroke={finalColors[index]}
+            />
+          ))}
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
   );
 }

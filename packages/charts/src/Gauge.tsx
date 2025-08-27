@@ -1,7 +1,4 @@
 import React, { useMemo } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "./Card";
-
-// ---------------------- Gauge ----------------------
 
 export type Thresholds = { warning: number; danger: number };
 
@@ -78,20 +75,7 @@ export function Gauge({
   const valueColor = getValueColor(pct);
 
   return (
-    <div className="w-full flex flex-col items-center" style={{ backgroundColor: '#1A1A1A' }}> {/* dark background */}
-      {/* title above arcs with ellipsis */}
-      {title && (
-        <div className="w-full px-4 py-2 text-center">
-          <div 
-            className="text-sm font-medium truncate" 
-            style={{ color: valueColor }}
-            title={title}
-          >
-            {title}
-          </div>
-        </div>
-      )}
-      
+    <div className="w-full flex flex-col items-center">
       <svg viewBox="0 0 240 160" className="w-full">
         {/* background arc - single grey background */}
         <path d={arcPath(cx, cy, arcRadius, startAngle, endAngle)} stroke="#6B7280" strokeOpacity={0.3} strokeWidth={18} fill="none" strokeLinecap="butt"/>
@@ -145,31 +129,5 @@ export function Gauge({
         )}
       </svg>
     </div>
-  );
-}
-
-export function GaugeCard({ 
-  title, 
-  value, 
-  min = 0, 
-  max = 100, 
-  thresholds, 
-  suffix,
-  decimals = 1
-}: {
-  title: string; 
-  value: number; 
-  min?: number; 
-  max?: number; 
-  thresholds?: Thresholds; 
-  suffix?: string;
-  decimals?: number;
-}) {
-  return (
-    <Card>
-      <CardContent className="pt-4">
-        <Gauge value={value} min={min} max={max} thresholds={thresholds} title={title} label={suffix} decimals={decimals} />
-      </CardContent>
-    </Card>
   );
 }
