@@ -7,7 +7,7 @@ export default defineConfig({
   splitting: false,
   sourcemap: true,
   clean: true,
-  external: ['react'],
+  external: ['react', '@calimero/icons'],
   outExtension({ format }) {
     return {
       js: format === 'esm' ? '.mjs' : '.js',
