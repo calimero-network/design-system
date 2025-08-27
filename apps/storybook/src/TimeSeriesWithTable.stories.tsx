@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { CombinedChart } from "../../../packages/charts/src/CombinedChart";
+import { TimeSeriesWithTable } from "../../../packages/charts/src/CombinedChart";
 import { Card, CardHeader, CardTitle, CardContent } from "@calimero/ui";
 import { calculateMean, calculateLast, calculateMax } from "../../../packages/charts/src/TimeSeries";
 
-const meta: Meta<typeof CombinedChart> = {
-  title: "CHARTS/CombinedChart",
-  component: CombinedChart,
+const meta: Meta<typeof TimeSeriesWithTable> = {
+  title: "CHARTS/TimeSeriesWithTable",
+  component: TimeSeriesWithTable,
   parameters: {
     layout: "centered",
   },
@@ -14,7 +14,7 @@ const meta: Meta<typeof CombinedChart> = {
 
 export default meta;
 
-// Sample data for combined chart
+// Sample data for time series with table
 const sampleTimeSeriesData = [
   {
     name: "10.0.99.165:8429 - /api/v1/query",
@@ -52,7 +52,7 @@ const sampleTimeSeriesData = [
   }
 ];
 
-export const CombinedChartExample: StoryObj<typeof CombinedChart> = {
+export const TimeSeriesWithTableExample: StoryObj<typeof TimeSeriesWithTable> = {
   render: (args: any) => {
     return (
       <div style={{ padding: '16px' }}>
@@ -62,7 +62,7 @@ export const CombinedChartExample: StoryObj<typeof CombinedChart> = {
               <CardTitle>API Performance Metrics</CardTitle>
             </CardHeader>
             <CardContent>
-              <CombinedChart {...args} />
+              <TimeSeriesWithTable {...args} />
             </CardContent>
           </Card>
         </div>
@@ -92,7 +92,7 @@ export const CombinedChartExample: StoryObj<typeof CombinedChart> = {
   }
 };
 
-export const CombinedChartWithColors: StoryObj<typeof CombinedChart> = {
+export const TimeSeriesWithTableWithColors: StoryObj<typeof TimeSeriesWithTable> = {
   render: (args: any) => {
     return (
       <div style={{ padding: '16px' }}>
@@ -102,7 +102,7 @@ export const CombinedChartWithColors: StoryObj<typeof CombinedChart> = {
               <CardTitle>API Performance Metrics</CardTitle>
             </CardHeader>
             <CardContent>
-              <CombinedChart {...args} />
+              <TimeSeriesWithTable {...args} />
             </CardContent>
           </Card>
         </div>
@@ -118,7 +118,7 @@ export const CombinedChartWithColors: StoryObj<typeof CombinedChart> = {
   }
 };
 
-export const CombinedChartNoLegend: StoryObj<typeof CombinedChart> = {
+export const TimeSeriesWithTableNoLegend: StoryObj<typeof TimeSeriesWithTable> = {
   render: (args: any) => {
     return (
       <div style={{ padding: '16px' }}>
@@ -128,7 +128,7 @@ export const CombinedChartNoLegend: StoryObj<typeof CombinedChart> = {
               <CardTitle>API Performance Metrics (No Legend)</CardTitle>
             </CardHeader>
             <CardContent>
-              <CombinedChart {...args} />
+              <TimeSeriesWithTable {...args} />
             </CardContent>
           </Card>
         </div>
@@ -143,7 +143,7 @@ export const CombinedChartNoLegend: StoryObj<typeof CombinedChart> = {
   }
 };
 
-export const CombinedChartAutoColors: StoryObj<typeof CombinedChart> = {
+export const TimeSeriesWithTableAutoColors: StoryObj<typeof TimeSeriesWithTable> = {
   render: (args: any) => {
     return (
       <div style={{ padding: '16px' }}>
@@ -153,7 +153,7 @@ export const CombinedChartAutoColors: StoryObj<typeof CombinedChart> = {
               <CardTitle>API Performance Metrics (Auto Colors)</CardTitle>
             </CardHeader>
             <CardContent>
-              <CombinedChart {...args} />
+              <TimeSeriesWithTable {...args} />
             </CardContent>
           </Card>
         </div>
@@ -169,7 +169,7 @@ export const CombinedChartAutoColors: StoryObj<typeof CombinedChart> = {
   }
 };
 
-export const CombinedChartCustomColumns: StoryObj<typeof CombinedChart> = {
+export const TimeSeriesWithTableCustomColumns: StoryObj<typeof TimeSeriesWithTable> = {
   render: (args: any) => {
     return (
       <div style={{ padding: '16px' }}>
@@ -179,7 +179,7 @@ export const CombinedChartCustomColumns: StoryObj<typeof CombinedChart> = {
               <CardTitle>API Performance Metrics (Custom Columns)</CardTitle>
             </CardHeader>
             <CardContent>
-              <CombinedChart {...args} />
+              <TimeSeriesWithTable {...args} />
             </CardContent>
           </Card>
         </div>

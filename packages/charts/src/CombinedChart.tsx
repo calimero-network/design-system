@@ -26,7 +26,7 @@ export type ColumnConfig = {
   function: (series: Series) => number;
 };
 
-export type CombinedChartProps = {
+export type TimeSeriesWithTableProps = {
   timeSeriesData: Series[];
   vectorTableData?: VectorRow[]; // Optional now since we can calculate from timeSeriesData
   colors?: string[];
@@ -37,7 +37,7 @@ export type CombinedChartProps = {
   columns?: ColumnConfig[];
 };
 
-export function CombinedChart({
+export function TimeSeriesWithTable({
   timeSeriesData,
   vectorTableData,
   colors,
@@ -49,7 +49,7 @@ export function CombinedChart({
     { title: 'Last *', function: calculateLast },
     { title: 'Max', function: calculateMax }
   ]
-}: CombinedChartProps) {
+}: TimeSeriesWithTableProps) {
   // Generate colors if not provided
   const finalColors = useMemo(() => {
     if (colors) {

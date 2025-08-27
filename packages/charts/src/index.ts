@@ -10,8 +10,8 @@ export type { Series, Point } from "./TimeSeries";
 export { VectorTableRaw } from "./VectorTable";
 export type { VectorRow, VectorTableProps, ColumnConfig } from "./VectorTable";
 
-// Combined chart
-export { CombinedChart } from "./CombinedChart";
-export type { CombinedChartProps, ColumnConfig as CombinedChartColumnConfig } from "./CombinedChart";
+// TimeSeries with table
+export { TimeSeriesWithTable } from "./CombinedChart";
+export type { TimeSeriesWithTableProps, ColumnConfig as TimeSeriesWithTableColumnConfig } from "./CombinedChart";
 
 

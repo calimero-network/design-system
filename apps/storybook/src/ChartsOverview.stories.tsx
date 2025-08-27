@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Gauge } from "../../../packages/charts/src/Gauge";
 import { TimeSeries } from "../../../packages/charts/src/TimeSeries";
 import { VectorTableRaw } from "../../../packages/charts/src/VectorTable";
-import { CombinedChart } from "../../../packages/charts/src/CombinedChart";
+import { TimeSeriesWithTable } from "../../../packages/charts/src/CombinedChart";
 import { Card, CardHeader, CardTitle, CardContent } from "@calimero/ui";
 
 const meta: Meta = {
@@ -208,16 +208,16 @@ export const ChartsOverview: StoryObj = {
           </div>
         </section>
 
-        {/* Combined Charts Section */}
+        {/* TimeSeries with Table Section */}
         <section style={{ marginBottom: '48px' }}>
-          <h2 style={{ fontSize: '24px', fontWeight: '600', color: 'white', marginBottom: '24px' }}>Combined Charts</h2>
+          <h2 style={{ fontSize: '24px', fontWeight: '600', color: 'white', marginBottom: '24px' }}>TimeSeries with Table</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
             <Card>
               <CardHeader>
                 <CardTitle>API Performance Overview</CardTitle>
               </CardHeader>
               <CardContent>
-                <CombinedChart 
+                <TimeSeriesWithTable 
                   timeSeriesData={combinedTimeSeriesData}
                   timeSeriesYLabel="req/s"
                   layout="side-by-side"
@@ -230,7 +230,7 @@ export const ChartsOverview: StoryObj = {
                 <CardTitle>Metrics with Table Below</CardTitle>
               </CardHeader>
               <CardContent>
-                <CombinedChart 
+                <TimeSeriesWithTable 
                   timeSeriesData={combinedTimeSeriesData}
                   timeSeriesYLabel="req/s"
                   layout="table-below"
