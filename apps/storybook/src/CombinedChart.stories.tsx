@@ -29,6 +29,7 @@ const sampleTimeSeriesData = [
   },
   {
     name: "10.0.99.165:8429 - /api/v1/write",
+    fill: true,
     data: [
       { t: Date.now() - 60000 * 5, y: 2.6 },
       { t: Date.now() - 60000 * 4, y: 2.7 },
@@ -173,13 +174,19 @@ export const CombinedChartCustomColumns: StoryObj<typeof CombinedChart> = {
     return (
       <div style={{ padding: '16px' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <CombinedChart {...args} />
+          <Card>
+            <CardHeader>
+              <CardTitle>API Performance Metrics (Custom Columns)</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CombinedChart {...args} />
+            </CardContent>
+          </Card>
         </div>
       </div>
     );
   },
   args: {
-    title: "API Performance Metrics (Custom Columns)",
     timeSeriesData: sampleTimeSeriesData,
     timeSeriesYLabel: "req/s",
     colors: ['#A5FF11', '#fbbf24', '#3b82f6'],

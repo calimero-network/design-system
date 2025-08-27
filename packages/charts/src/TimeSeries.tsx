@@ -1,10 +1,14 @@
 // @ts-nocheck - React 19 compatibility issue with recharts
 import React, { useMemo } from "react";
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import { ComposedChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, Area } from "recharts";
 
 export type Point = { t: number | string; y: number };
 
-export type Series = { name: string; data: Point[] };
+export type Series = { 
+  name: string; 
+  data: Point[];
+  fill?: boolean; // Whether to fill the area under the line
+};
 
 // Calculation functions for time series data
 export function calculateMean(series: Series): number {
@@ -82,22 +86,40 @@ export function TimeSeries({
   return (
     <div style={{ width: '100%', height: '100%' }}>
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={rows} margin={{ left: 12, right: 12, top: 5, bottom: 5 }}>
+        <ComposedChart data={rows} margin={{ left: 12, right: 12, top: 5, bottom: 5 }}>
           <XAxis dataKey="t" tickFormatter={formatTime} minTickGap={32}/>
           <YAxis domain={domainY as [number, number]} tickFormatter={(v) => `${v}`}/>
           <Tooltip labelFormatter={(l) => `Time: ${formatTime(l as any)}`} formatter={(v) => [v as number, yLabel ?? "value"]}/>
           {showLegend && <Legend />}
-          {series.map((s, index) => (
-            <Line 
-              key={s.name} 
-              type="monotone" 
-              dataKey={s.name} 
-              dot={false} 
-              strokeWidth={2}
-              stroke={finalColors[index]}
-            />
-          ))}
-        </LineChart>
+          {series.map((s, index) => {
+            const color = finalColors[index];
+            if (s.fill) {
+              return (
+                <Area
+                  key={s.name}
+                  type="monotone"
+                  dataKey={s.name}
+                  stroke={color}
+                  fill={color}
+                  fillOpacity={0.1}
+                  strokeWidth={2}
+                />
+              );
+            } else {
+              return (
+                <Line 
+                  key={s.name} 
+                  type="monotone" 
+                  dataKey={s.name} 
+                  dot={false} 
+                  strokeWidth={2}
+                  stroke={color}
+                  fill="none"
+                />
+              );
+            }
+          })}
+        </ComposedChart>
       </ResponsiveContainer>
     </div>
   );

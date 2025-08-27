@@ -24,7 +24,8 @@ const sampleTimeSeriesData = [
       { t: Date.now() - 60000 * 2, y: 67 },
       { t: Date.now() - 60000 * 1, y: 73 },
       { t: Date.now(), y: 68 }
-    ]
+    ],
+    fill: true
   },
   {
     name: "Memory Usage",
@@ -35,7 +36,8 @@ const sampleTimeSeriesData = [
       { t: Date.now() - 60000 * 2, y: 71 },
       { t: Date.now() - 60000 * 1, y: 69 },
       { t: Date.now(), y: 75 }
-    ]
+    ],
+    fill: false
   }
 ];
 
@@ -43,13 +45,14 @@ const singleSeriesData = [
   {
     name: "Network Traffic",
     data: [
-      { t: Date.now() - 60000 * 5, y: 120 },
-      { t: Date.now() - 60000 * 4, y: 145 },
-      { t: Date.now() - 60000 * 3, y: 98 },
-      { t: Date.now() - 60000 * 2, y: 167 },
-      { t: Date.now() - 60000 * 1, y: 134 },
-      { t: Date.now(), y: 156 }
-    ]
+      { t: Date.now() - 60000 * 5, y: 2.1 },
+      { t: Date.now() - 60000 * 4, y: 2.8 },
+      { t: Date.now() - 60000 * 3, y: 2.3 },
+      { t: Date.now() - 60000 * 2, y: 3.2 },
+      { t: Date.now() - 60000 * 1, y: 2.9 },
+      { t: Date.now(), y: 3.1 }
+    ],
+    fill: true
   }
 ];
 
@@ -200,4 +203,55 @@ export const TimeSeriesAllProps: StoryObj<typeof TimeSeries> = {
       </div>
     );
   },
+};
+
+export const TimeSeriesFillableAreas: StoryObj<typeof TimeSeries> = {
+  render: (args) => {
+    return (
+      <div style={{ padding: '16px' }}>
+        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+          <Card>
+            <CardHeader>
+              <CardTitle>Fillable Areas Demo</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div style={{ height: '240px' }}>
+                <TimeSeries {...args} />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  },
+  args: {
+    series: [
+      {
+        name: "Filled Series",
+        data: [
+          { t: Date.now() - 60000 * 5, y: 20 },
+          { t: Date.now() - 60000 * 4, y: 35 },
+          { t: Date.now() - 60000 * 3, y: 25 },
+          { t: Date.now() - 60000 * 2, y: 45 },
+          { t: Date.now() - 60000 * 1, y: 40 },
+          { t: Date.now(), y: 50 }
+        ],
+        fill: true
+      },
+      {
+        name: "Line Only",
+        data: [
+          { t: Date.now() - 60000 * 5, y: 60 },
+          { t: Date.now() - 60000 * 4, y: 75 },
+          { t: Date.now() - 60000 * 3, y: 65 },
+          { t: Date.now() - 60000 * 2, y: 85 },
+          { t: Date.now() - 60000 * 1, y: 80 },
+          { t: Date.now(), y: 90 }
+        ],
+        fill: false
+      }
+    ],
+    yLabel: "Value",
+    showLegend: true
+  }
 };

@@ -34,7 +34,8 @@ const timeSeriesData = [
       { t: Date.now() - 60000 * 2, y: 67 },
       { t: Date.now() - 60000 * 1, y: 73 },
       { t: Date.now(), y: 68 }
-    ]
+    ],
+    fill: true
   },
   {
     name: "Memory Usage",
@@ -45,7 +46,8 @@ const timeSeriesData = [
       { t: Date.now() - 60000 * 2, y: 71 },
       { t: Date.now() - 60000 * 1, y: 69 },
       { t: Date.now(), y: 75 }
-    ]
+    ],
+    fill: false
   }
 ];
 
