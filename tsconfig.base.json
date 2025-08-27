@@ -14,7 +14,8 @@
     "paths": {
       "@calimero/icons": ["packages/icons/src"],
       "@calimero/ui": ["packages/ui/src"],
-      "@calimero/tokens": ["packages/tokens/src"]
+      "@calimero/tokens": ["packages/tokens/src"],
+      "@calimero/charts": ["packages/charts/src"]
     }
   }
 } 

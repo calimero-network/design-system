@@ -3,7 +3,18 @@ import { cssVariables } from '@calimero/tokens';
 
 // Inject CSS variables directly into the document
 const style = document.createElement('style');
-style.textContent = cssVariables;
+style.textContent = cssVariables + `
+  /* Additional styles for charts */
+  body {
+    font-family: var(--font-body, Inter, system-ui, sans-serif);
+  }
+  
+  /* Dark theme for charts */
+  .dark {
+    background-color: #0b0f1a;
+    color: white;
+  }
+`;
 document.head.appendChild(style);
 
 const preview: Preview = {

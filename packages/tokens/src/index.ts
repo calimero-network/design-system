@@ -29,6 +29,10 @@ export const cssVariables = `
   --color-background-secondary: ${colors.background.secondary.value};
   --color-background-tertiary: ${colors.background.tertiary.value};
   --color-background-brand: ${colors.background.brand.value};
+  --color-semantic-success: ${colors.semantic.success.value};
+  --color-semantic-warning: ${colors.semantic.warning.value};
+  --color-semantic-error: ${colors.semantic.error.value};
+  --color-semantic-info: ${colors.semantic.info.value};
   --radius-sm: ${radius.sm.value};
   --radius-md: ${radius.md.value};
   --radius-lg: ${radius.lg.value};

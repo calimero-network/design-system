@@ -89,6 +89,19 @@ const Palette = () => (
         <ColorSwatch color="var(--color-background-brand)" name="background-brand" value="#1F2A15" />
       </div>
     </div>
+
+    {/* Semantic Colors */}
+    <div style={{ marginBottom: '40px' }}>
+      <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '20px', color: '#333' }}>
+        Semantic Colors (4)
+      </h2>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+        <ColorSwatch color="var(--color-semantic-success)" name="semantic-success" value="#16a34a" />
+        <ColorSwatch color="var(--color-semantic-warning)" name="semantic-warning" value="#f59e0b" />
+        <ColorSwatch color="var(--color-semantic-error)" name="semantic-error" value="#ef4444" />
+        <ColorSwatch color="var(--color-semantic-info)" name="semantic-info" value="#3b82f6" />
+      </div>
+    </div>
   </div>
 );
 
