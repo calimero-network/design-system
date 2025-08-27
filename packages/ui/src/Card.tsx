@@ -1,5 +1,70 @@
-import React from "react";
+import React, { useState } from "react";
 import { ClockAlert } from "@calimero/icons";
+
+// Custom Tooltip Component
+function Tooltip({ 
+  children, 
+  content, 
+  color 
+}: { 
+  children: React.ReactNode; 
+  content: string; 
+  color?: string;
+}) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  return (
+    <div 
+      style={{ position: 'relative', display: 'inline-block' }}
+      onMouseEnter={() => setIsVisible(true)}
+      onMouseLeave={() => setIsVisible(false)}
+    >
+      {children}
+      {isVisible && (
+        <div style={{
+          position: 'absolute',
+          top: '-8px',
+          right: '100%',
+          marginRight: '8px',
+          background: '#2A2A2A',
+          color: 'white',
+          padding: '8px 12px',
+          borderRadius: '8px',
+          fontSize: '12px',
+          fontWeight: '400',
+          whiteSpace: 'nowrap',
+          zIndex: 1000,
+          border: `1px solid ${color || '#404040'}`,
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+          pointerEvents: 'none'
+        }}>
+          {content}
+          {/* Arrow pointing to the icon */}
+          <div style={{
+            position: 'absolute',
+            top: '12px',
+            right: '-6px',
+            width: '0',
+            height: '0',
+            borderLeft: `6px solid ${color || '#404040'}`,
+            borderTop: '6px solid transparent',
+            borderBottom: '6px solid transparent'
+          }} />
+          <div style={{
+            position: 'absolute',
+            top: '12px',
+            right: '-5px',
+            width: '0',
+            height: '0',
+            borderLeft: '5px solid #2A2A2A',
+            borderTop: '5px solid transparent',
+            borderBottom: '5px solid transparent'
+          }} />
+        </div>
+      )}
+    </div>
+  );
+}
 
 // ---------------------- Minimal Card primitives (fallback) ----------------------
 
@@ -37,8 +102,10 @@ export function Card({
           top: '8px',
           right: '8px',
           cursor: 'help'
-        }} title={tooltip}>
-          <TooltipIcon size={20} strokeWidth={3} color={color || '#6B7280'} />
+        }}>
+          <Tooltip content={tooltip} color={color}>
+            <TooltipIcon size={20} strokeWidth={3} color={color || '#6B7280'} />
+          </Tooltip>
         </div>
       )}
       {React.Children.map(children, child => {
