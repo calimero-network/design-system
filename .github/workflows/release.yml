@@ -57,6 +57,50 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Upload packages to GitHub Release
+        if: github.event.inputs.dry_run != 'true'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./packages/tokens/dist/index.js
+          asset_name: mero-tokens.js
+          asset_content_type: application/javascript
+
+      - name: Upload icons package
+        if: github.event.inputs.dry_run != 'true'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./packages/icons/dist/index.js
+          asset_name: mero-icons.js
+          asset_content_type: application/javascript
+
+      - name: Upload UI package
+        if: github.event.inputs.dry_run != 'true'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./packages/ui/dist/index.js
+          asset_name: mero-ui.js
+          asset_content_type: application/javascript
+
+      - name: Upload charts package
+        if: github.event.inputs.dry_run != 'true'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./packages/charts/dist/index.js
+          asset_name: mero-charts.js
+          asset_content_type: application/javascript
+
       - name: Dry run summary
         if: github.event.inputs.dry_run == 'true'
         run: |
@@ -71,6 +115,7 @@ jobs:
           echo "To publish for real, run without dry_run=true"
 
       - name: Create GitHub Release
+        id: create_release
         if: github.event.inputs.dry_run != 'true'
         uses: actions/create-release@v1
         env:
