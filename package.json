@@ -10,7 +10,7 @@
     "typecheck": "turbo run typecheck",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "turbo run build && changeset publish",
+    "release": "changeset publish",
 
     "storybook": "storybook dev -p 6006 --config-dir apps/storybook/.storybook",
     "build-storybook": "storybook build --config-dir apps/storybook/.storybook"
