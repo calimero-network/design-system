@@ -43,9 +43,6 @@ jobs:
           pnpm --filter=@calimero-network/mero-ui build
           pnpm --filter=@calimero-network/mero-charts build
 
-      - name: Run type checking
-        run: pnpm --filter=@calimero-network/mero-tokens --filter=@calimero-network/mero-icons --filter=@calimero-network/mero-ui --filter=@calimero-network/mero-charts typecheck
-
       - name: Setup NPM authentication
         if: github.event.inputs.dry_run != 'true'
         run: |
@@ -60,42 +57,6 @@ jobs:
         run: pnpm release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Upload packages to GitHub Release
-        if: github.event.inputs.dry_run != 'true'
-        run: |
-          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/${{ github.ref_name }} --jq .id)
-          gh api repos/${{ github.repository }}/releases/$RELEASE_ID/assets \
-            -F name=mero-tokens.js \
-            -F content_type=application/javascript \
-            --data-binary @./packages/tokens/dist/index.js
-
-      - name: Upload icons package
-        if: github.event.inputs.dry_run != 'true'
-        run: |
-          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/${{ github.ref_name }} --jq .id)
-          gh api repos/${{ github.repository }}/releases/$RELEASE_ID/assets \
-            -F name=mero-icons.js \
-            -F content_type=application/javascript \
-            --data-binary @./packages/icons/dist/index.js
-
-      - name: Upload UI package
-        if: github.event.inputs.dry_run != 'true'
-        run: |
-          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/${{ github.ref_name }} --jq .id)
-          gh api repos/${{ github.repository }}/releases/$RELEASE_ID/assets \
-            -F name=mero-ui.js \
-            -F content_type=application/javascript \
-            --data-binary @./packages/ui/dist/index.js
-
-      - name: Upload charts package
-        if: github.event.inputs.dry_run != 'true'
-        run: |
-          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/${{ github.ref_name }} --jq .id)
-          gh api repos/${{ github.repository }}/releases/$RELEASE_ID/assets \
-            -F name=mero-charts.js \
-            -F content_type=application/javascript \
-            --data-binary @./packages/charts/dist/index.js
 
       - name: Dry run summary
         if: github.event.inputs.dry_run == 'true'

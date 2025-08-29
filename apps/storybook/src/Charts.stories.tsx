@@ -17,7 +17,7 @@ export const GaugeExample: StoryObj<typeof Gauge> = {
   render: (args) => {
     // Update value if it's outside the min/max range
     const adjustedValue = Math.max(args.min || 0, Math.min(args.max || 100, args.value));
-    
+
     return (
       <div style={{ padding: '16px' }}>
         <div style={{ maxWidth: '400px', margin: '0 auto' }}>
