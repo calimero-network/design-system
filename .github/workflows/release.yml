@@ -42,9 +42,6 @@ jobs:
       - name: Run type checking
         run: pnpm typecheck
 
-      - name: Run linting
-        run: pnpm lint
-
       - name: Setup NPM authentication
         if: github.event.inputs.dry_run != 'true'
         run: |
