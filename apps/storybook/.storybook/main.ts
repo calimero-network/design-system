@@ -12,26 +12,13 @@ const config: StorybookConfig = {
     "options": {}
   },
   "viteFinal": async (config) => {
-    // Handle external modules for both dev and build
+    // Only apply external configuration for build mode, not dev mode
     if (config.build && config.build.rollupOptions) {
       config.build.rollupOptions.external = [
         'storybook/internal/preview/runtime',
-        'storybook/internal/csf',
-        'storybook/internal/*'
+        'storybook/internal/csf'
       ] as any;
     }
-    
-    // Add optimizeDeps configuration for dev mode
-    if (!config.optimizeDeps) {
-      config.optimizeDeps = {};
-    }
-    if (!config.optimizeDeps.exclude) {
-      config.optimizeDeps.exclude = [];
-    }
-    config.optimizeDeps.exclude.push(
-      'storybook/internal/preview/runtime',
-      'storybook/internal/csf'
-    );
     
     return config;
   }
