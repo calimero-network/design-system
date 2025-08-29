@@ -53,7 +53,7 @@ const sampleTimeSeriesData = [
 ];
 
 export const TimeSeriesWithTableExample: StoryObj<typeof TimeSeriesWithTable> = {
-  render: (args: any) => {
+  render: (args) => {
     return (
       <div style={{ padding: '16px' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -93,7 +93,7 @@ export const TimeSeriesWithTableExample: StoryObj<typeof TimeSeriesWithTable> = 
 };
 
 export const TimeSeriesWithTableWithColors: StoryObj<typeof TimeSeriesWithTable> = {
-  render: (args: any) => {
+  render: (args) => {
     return (
       <div style={{ padding: '16px' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -119,7 +119,7 @@ export const TimeSeriesWithTableWithColors: StoryObj<typeof TimeSeriesWithTable>
 };
 
 export const TimeSeriesWithTableNoLegend: StoryObj<typeof TimeSeriesWithTable> = {
-  render: (args: any) => {
+  render: (args) => {
     return (
       <div style={{ padding: '16px' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -144,7 +144,7 @@ export const TimeSeriesWithTableNoLegend: StoryObj<typeof TimeSeriesWithTable> =
 };
 
 export const TimeSeriesWithTableAutoColors: StoryObj<typeof TimeSeriesWithTable> = {
-  render: (args: any) => {
+  render: (args) => {
     return (
       <div style={{ padding: '16px' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>

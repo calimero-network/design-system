@@ -101,7 +101,7 @@ import {
   HeartCheck,
   Shield,
   ShieldCheck,
-  IconBase 
+   
 } from '../../../../packages/icons/src';
 
 const meta: Meta = {
@@ -225,7 +225,7 @@ const allIcons = [
 
 // Lucide-style icon showcase with shared controls
 export const IconShowcase: Story = {
-  render: (args: any) => {
+  render: (args) => {
     const [searchTerm, setSearchTerm] = React.useState('');
     const [copiedIcon, setCopiedIcon] = React.useState<string | null>(null);
 

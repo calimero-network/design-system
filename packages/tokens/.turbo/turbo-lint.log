@@ -1,0 +1,26 @@
+
+
+> @calimero-network/mero-tokens@0.0.1 lint /Users/xilosada/dev/calimero/design-system/packages/tokens
+> eslint .
+
+
+Oops! Something went wrong! :(
+
+ESLint: 9.33.0
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@eslint/js' imported from /Users/xilosada/dev/calimero/design-system/eslint.config.js
+Did you mean to import "@eslint/js/src/index.js"?
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:267:9)
+    at packageResolve (node:internal/modules/esm/resolve:768:81)
+    at moduleResolve (node:internal/modules/esm/resolve:854:18)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:780:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:704:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:687:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:305:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:137:49)
+(node:74941) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/xilosada/dev/calimero/design-system/eslint.config.js?mtime=1756470719800 is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/xilosada/dev/calimero/design-system/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[41m[30m ELIFECYCLE [39m[49m [31mCommand failed with exit code 2.[39m

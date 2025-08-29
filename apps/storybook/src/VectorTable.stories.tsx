@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { VectorTableRaw } from "../../../packages/charts/src/VectorTable";
 import { Card, CardHeader, CardTitle, CardContent } from "../../../packages/ui/src";
-import { calculateMean, calculateLast, calculateMax } from "../../../packages/charts/src/TimeSeries";
+import { calculateMean, calculateLast, calculateMax, type Series } from "../../../packages/charts/src/TimeSeries";
 
 const meta: Meta<typeof VectorTableRaw> = {
   title: "CHARTS/VectorTable",
@@ -178,7 +178,7 @@ export const VectorTableCustomColumns: StoryObj<typeof VectorTableRaw> = {
       { title: 'Peak', function: calculateMax },
       { 
         title: 'Min', 
-        function: (series: any) => Math.min(...series.data.map((p: any) => p.y)) 
+        function: (series: Series) => Math.min(...series.data.map((p) => p.y)) 
       }
     ];
 
