@@ -3,7 +3,7 @@ import { Gauge } from "../../../packages/charts/src/Gauge";
 import { TimeSeries } from "../../../packages/charts/src/TimeSeries";
 import { VectorTableRaw } from "../../../packages/charts/src/VectorTable";
 import { TimeSeriesWithTable } from "../../../packages/charts/src/CombinedChart";
-import { Card, CardHeader, CardTitle, CardContent } from "@calimero-network/mero-ui";
+import { Card, CardHeader, CardTitle, CardContent } from "../../../packages/ui/src";
 
 const meta: Meta = {
   title: "CHARTS/Overview",

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Card, CardHeader, CardTitle, CardContent } from '@calimero-network/mero-ui';
-import { Settings, Clock } from '@calimero-network/mero-icons';
+import { Card, CardHeader, CardTitle, CardContent } from '../../../packages/ui/src';
+import { Settings, Clock } from '../../../packages/icons/src';
 
 const meta: Meta<typeof Card> = {
   title: 'UI/Card',

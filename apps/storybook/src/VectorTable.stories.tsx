@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { VectorTableRaw } from "../../../packages/charts/src/VectorTable";
-import { Card, CardHeader, CardTitle, CardContent } from "@calimero-network/mero-ui";
+import { Card, CardHeader, CardTitle, CardContent } from "../../../packages/ui/src";
 import { calculateMean, calculateLast, calculateMax } from "../../../packages/charts/src/TimeSeries";
 
 const meta: Meta<typeof VectorTableRaw> = {

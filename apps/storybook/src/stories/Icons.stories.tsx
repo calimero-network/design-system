@@ -102,7 +102,7 @@ import {
   Shield,
   ShieldCheck,
   IconBase 
-} from '@calimero-network/mero-icons';
+} from '../../../../packages/icons/src';
 
 const meta: Meta = {
   title: 'Design System/Icons',
