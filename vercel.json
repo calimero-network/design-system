@@ -2,5 +2,10 @@
   "buildCommand": "pnpm build-storybook",
   "outputDirectory": "storybook-static",
   "installCommand": "pnpm install",
-  "framework": null
+  "framework": null,
+  "build": {
+    "env": {
+      "NODE_OPTIONS": "--max-old-space-size=4096"
+    }
+  }
 }
