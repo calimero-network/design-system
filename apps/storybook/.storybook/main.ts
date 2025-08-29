@@ -10,6 +10,17 @@ const config: StorybookConfig = {
   "framework": {
     "name": '@storybook/react-vite',
     "options": {}
+  },
+  "viteFinal": async (config) => {
+    // @ts-ignore - Fix for storybook internal module resolution
+    if (config.build && config.build.rollupOptions) {
+      config.build.rollupOptions.external = [
+        'storybook/internal/preview/runtime',
+        'storybook/internal/csf',
+        'storybook/internal/*'
+      ];
+    }
+    return config;
   }
 };
 export default config;

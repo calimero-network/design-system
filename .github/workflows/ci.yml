@@ -28,7 +28,7 @@ jobs:
         run: pnpm install
 
       - name: Build packages
-        run: pnpm build
+        run: pnpm --filter=@calimero-network/mero-tokens --filter=@calimero-network/mero-icons --filter=@calimero-network/mero-ui --filter=@calimero-network/mero-charts build
 
       - name: Lint
         run: pnpm lint

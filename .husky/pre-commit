@@ -1,2 +1,2 @@
-# Build library packages to ensure they compile
-pnpm --filter=@calimero-network/mero-tokens --filter=@calimero-network/mero-icons --filter=@calimero-network/mero-ui --filter=@calimero-network/mero-charts build
+# Build all packages to ensure they compile
+pnpm build
