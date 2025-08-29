@@ -59,47 +59,39 @@ jobs:
 
       - name: Upload packages to GitHub Release
         if: github.event.inputs.dry_run != 'true'
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./packages/tokens/dist/index.js
-          asset_name: mero-tokens.js
-          asset_content_type: application/javascript
+        run: |
+          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/${{ github.ref_name }} --jq .id)
+          gh api repos/${{ github.repository }}/releases/$RELEASE_ID/assets \
+            -F name=mero-tokens.js \
+            -F content_type=application/javascript \
+            --data-binary @./packages/tokens/dist/index.js
 
       - name: Upload icons package
         if: github.event.inputs.dry_run != 'true'
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./packages/icons/dist/index.js
-          asset_name: mero-icons.js
-          asset_content_type: application/javascript
+        run: |
+          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/${{ github.ref_name }} --jq .id)
+          gh api repos/${{ github.repository }}/releases/$RELEASE_ID/assets \
+            -F name=mero-icons.js \
+            -F content_type=application/javascript \
+            --data-binary @./packages/icons/dist/index.js
 
       - name: Upload UI package
         if: github.event.inputs.dry_run != 'true'
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./packages/ui/dist/index.js
-          asset_name: mero-ui.js
-          asset_content_type: application/javascript
+        run: |
+          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/${{ github.ref_name }} --jq .id)
+          gh api repos/${{ github.repository }}/releases/$RELEASE_ID/assets \
+            -F name=mero-ui.js \
+            -F content_type=application/javascript \
+            --data-binary @./packages/ui/dist/index.js
 
       - name: Upload charts package
         if: github.event.inputs.dry_run != 'true'
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./packages/charts/dist/index.js
-          asset_name: mero-charts.js
-          asset_content_type: application/javascript
+        run: |
+          RELEASE_ID=$(gh api repos/${{ github.repository }}/releases/tags/${{ github.ref_name }} --jq .id)
+          gh api repos/${{ github.repository }}/releases/$RELEASE_ID/assets \
+            -F name=mero-charts.js \
+            -F content_type=application/javascript \
+            --data-binary @./packages/charts/dist/index.js
 
       - name: Dry run summary
         if: github.event.inputs.dry_run == 'true'
@@ -115,7 +107,6 @@ jobs:
           echo "To publish for real, run without dry_run=true"
 
       - name: Create GitHub Release
-        id: create_release
         if: github.event.inputs.dry_run != 'true'
         uses: actions/create-release@v1
         env:
