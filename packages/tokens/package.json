@@ -19,7 +19,6 @@
   "scripts": {
     "build": "tsup src/index.ts --dts --format esm,cjs",
     "dev": "pnpm build",
-
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
