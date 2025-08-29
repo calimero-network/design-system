@@ -14,7 +14,7 @@ type Story = StoryObj;
 
 // Get all icon components
 const allIcons = Object.entries(Icons)
-  .filter(([name, component]) => typeof component === 'function')
+  .filter(([, component]) => typeof component === 'function')
   .map(([name, component]) => ({ name, component: component as React.ComponentType<any> }))
   .sort((a, b) => a.name.localeCompare(b.name));
 
