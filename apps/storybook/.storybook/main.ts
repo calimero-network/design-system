@@ -12,13 +12,12 @@ const config: StorybookConfig = {
     "options": {}
   },
   "viteFinal": async (config) => {
-    // @ts-ignore - Fix for storybook internal module resolution
     if (config.build && config.build.rollupOptions) {
       config.build.rollupOptions.external = [
         'storybook/internal/preview/runtime',
         'storybook/internal/csf',
         'storybook/internal/*'
-      ];
+      ] as any;
     }
     return config;
   }
