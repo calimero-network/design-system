@@ -1,6 +1,6 @@
 {
   "name": "@calimero-network/mero-tokens",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -11,7 +11,11 @@
       "require": "./dist/index.js"
     }
   },
-  "files": ["dist", "src", "tokens.json"],
+  "files": [
+    "dist",
+    "src",
+    "tokens.json"
+  ],
   "scripts": {
     "build": "tsup src/index.ts --dts --format esm,cjs",
     "dev": "pnpm build",
@@ -22,4 +26,4 @@
     "tsup": "^8.0.0",
     "typescript": "^5.5.0"
   }
-} 
+}

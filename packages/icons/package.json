@@ -1,20 +1,29 @@
 {
   "name": "@calimero-network/mero-icons",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
-  "exports": { ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" } },
-  "files": ["dist"],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup src/index.ts --dts --format esm,cjs",
     "dev": "pnpm build",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
-  "peerDependencies": { "react": ">=18" },
+  "peerDependencies": {
+    "react": ">=18"
+  },
   "devDependencies": {
     "tsup": "^8.0.0",
     "typescript": "^5.5.0",
     "react": "^18.2.0",
     "@types/react": "^18.2.0"
   }
-} 
+}

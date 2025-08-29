@@ -1,6 +1,6 @@
 {
   "name": "@calimero-network/mero-charts",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Chart components for Calimero design system",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
