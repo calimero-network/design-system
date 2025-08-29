@@ -37,10 +37,14 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build all packages
-        run: pnpm --filter=@calimero-network/mero-tokens --filter=@calimero-network/mero-icons --filter=@calimero-network/mero-ui --filter=@calimero-network/mero-charts build
+        run: |
+          pnpm --filter=@calimero-network/mero-tokens build
+          pnpm --filter=@calimero-network/mero-icons build
+          pnpm --filter=@calimero-network/mero-ui build
+          pnpm --filter=@calimero-network/mero-charts build
 
       - name: Run type checking
-        run: pnpm typecheck
+        run: pnpm --filter=@calimero-network/mero-tokens --filter=@calimero-network/mero-icons --filter=@calimero-network/mero-ui --filter=@calimero-network/mero-charts typecheck
 
       - name: Setup NPM authentication
         if: github.event.inputs.dry_run != 'true'
