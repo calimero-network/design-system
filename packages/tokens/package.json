@@ -1,5 +1,8 @@
 {
   "name": "@calimero-network/mero-tokens",
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "0.0.1",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

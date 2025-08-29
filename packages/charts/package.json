@@ -1,5 +1,8 @@
 {
   "name": "@calimero-network/mero-charts",
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "0.0.1",
   "description": "Chart components for Calimero design system",
   "main": "./dist/index.js",

@@ -100,7 +100,6 @@ jobs:
           echo "✅ All packages built successfully"
           echo "✅ Type checking passed"
           echo "✅ Linting passed"
-          echo "✅ Storybook built successfully"
           echo "✅ Version packages step completed"
           echo ""
           echo "This was a dry run - no packages were published"
