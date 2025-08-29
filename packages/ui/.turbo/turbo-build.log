@@ -1,6 +1,6 @@
 
 
-> @calimero-network/mero-ui@0.0.0 build /Users/xilosada/dev/calimero/design-system/packages/ui
+> @calimero-network/mero-ui@0.0.1 build /Users/xilosada/dev/calimero/design-system/packages/ui
 > tsup
 
 [34mCLI[39m Building entry: src/index.ts
@@ -18,6 +18,6 @@
 [32mCJS[39m [1mdist/index.js.map [22m[32m220.94 KB[39m
 [32mCJS[39m ⚡️ Build success in 25ms
 DTS Build start
-DTS ⚡️ Build success in 793ms
+DTS ⚡️ Build success in 808ms
 DTS dist/index.d.ts  1.00 KB
 DTS dist/index.d.mts 1.00 KB

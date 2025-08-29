@@ -1,6 +1,6 @@
 
 
-> @calimero-network/mero-icons@0.0.0 build /Users/xilosada/dev/calimero/design-system/packages/icons
+> @calimero-network/mero-icons@0.0.1 build /Users/xilosada/dev/calimero/design-system/packages/icons
 > tsup src/index.ts --dts --format esm,cjs
 
 [34mCLI[39m Building entry: src/index.ts
@@ -14,6 +14,6 @@
 [32mESM[39m [1mdist/index.js [22m[32m148.53 KB[39m
 [32mESM[39m ⚡️ Build success in 26ms
 DTS Build start
-DTS ⚡️ Build success in 789ms
+DTS ⚡️ Build success in 767ms
 DTS dist/index.d.ts  28.43 KB
 DTS dist/index.d.cts 28.43 KB

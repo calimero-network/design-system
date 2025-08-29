@@ -1,6 +1,6 @@
 
 
-> @calimero-network/mero-charts@0.0.0 build /Users/xilosada/dev/calimero/design-system/packages/charts
+> @calimero-network/mero-charts@0.0.1 build /Users/xilosada/dev/calimero/design-system/packages/charts
 > tsup
 
 [34mCLI[39m Building entry: src/index.ts
@@ -11,7 +11,7 @@
 [34mCLI[39m Cleaning output folder
 [34mESM[39m Build start
 [34mCJS[39m Build start
-[32mESM[39m [1mdist/index.mjs [22m[32m10.77 KB[39m
-[32mESM[39m ⚡️ Build success in 37ms
 [32mCJS[39m [1mdist/index.js [22m[32m11.34 KB[39m
-[32mCJS[39m ⚡️ Build success in 37ms
+[32mCJS[39m ⚡️ Build success in 38ms
+[32mESM[39m [1mdist/index.mjs [22m[32m10.77 KB[39m
+[32mESM[39m ⚡️ Build success in 39ms

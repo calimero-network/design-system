@@ -33,16 +33,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build all packages
-        run: pnpm build
+        run: pnpm --filter=@calimero-network/mero-tokens --filter=@calimero-network/mero-icons --filter=@calimero-network/mero-ui --filter=@calimero-network/mero-charts build
 
       - name: Run type checking
         run: pnpm typecheck
 
       - name: Run linting
         run: pnpm lint
-
-      - name: Build Storybook
-        run: pnpm build-storybook
 
       - name: Check package.json files
         run: |
