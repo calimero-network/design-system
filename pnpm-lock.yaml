@@ -56,16 +56,16 @@ importers:
 
   apps/storybook:
     dependencies:
-      '@calimero/charts':
+      '@calimero-network/mero-charts':
         specifier: workspace:*
         version: link:../../packages/charts
-      '@calimero/icons':
+      '@calimero-network/mero-icons':
         specifier: workspace:*
         version: link:../../packages/icons
-      '@calimero/tokens':
+      '@calimero-network/mero-tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
-      '@calimero/ui':
+      '@calimero-network/mero-ui':
         specifier: workspace:*
         version: link:../../packages/ui
       react:
@@ -126,7 +126,7 @@ importers:
 
   packages/charts:
     dependencies:
-      '@calimero/ui':
+      '@calimero-network/mero-ui':
         specifier: workspace:*
         version: link:../ui
       react:
@@ -172,7 +172,7 @@ importers:
 
   packages/ui:
     dependencies:
-      '@calimero/icons':
+      '@calimero-network/mero-icons':
         specifier: workspace:*
         version: link:../icons
       react:
