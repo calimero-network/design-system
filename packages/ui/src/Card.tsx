@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ClockAlert } from "@calimero/icons";
+import { ClockAlert } from "@calimero-network/mero-icons";
 
 // Custom Tooltip Component
 function Tooltip({ 

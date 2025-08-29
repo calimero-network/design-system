@@ -1,5 +1,5 @@
 import type { Preview } from '@storybook/react-vite';
-import { cssVariables } from '@calimero/tokens';
+import { cssVariables } from '@calimero-network/mero-tokens';
 
 // Inject CSS variables directly into the document
 const style = document.createElement('style');

@@ -9,10 +9,10 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
-    "@calimero/charts": "workspace:*",
-    "@calimero/icons": "workspace:*",
-    "@calimero/tokens": "workspace:*",
-    "@calimero/ui": "workspace:*",
+    "@calimero-network/mero-charts": "workspace:*",
+    "@calimero-network/mero-icons": "workspace:*",
+    "@calimero-network/mero-tokens": "workspace:*",
+    "@calimero-network/mero-ui": "workspace:*",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "recharts": "^2.12.0"

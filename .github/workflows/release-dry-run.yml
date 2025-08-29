@@ -92,10 +92,10 @@ jobs:
         run: |
           echo "=== Changeset Dry Run ==="
           echo "This would publish the following packages:"
-          echo "- @calimero/icons"
-          echo "- @calimero/ui" 
-          echo "- @calimero/charts"
-          echo "- @calimero/tokens"
+          echo "- @calimero-network/mero-icons"
+          echo "- @calimero-network/mero-ui"
+          echo "- @calimero-network/mero-charts"
+          echo "- @calimero-network/mero-tokens"
           echo ""
           echo "Note: This is a dry run - no packages would actually be published"
 

@@ -1,5 +1,5 @@
 {
-  "name": "@calimero/ui",
+  "name": "@calimero-network/mero-ui",
   "version": "0.0.0",
   "description": "UI primitives for Calimero design system",
   "main": "./dist/index.js",
@@ -21,7 +21,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@calimero/icons": "workspace:*",
+    "@calimero-network/mero-icons": "workspace:*",
     "react": "^19.0.0"
   },
   "devDependencies": {

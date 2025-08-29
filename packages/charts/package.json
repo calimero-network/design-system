@@ -1,5 +1,5 @@
 {
-  "name": "@calimero/charts",
+  "name": "@calimero-network/mero-charts",
   "version": "0.0.0",
   "description": "Chart components for Calimero design system",
   "main": "./dist/index.js",
@@ -20,7 +20,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@calimero/ui": "workspace:*",
+    "@calimero-network/mero-ui": "workspace:*",
     "react": "^19.0.0",
     "recharts": "^2.8.0"
   },

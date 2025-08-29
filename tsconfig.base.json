@@ -12,10 +12,10 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@calimero/icons": ["packages/icons/src"],
-      "@calimero/ui": ["packages/ui/src"],
-      "@calimero/tokens": ["packages/tokens/src"],
-      "@calimero/charts": ["packages/charts/src"]
+      "@calimero-network/mero-icons": ["packages/icons/src"],
+      "@calimero-network/mero-ui": ["packages/ui/src"],
+      "@calimero-network/mero-tokens": ["packages/tokens/src"],
+      "@calimero-network/mero-charts": ["packages/charts/src"]
     }
   }
 } 

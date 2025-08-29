@@ -1,5 +1,5 @@
 {
-  "name": "@calimero/icons",
+  "name": "@calimero-network/mero-icons",
   "version": "0.0.0",
   "type": "module",
   "exports": { ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" } },

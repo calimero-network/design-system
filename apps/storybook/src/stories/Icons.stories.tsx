@@ -102,7 +102,7 @@ import {
   Shield,
   ShieldCheck,
   IconBase 
-} from '@calimero/icons';
+} from '@calimero-network/mero-icons';
 
 const meta: Meta = {
   title: 'Design System/Icons',
@@ -234,7 +234,7 @@ export const IconShowcase: Story = {
     );
 
     const copyToClipboard = async (iconName: string) => {
-      const importText = `import { ${iconName} } from '@calimero/icons'`;
+      const importText = `import { ${iconName} } from '@calimero-network/mero-icons'`;
       try {
         await navigator.clipboard.writeText(importText);
         setCopiedIcon(iconName);

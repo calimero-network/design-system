@@ -88,10 +88,10 @@ jobs:
             ## Calimero Design System Release
             
             This release includes:
-            - @calimero/icons: Icon components
-            - @calimero/ui: UI primitives with enhanced tooltips
-            - @calimero/charts: Chart components (Gauge, TimeSeries, VectorTable, TimeSeriesWithTable)
-            - @calimero/tokens: Design tokens
+            - @calimero-network/mero-icons: Icon components
+            - @calimero-network/mero-ui: UI primitives with enhanced tooltips
+            - @calimero-network/mero-charts: Chart components (Gauge, TimeSeries, VectorTable, TimeSeriesWithTable)
+            - @calimero-network/mero-tokens: Design tokens
             
             ### New Features:
             - Complete charts package with fillable areas
