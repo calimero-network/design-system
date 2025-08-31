@@ -1,5 +1,0 @@
-
-
-> @calimero-network/mero-tokens@0.0.2 typecheck /Users/xilosada/dev/calimero/design-system/packages/tokens
-> tsc -p tsconfig.json --noEmit
-
