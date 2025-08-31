@@ -75,8 +75,8 @@ export function Gauge({
   const valueColor = getValueColor(pct);
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <svg viewBox="0 0 240 160" className="w-full">
+    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <svg viewBox="0 0 240 160" style={{ width: '100%' }}>
         {/* background arc - single grey background */}
         <path d={arcPath(cx, cy, arcRadius, startAngle, endAngle)} stroke="#6B7280" strokeOpacity={0.3} strokeWidth={18} fill="none" strokeLinecap="butt"/>
 
