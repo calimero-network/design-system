@@ -1,2 +1,15 @@
+echo "🔍 Running pre-commit checks..."
+
+# Lint all files
+echo "📝 Linting..."
+pnpm lint
+
+# Type check all packages
+echo "🔍 Type checking..."
+pnpm typecheck
+
 # Build all packages to ensure they compile
+echo "🏗️ Building packages..."
 pnpm build
+
+echo "✅ All pre-commit checks passed!"

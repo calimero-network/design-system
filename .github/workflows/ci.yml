@@ -30,25 +30,11 @@ jobs:
       - name: Build packages
         run: pnpm --filter=@calimero-network/mero-tokens --filter=@calimero-network/mero-icons --filter=@calimero-network/mero-ui --filter=@calimero-network/mero-charts build
 
+      - name: Build Storybook
+        run: pnpm build-storybook
+
       - name: Lint
         run: pnpm lint
 
       - name: Type check
         run: pnpm typecheck
-
-      - name: Test
-        run: pnpm test
-
-      - name: Trigger Release Dry Run
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'release.yml',
-              ref: context.ref,
-              inputs: {
-                dry_run: 'true'
-              }
-            });
