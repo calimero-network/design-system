@@ -93,6 +93,9 @@ importers:
       '@storybook/addon-docs':
         specifier: ^8.6.14
         version: 8.6.14(@types/react@19.1.10)(storybook@8.6.14(prettier@3.6.2))
+      '@storybook/addon-interactions':
+        specifier: ^8.6.14
+        version: 8.6.14(storybook@8.6.14(prettier@3.6.2))
       '@storybook/addon-onboarding':
         specifier: ^8.6.14
         version: 8.6.14(storybook@8.6.14(prettier@3.6.2))
@@ -982,6 +985,11 @@ packages:
 
   '@storybook/addon-highlight@8.6.14':
     resolution: {integrity: sha512-4H19OJlapkofiE9tM6K/vsepf4ir9jMm9T+zw5L85blJZxhKZIbJ6FO0TCG9PDc4iPt3L6+aq5B0X29s9zicNQ==}
+    peerDependencies:
+      storybook: ^8.6.14
+
+  '@storybook/addon-interactions@8.6.14':
+    resolution: {integrity: sha512-8VmElhm2XOjh22l/dO4UmXxNOolGhNiSpBcls2pqWSraVh4a670EyYBZsHpkXqfNHo2YgKyZN3C91+9zfH79qQ==}
     peerDependencies:
       storybook: ^8.6.14
 
@@ -3453,6 +3461,10 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
+  polished@4.3.1:
+    resolution: {integrity: sha512-OBatVyC/N7SCW/FaDHrSd+vn0o5cS855TOmYi4OkdWUMSJCET/xip//ch8xGUvtr3i44X9LVyWwQlRMTN3pwSA==}
+    engines: {node: '>=10'}
+
   possible-typed-array-names@1.1.0:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
     engines: {node: '>= 0.4'}
@@ -5189,6 +5201,15 @@ snapshots:
     dependencies:
       '@storybook/global': 5.0.0
       storybook: 8.6.14(prettier@3.6.2)
+
+  '@storybook/addon-interactions@8.6.14(storybook@8.6.14(prettier@3.6.2))':
+    dependencies:
+      '@storybook/global': 5.0.0
+      '@storybook/instrumenter': 8.6.14(storybook@8.6.14(prettier@3.6.2))
+      '@storybook/test': 8.6.14(storybook@8.6.14(prettier@3.6.2))
+      polished: 4.3.1
+      storybook: 8.6.14(prettier@3.6.2)
+      ts-dedent: 2.2.0
 
   '@storybook/addon-onboarding@8.6.14(storybook@8.6.14(prettier@3.6.2))':
     dependencies:
@@ -8010,6 +8031,10 @@ snapshots:
       playwright-core: 1.55.0
     optionalDependencies:
       fsevents: 2.3.2
+
+  polished@4.3.1:
+    dependencies:
+      '@babel/runtime': 7.28.3
 
   possible-typed-array-names@1.1.0: {}
 
