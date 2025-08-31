@@ -1,0 +1,5 @@
+
+
+> @calimero-network/mero-icons@0.0.2 typecheck /Users/xilosada/dev/calimero/design-system/packages/icons
+> tsc -p tsconfig.json --noEmit
+

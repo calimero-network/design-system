@@ -1,0 +1,5 @@
+
+
+> @calimero-network/mero-ui@0.0.2 typecheck /Users/xilosada/dev/calimero/design-system/packages/ui
+> tsc --noEmit
+
