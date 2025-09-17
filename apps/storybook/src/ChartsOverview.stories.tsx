@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Gauge } from "../../../packages/charts/src/Gauge";
 import { TimeSeries } from "../../../packages/charts/src/TimeSeries";
 import { VectorTableRaw } from "../../../packages/charts/src/VectorTable";
