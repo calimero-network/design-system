@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { TimeSeriesWithTable } from "../../../packages/charts/src/CombinedChart";
 import { Card, CardHeader, CardTitle, CardContent } from "../../../packages/ui/src";
 import { calculateMean, calculateLast, calculateMax } from "../../../packages/charts/src/TimeSeries";

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { VectorTableRaw } from "../../../packages/charts/src/VectorTable";
 import { Card, CardHeader, CardTitle, CardContent } from "../../../packages/ui/src";
 import { calculateMean, calculateLast, calculateMax, type Series } from "../../../packages/charts/src/TimeSeries";

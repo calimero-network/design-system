@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Card, CardHeader, CardTitle, CardContent } from '../../../packages/ui/src';
 import { Settings, Clock } from '../../../packages/icons/src';
 
