@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm build-storybook",
+  "buildCommand": "pnpm -w build && pnpm build-storybook",
   "outputDirectory": "storybook-static",
   "installCommand": "pnpm install",
   "framework": null,
