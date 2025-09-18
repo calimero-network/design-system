@@ -20,12 +20,11 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "peerDependencies": {
-    "react": ">=18"
+    "react": "^19.1.1"
   },
   "devDependencies": {
     "tsup": "^8.0.0",
     "typescript": "^5.5.0",
-    "react": "^18.2.0",
-    "@types/react": "^18.2.0"
+    "@types/react": "^19.1.13"
   }
 }
