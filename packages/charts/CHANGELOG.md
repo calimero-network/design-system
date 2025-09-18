@@ -1,5 +1,12 @@
 # @calimero-network/mero-charts
 
+## 0.0.4
+
+### Patch Changes
+
+- Updated dependencies
+  - @calimero-network/mero-ui@0.2.0
+
 ## 0.0.3
 
 ### Patch Changes
