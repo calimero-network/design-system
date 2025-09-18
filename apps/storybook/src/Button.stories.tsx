@@ -3,17 +3,10 @@ import { Button } from "@calimero-network/mero-ui";
 import { cssVariables } from "@calimero-network/mero-tokens";
 
 const withTokens = (Story: any) => (
-  <div
-    style={{
-      background: '#111827',
-      minHeight: '100vh',
-      padding: '24px',
-      color: 'white'
-    }}
-  >
+  <>
     <style>{cssVariables}</style>
     <Story />
-  </div>
+  </>
 );
 
 const meta: Meta<typeof Button> = {
@@ -41,11 +34,21 @@ export const Primary: Story = {
 
 export const States: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: 16 }}>
-      <Button>Default (brand-600)</Button>
-      <Button style={{ backgroundColor: 'var(--color-brand-100)' }}>Hover (brand-100)</Button>
-      <Button style={{ backgroundColor: 'var(--color-brand-800)' }}>Active (brand-800)</Button>
-      <Button disabled>Disabled (brand-900)</Button>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div style={{ display: 'flex', gap: 16 }}>
+        <Button>Primary</Button>
+        <Button disabled>Primary Disabled</Button>
+      </div>
+      <div style={{ display: 'flex', gap: 16 }}>
+        <Button variant="secondary">Secondary</Button>
+        <Button variant="secondary" disabled>Secondary Disabled</Button>
+      </div>
+      <div style={{ display: 'flex', gap: 16 }}>
+        <Button variant="success">Success</Button>
+        <Button variant="warning">Warning</Button>
+        <Button variant="error">Error</Button>
+        <Button variant="info">Info</Button>
+      </div>
     </div>
   )
 };

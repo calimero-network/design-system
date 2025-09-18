@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Card, CardHeader, CardTitle, CardContent } from '../../../packages/ui/src';
-import { Settings, Clock } from '../../../packages/icons/src';
+import { Card, CardHeader, CardTitle, CardContent } from '@calimero-network/mero-ui';
+import { Settings, Clock } from '@calimero-network/mero-icons';
 
 const meta: Meta<typeof Card> = {
   title: 'UI/Card',
@@ -13,7 +13,9 @@ const meta: Meta<typeof Card> = {
 
 export default meta;
 
-export const Basic: StoryObj<typeof Card> = {
+type Story = StoryObj<typeof meta>;
+
+export const Basic: Story = {
   render: () => (
     <div style={{ maxWidth: '400px' }}>
       <Card>
@@ -30,7 +32,7 @@ export const Basic: StoryObj<typeof Card> = {
   ),
 };
 
-export const WithTooltip: StoryObj<typeof Card> = {
+export const WithTooltip: Story = {
   render: () => (
     <div style={{ maxWidth: '400px' }}>
       <Card tooltip="This card shows important information">
@@ -47,7 +49,7 @@ export const WithTooltip: StoryObj<typeof Card> = {
   ),
 };
 
-export const WithCustomColor: StoryObj<typeof Card> = {
+export const WithCustomColor: Story = {
   render: () => (
     <div style={{ maxWidth: '400px' }}>
       <Card 
@@ -67,7 +69,7 @@ export const WithCustomColor: StoryObj<typeof Card> = {
   ),
 };
 
-export const NoBorder: StoryObj<typeof Card> = {
+export const NoBorder: Story = {
   render: () => (
     <div style={{ maxWidth: '400px' }}>
       <Card 
@@ -88,7 +90,7 @@ export const NoBorder: StoryObj<typeof Card> = {
   ),
 };
 
-export const CustomTooltipIcon: StoryObj<typeof Card> = {
+export const CustomTooltipIcon: Story = {
   render: () => (
     <div style={{ maxWidth: '400px' }}>
       <Card 
@@ -109,7 +111,7 @@ export const CustomTooltipIcon: StoryObj<typeof Card> = {
   ),
 };
 
-export const WarningCard: StoryObj<typeof Card> = {
+export const WarningCard: Story = {
   render: () => (
     <div style={{ maxWidth: '400px' }}>
       <Card 
@@ -130,7 +132,7 @@ export const WarningCard: StoryObj<typeof Card> = {
   ),
 };
 
-export const WithLongTitle: StoryObj<typeof Card> = {
+export const WithLongTitle: Story = {
   render: () => (
     <div style={{ maxWidth: '400px' }}>
       <Card>
@@ -147,7 +149,7 @@ export const WithLongTitle: StoryObj<typeof Card> = {
   ),
 };
 
-export const MultipleCards: StoryObj<typeof Card> = {
+export const MultipleCards: Story = {
   render: () => (
     <div style={{ 
       display: 'flex', 
