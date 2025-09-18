@@ -1,16 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Table, Button } from "@calimero-network/mero-ui";
 import { Settings as EditIcon, Trash as TrashIcon } from "@calimero-network/mero-icons";
-import { cssVariables } from "@calimero-network/mero-tokens";
 
 type Person = { name: string; email: string; role: string; lastActive: string };
 
-const columns = [
+const columns: any[] = [
   { key: 'name', header: 'Name' },
   { key: 'email', header: 'Email' },
   { key: 'role', header: 'Role' },
   { key: 'lastActive', header: 'Last Active', align: 'right' },
-] as const satisfies Array<{ key: keyof Person; header: string; align?: 'left' | 'center' | 'right' }>;
+];
 
 const data: Person[] = [
   { name: 'Alice Johnson', email: 'alice@example.com', role: 'Admin', lastActive: '2h ago' },
@@ -18,17 +17,9 @@ const data: Person[] = [
   { name: 'Carol Lee', email: 'carol@example.com', role: 'Manager', lastActive: '3d ago' },
 ];
 
-const withTokens = (Story: any) => (
-  <>
-    <style>{cssVariables}</style>
-    <Story />
-  </>
-);
-
 const meta: Meta<typeof Table> = {
   title: "UI/Table",
   component: Table,
-  decorators: [withTokens],
   parameters: {
     layout: 'centered',
   },
@@ -55,14 +46,6 @@ export const CompactSticky: Story = {
   )
 };
 
-
-type Controls = {
-  showEdit: boolean;
-  showDelete: boolean;
-  useButtons: boolean;
-  compact: boolean;
-};
-
 export const WithControls: Story = {
   argTypes: {
     showEdit: { control: 'boolean' },
@@ -77,12 +60,25 @@ export const WithControls: Story = {
     compact: false,
   },
   render: (args: any) => {
+    const dataLocal: Person[] = [
+      { name: 'Alice Johnson', email: 'alice@example.com', role: 'Admin', lastActive: '2h ago' },
+      { name: 'Bob Smith', email: 'bob@example.com', role: 'User', lastActive: '1d ago' },
+      { name: 'Carol Lee', email: 'carol@example.com', role: 'Manager', lastActive: '3d ago' },
+    ];
+
+    const baseColumns = [
+      { key: 'name', header: 'Name' },
+      { key: 'email', header: 'Email' },
+      { key: 'role', header: 'Role' },
+      { key: 'lastActive', header: 'Last Active', align: 'right' as const },
+    ];
+
     const makeActions = (row: Person) => {
       const items: React.ReactNode[] = [];
       if (args.showEdit) {
         items.push(
           args.useButtons ? (
-            <Button key="edit" onClick={() => alert(`Edit ${row.name}`)} style={args.compact ? { height: 28, padding: '0 10px', borderRadius: 8, fontSize: 12 } : undefined}>
+            <Button key="edit" variant="info" onClick={() => alert(`Edit ${row.name}`)} style={args.compact ? { height: 28, padding: '0 10px', borderRadius: 8, fontSize: 12 } : undefined}>
               <EditIcon size={args.compact ? 14 : 16} />
               {args.compact ? ' Edit' : ' Edit'}
             </Button>
@@ -91,7 +87,7 @@ export const WithControls: Story = {
               key="edit"
               title={`Edit ${row.name}`}
               onClick={() => alert(`Edit ${row.name}`)}
-              style={{ display: 'inline-grid', placeItems: 'center', width: args.compact ? 22 : 28, height: args.compact ? 22 : 28, borderRadius: args.compact ? 6 : 8, cursor: 'pointer', color: 'var(--color-brand-400)' }}
+              style={{ display: 'inline-grid', placeItems: 'center', width: args.compact ? 22 : 28, height: args.compact ? 22 : 28, borderRadius: args.compact ? 6 : 8, cursor: 'pointer', color: 'var(--color-semantic-info)' }}
             >
               <EditIcon size={args.compact ? 14 : 18} />
             </span>
@@ -101,7 +97,7 @@ export const WithControls: Story = {
       if (args.showDelete) {
         items.push(
           args.useButtons ? (
-            <Button key="delete" onClick={() => alert(`Delete ${row.name}`)} style={args.compact ? { height: 28, padding: '0 10px', borderRadius: 8, fontSize: 12, backgroundColor: 'var(--color-brand-800)' } : { backgroundColor: 'var(--color-brand-800)' }}>
+            <Button key="delete" variant="error" onClick={() => alert(`Delete ${row.name}`)} style={args.compact ? { height: 28, padding: '0 10px', borderRadius: 8, fontSize: 12 } : undefined}>
               <TrashIcon size={args.compact ? 14 : 16} />
               {args.compact ? ' Delete' : ' Delete'}
             </Button>
@@ -110,7 +106,7 @@ export const WithControls: Story = {
               key="delete"
               title={`Delete ${row.name}`}
               onClick={() => alert(`Delete ${row.name}`)}
-              style={{ display: 'inline-grid', placeItems: 'center', width: args.compact ? 22 : 28, height: args.compact ? 22 : 28, borderRadius: args.compact ? 6 : 8, cursor: 'pointer', color: 'var(--color-brand-700)' }}
+              style={{ display: 'inline-grid', placeItems: 'center', width: args.compact ? 22 : 28, height: args.compact ? 22 : 28, borderRadius: args.compact ? 6 : 8, cursor: 'pointer', color: 'var(--color-semantic-error)' }}
             >
               <TrashIcon size={args.compact ? 14 : 18} />
             </span>
@@ -124,21 +120,19 @@ export const WithControls: Story = {
       );
     };
 
-    const cols: any[] = [...columns];
-    if (args.showEdit || args.showDelete) {
-      cols.push({
+    const cols: any[] = [...baseColumns,
+      {
+        key: '__actions__',
         header: 'Actions',
         align: 'right' as const,
-        render: (_: any, row: Person) => makeActions(row),
-      });
-    }
+        render: (_: any, row: Person) => (args.showEdit || args.showDelete) ? makeActions(row) : <div />,
+      }
+    ];
 
     return (
       <div style={{ width: args.compact ? 720 : 780 }}>
-        <Table columns={cols as any} data={data} compact={args.compact} />
+        <Table columns={cols as any} data={dataLocal as any} compact={args.compact} />
       </div>
     );
   }
 } as any;
-
-

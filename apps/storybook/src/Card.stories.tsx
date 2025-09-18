@@ -32,163 +32,42 @@ export const Basic: Story = {
   ),
 };
 
-export const WithTooltip: Story = {
-  render: () => (
-    <div style={{ maxWidth: '400px' }}>
-      <Card tooltip="This card shows important information">
-        <CardHeader>
-          <CardTitle>Card with Tooltip</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p style={{ color: 'white', margin: 0 }}>
-            Hover over the clock icon to see the tooltip.
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  ),
-};
-
-export const WithCustomColor: Story = {
-  render: () => (
-    <div style={{ maxWidth: '400px' }}>
-      <Card 
-        tooltip="This card uses custom colors" 
-        color="#A5FF11"
-      >
-        <CardHeader>
-          <CardTitle>Custom Color Card</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p style={{ color: 'white', margin: 0 }}>
-            Notice the green border, title, and tooltip icon.
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  ),
-};
-
-export const NoBorder: Story = {
-  render: () => (
-    <div style={{ maxWidth: '400px' }}>
-      <Card 
-        tooltip="This card has no border" 
-        noBorder
-        color="#f59e0b"
-      >
-        <CardHeader>
-          <CardTitle>No Border Card</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p style={{ color: 'white', margin: 0 }}>
-            This card has no border but still has the tooltip.
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  ),
-};
-
-export const CustomTooltipIcon: Story = {
-  render: () => (
-    <div style={{ maxWidth: '400px' }}>
-      <Card 
-        tooltip="This card uses a custom settings icon" 
-        tooltipIcon={Settings}
-        color="#3b82f6"
-      >
-        <CardHeader>
-          <CardTitle>Custom Icon Card</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p style={{ color: 'white', margin: 0 }}>
-            This card uses a Settings icon instead of the default ClockAlert.
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  ),
-};
-
-export const WarningCard: Story = {
-  render: () => (
-    <div style={{ maxWidth: '400px' }}>
-      <Card 
-        tooltip="This card shows a warning" 
-        tooltipIcon={Clock}
-        color="#f59e0b"
-      >
-        <CardHeader>
-          <CardTitle>Warning Card</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p style={{ color: 'white', margin: 0 }}>
-            This card uses a ClockX icon with warning colors.
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  ),
-};
-
-export const WithLongTitle: Story = {
-  render: () => (
-    <div style={{ maxWidth: '400px' }}>
-      <Card>
-        <CardHeader>
-          <CardTitle>This is a very long title that should be truncated with ellipsis when it exceeds the available space</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p style={{ color: 'white', margin: 0 }}>
-            The title above should be truncated with ellipsis.
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  ),
-};
-
-export const MultipleCards: Story = {
-  render: () => (
-    <div style={{ 
-      display: 'flex', 
-      flexWrap: 'wrap',
-      gap: '16px',
-      maxWidth: '900px'
-    }}>
-      <Card style={{ flex: '1 1 250px' }}>
-        <CardHeader>
-          <CardTitle>Card 1</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p style={{ color: 'white', margin: 0 }}>
-            First card content.
-          </p>
-        </CardContent>
-      </Card>
-      
-      <Card style={{ flex: '1 1 250px' }}>
-        <CardHeader>
-          <CardTitle>Card 2</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p style={{ color: 'white', margin: 0 }}>
-            Second card content.
-          </p>
-        </CardContent>
-      </Card>
-      
-      <Card style={{ flex: '1 1 250px' }}>
-        <CardHeader>
-          <CardTitle>Card 3</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p style={{ color: 'white', margin: 0 }}>
-            Third card content.
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  ),
-};
+export const WithControls: Story = {
+  argTypes: {
+    showTooltip: { control: 'boolean' },
+    customIcon: { control: 'boolean' },
+    color: { control: 'text' },
+    noBorder: { control: 'boolean' },
+    title: { control: 'text' },
+    content: { control: 'text' },
+    longTitle: { control: 'boolean' },
+  },
+  args: {
+    showTooltip: true,
+    customIcon: false,
+    color: '#A5FF11',
+    noBorder: false,
+    title: 'Configurable Card',
+    content: 'Use controls to toggle tooltip, icon, border and color.',
+    longTitle: false,
+  },
+  render: (args: any) => {
+    const tooltip = args.showTooltip ? 'This card shows important information' : undefined;
+    const icon = args.customIcon ? Settings : undefined;
+    const titleText = args.longTitle 
+      ? 'This is a very long title that should be truncated with ellipsis when it exceeds the available space'
+      : args.title;
+    return (
+      <div style={{ maxWidth: '420px' }}>
+        <Card tooltip={tooltip} tooltipIcon={icon as any} color={args.color} noBorder={args.noBorder}>
+          <CardHeader>
+            <CardTitle>{titleText}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p style={{ color: 'white', margin: 0 }}>{args.content}</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+} as any;

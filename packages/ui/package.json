@@ -25,8 +25,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@calimero-network/mero-icons": "workspace:*",
-    "react": "^19.0.0"
+    "@calimero-network/mero-icons": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",
@@ -34,6 +33,6 @@
     "typescript": "^5.0.0"
   },
   "peerDependencies": {
-    "react": "^19.0.0"
+    "react": "^19.1.1"
   }
 }

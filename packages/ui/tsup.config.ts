@@ -7,7 +7,7 @@ export default defineConfig({
   splitting: false,
   sourcemap: true,
   clean: true,
-  external: ['react', '@calimero-network/mero-icons'],
+  external: ['react', 'react/jsx-runtime', '@calimero-network/mero-icons'],
   outExtension({ format }) {
     return {
       js: format === 'esm' ? '.mjs' : '.js',
