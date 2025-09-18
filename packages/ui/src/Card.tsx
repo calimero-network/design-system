@@ -75,6 +75,7 @@ export function Card({
   tooltipIcon: TooltipIcon = ClockAlert,
   color,
   noBorder = false,
+  variant = "rounded",
   style
 }: React.PropsWithChildren<{ 
   className?: string;
@@ -82,6 +83,7 @@ export function Card({
   tooltipIcon?: React.ComponentType<{ size?: number; color?: string; strokeWidth?: number }>;
   color?: string;
   noBorder?: boolean;
+  variant?: "rounded" | "rectangle";
   style?: React.CSSProperties;
 }>) {
   return (
@@ -89,7 +91,7 @@ export function Card({
       style={{
         background: '#1A1A1A', 
         border: noBorder ? 'none' : `1px solid ${color || '#404040'}`,
-        borderRadius: '16px',
+        borderRadius: variant === "rectangle" ? '4px' : '16px',
         padding: '12px',
         width: '100%',
         position: 'relative',

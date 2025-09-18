@@ -38,6 +38,7 @@ export const WithControls: Story = {
     customIcon: { control: 'boolean' },
     color: { control: 'text' },
     noBorder: { control: 'boolean' },
+    variant: { control: 'select', options: ['rounded', 'rectangle'] },
     title: { control: 'text' },
     content: { control: 'text' },
     longTitle: { control: 'boolean' },
@@ -47,8 +48,9 @@ export const WithControls: Story = {
     customIcon: false,
     color: '#A5FF11',
     noBorder: false,
+    variant: 'rounded',
     title: 'Configurable Card',
-    content: 'Use controls to toggle tooltip, icon, border and color.',
+    content: 'Use controls to toggle tooltip, icon, border, variant and color.',
     longTitle: false,
   },
   render: (args: any) => {
@@ -59,7 +61,7 @@ export const WithControls: Story = {
       : args.title;
     return (
       <div style={{ maxWidth: '420px' }}>
-        <Card tooltip={tooltip} tooltipIcon={icon as any} color={args.color} noBorder={args.noBorder}>
+        <Card tooltip={tooltip} tooltipIcon={icon as any} color={args.color} noBorder={args.noBorder} variant={args.variant}>
           <CardHeader>
             <CardTitle>{titleText}</CardTitle>
           </CardHeader>
@@ -71,3 +73,83 @@ export const WithControls: Story = {
     );
   }
 } as any;
+
+export const Variants: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: '24px', maxWidth: '800px' }}>
+      <div style={{ flex: 1 }}>
+        <h3 style={{ color: 'white', marginBottom: '12px' }}>Rounded (Default)</h3>
+        <Card variant="rounded" color="#3B82F6">
+          <CardHeader>
+            <CardTitle>Rounded Card</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p style={{ color: 'white', margin: 0 }}>
+              This card uses the default rounded variant with 16px border radius.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+      
+      <div style={{ flex: 1 }}>
+        <h3 style={{ color: 'white', marginBottom: '12px' }}>Rectangle</h3>
+        <Card variant="rectangle" color="#10B981">
+          <CardHeader>
+            <CardTitle>Rectangle Card</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p style={{ color: 'white', margin: 0 }}>
+              This card uses the rectangle variant with 4px border radius.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  ),
+};
+
+export const VariantComparison: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', maxWidth: '600px' }}>
+      <Card variant="rounded" color="#F59E0B">
+        <CardContent>
+          <div style={{ color: 'white', textAlign: 'center', padding: '8px' }}>
+            <strong>Rounded</strong>
+            <br />
+            <small>16px radius</small>
+          </div>
+        </CardContent>
+      </Card>
+      
+      <Card variant="rectangle" color="#EF4444">
+        <CardContent>
+          <div style={{ color: 'white', textAlign: 'center', padding: '8px' }}>
+            <strong>Rectangle</strong>
+            <br />
+            <small>4px radius</small>
+          </div>
+        </CardContent>
+      </Card>
+      
+      <Card variant="rounded" color="#8B5CF6" noBorder>
+        <CardContent>
+          <div style={{ color: 'white', textAlign: 'center', padding: '8px' }}>
+            <strong>Rounded</strong>
+            <br />
+            <small>No border</small>
+          </div>
+        </CardContent>
+      </Card>
+      
+      <Card variant="rectangle" color="#06B6D4" noBorder>
+        <CardContent>
+          <div style={{ color: 'white', textAlign: 'center', padding: '8px' }}>
+            <strong>Rectangle</strong>
+            <br />
+            <small>No border</small>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  ),
+};
