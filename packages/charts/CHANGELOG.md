@@ -1,5 +1,13 @@
 # @calimero-network/mero-charts
 
+## 0.0.3
+
+### Patch Changes
+
+- Release: add secondary and semantic button variants; fix Storybook stability and icon packing; externalize React in builds; align peer deps; dark theme consistency across components.
+- Updated dependencies
+  - @calimero-network/mero-ui@0.1.0
+
 ## 0.0.2
 
 ### Patch Changes
