@@ -150,7 +150,8 @@ export const Fieldset: React.FC<FieldsetProps> = ({
     padding: `0 ${tokens.space['2'].value}`,
     fontSize: '14px',
     fontWeight: 500,
-    color: tokens.color.background.primary.value,
+    color: '#FFFFFF', // White text for better contrast
+    fontFamily: 'var(--font-body)',
   };
 
   return (
@@ -191,13 +192,15 @@ export const FormField: React.FC<FormFieldProps> = ({
   const labelStyle: React.CSSProperties = {
     fontSize: '14px',
     fontWeight: 500,
-    color: hasError ? tokens.color.semantic.error.value : tokens.color.background.primary.value,
+    color: hasError ? tokens.color.semantic.error.value : '#FFFFFF', // White text for better contrast
+    fontFamily: 'var(--font-body)',
   };
 
   const errorStyle: React.CSSProperties = {
     fontSize: '12px',
     color: tokens.color.semantic.error.value,
-    marginTop: '-4px',
+    marginTop: '4px', // Better spacing
+    fontFamily: 'var(--font-body)',
   };
 
   return (

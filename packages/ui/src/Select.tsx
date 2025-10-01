@@ -126,7 +126,8 @@ export function Select({
             fontSize: '14px',
             fontWeight: 500,
             marginBottom: '4px',
-            fontFamily: 'var(--font-body)'
+            fontFamily: 'var(--font-body)',
+            lineHeight: '1.4',
           }}
         >
           {label}
@@ -139,7 +140,8 @@ export function Select({
             color: 'var(--color-neutral-400)',
             fontSize: '12px',
             marginBottom: '8px',
-            fontFamily: 'var(--font-body)'
+            fontFamily: 'var(--font-body)',
+            lineHeight: '1.4',
           }}
         >
           {description}
@@ -163,6 +165,8 @@ export function Select({
             color: selectedOption ? '#FFFFFF' : 'var(--color-neutral-400)',
             fontSize: '14px',
             fontFamily: 'var(--font-body)',
+            fontWeight: '400',
+            lineHeight: '1.5',
             textAlign: 'left',
             cursor: disabled ? 'not-allowed' : 'pointer',
             display: 'flex',
@@ -221,6 +225,8 @@ export function Select({
                   cursor: option.disabled ? 'not-allowed' : 'pointer',
                   fontSize: '14px',
                   fontFamily: 'var(--font-body)',
+                  fontWeight: '400',
+                  lineHeight: '1.5',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between'
@@ -243,7 +249,8 @@ export function Select({
             color: 'var(--color-semantic-error)',
             fontSize: '12px',
             marginTop: '4px',
-            fontFamily: 'var(--font-body)'
+            fontFamily: 'var(--font-body)',
+            lineHeight: '1.4',
           }}
         >
           {error}

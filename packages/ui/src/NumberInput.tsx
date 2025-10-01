@@ -86,11 +86,13 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(({
 
   const baseStyle = {
     width: '100%',
-    fontFamily: 'system-ui, sans-serif',
+    fontFamily: 'var(--font-body)', // Use design system font
     color: '#FFFFFF', // White text for better contrast with dark background
     borderRadius: tokens.radius.md.value,
     outline: 'none',
     transition: 'all 0.2s ease',
+    fontWeight: '400',
+    lineHeight: '1.5',
     ...sizeStyles[size],
     ...variantStyles[variant],
     ...style,
@@ -146,12 +148,16 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(({
     fontWeight: 500,
     color: '#FFFFFF', // White text for better contrast
     marginBottom: '4px',
+    fontFamily: 'var(--font-body)',
+    lineHeight: '1.4',
   };
 
   const helperTextStyle = {
     fontSize: '12px',
     color: error ? tokens.color.semantic.error.value : tokens.color.neutral[300].value,
     marginTop: '4px',
+    fontFamily: 'var(--font-body)',
+    lineHeight: '1.4',
   };
 
   const formatValue = (val: number | undefined): string => {

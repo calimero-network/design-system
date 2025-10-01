@@ -46,8 +46,10 @@ export function Input({
     backgroundColor: '#1A1A1A',
     color: '#FFFFFF', // Ensure white text for better contrast
     outline: 'none',
-    fontFamily: 'inherit',
+    fontFamily: 'var(--font-body)', // Use design system font
     fontSize: '14px',
+    fontWeight: '400',
+    lineHeight: '1.5',
     transition: 'border-color 120ms ease, box-shadow 120ms ease',
   };
 
