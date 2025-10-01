@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ErrorView, EmptyView, NotFoundView } from '@calimero-network/mero-ui';
 
 const meta: Meta<typeof ErrorView> = {
-  title: 'Overlays/Error View',
+  title: 'Feedback/State View',
   component: ErrorView,
   parameters: {
     layout: 'centered',
@@ -10,11 +10,11 @@ const meta: Meta<typeof ErrorView> = {
   argTypes: {
     title: {
       control: { type: 'text' },
-      description: 'Error title',
+      description: 'State view title',
     },
     message: {
       control: { type: 'text' },
-      description: 'Error message',
+      description: 'State view message',
     },
     actionLabel: {
       control: { type: 'text' },
@@ -23,7 +23,7 @@ const meta: Meta<typeof ErrorView> = {
     variant: {
       control: { type: 'select' },
       options: ['error', 'empty', 'not-found'],
-      description: 'Error view variant',
+      description: 'State variant (error, empty, or not-found)',
     },
     showAction: {
       control: { type: 'boolean' },
