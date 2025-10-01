@@ -31,7 +31,7 @@ export function Table<T extends Record<string, any>>({
     width: '100%',
     borderCollapse: 'separate',
     borderSpacing: 0,
-    background: 'var(--color-background-primary)',
+    background: 'transparent',
     border: '1px solid #404040',
     borderRadius: '12px',
     overflow: 'hidden',
@@ -55,7 +55,7 @@ export function Table<T extends Record<string, any>>({
                   fontWeight: 600,
                   fontSize: 12,
                   fontFamily: 'var(--font-body)',
-                  background: '#111111',
+                  background: 'transparent',
                   borderBottom: '1px solid #2A2A2A',
                   position: stickyHeader ? 'sticky' : 'static',
                   top: 0,
@@ -69,7 +69,7 @@ export function Table<T extends Record<string, any>>({
         </thead>
         <tbody>
           {data.map((row, rowIndex) => (
-            <tr key={rowIndex} style={{ background: zebra && rowIndex % 2 === 1 ? '#141414' : 'transparent' }}>
+            <tr key={rowIndex} style={{ background: 'transparent' }}>
               {columns.map((col, colIndex) => {
                 const value = col.key ? row[col.key] : undefined;
                 return (

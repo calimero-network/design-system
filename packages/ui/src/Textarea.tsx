@@ -64,11 +64,11 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({
 
   const variantStyles = {
     default: {
-      backgroundColor: tokens.color.background.primary.value,
+      backgroundColor: 'transparent',
       border: `1px solid ${error ? tokens.color.semantic.error.value : tokens.color.neutral[600].value}`,
     },
     filled: {
-      backgroundColor: tokens.color.background.tertiary.value,
+      backgroundColor: 'transparent',
       border: `1px solid ${error ? tokens.color.semantic.error.value : 'transparent'}`,
     },
     outlined: {
@@ -98,7 +98,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({
   };
 
   const disabledStyle = {
-    backgroundColor: tokens.color.background.tertiary.value,
+    backgroundColor: 'transparent',
     color: tokens.color.neutral[300].value,
     cursor: 'not-allowed',
     opacity: 0.6,

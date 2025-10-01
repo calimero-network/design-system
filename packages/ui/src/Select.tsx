@@ -161,7 +161,7 @@ export function Select({
             padding: '0 12px',
             border: `1px solid ${error ? 'var(--color-semantic-error)' : 'var(--color-neutral-600)'}`,
             borderRadius: 'var(--radius-md)',
-            backgroundColor: disabled ? 'var(--color-background-secondary)' : 'var(--color-background-primary)',
+            backgroundColor: 'transparent',
             color: selectedOption ? '#FFFFFF' : 'var(--color-neutral-400)',
             fontSize: '14px',
             fontFamily: 'var(--font-body)',
@@ -221,7 +221,7 @@ export function Select({
                 style={{
                   padding: '8px 12px',
                   color: option.disabled ? 'var(--color-neutral-600)' : '#FFFFFF',
-                  backgroundColor: index === focusedIndex ? 'var(--color-background-secondary)' : 'transparent',
+                  backgroundColor: 'transparent',
                   cursor: option.disabled ? 'not-allowed' : 'pointer',
                   fontSize: '14px',
                   fontFamily: 'var(--font-body)',

@@ -43,7 +43,7 @@ export function Input({
     padding: '0 12px',
     borderRadius: '12px',
     border: '1px solid #404040',
-    backgroundColor: '#1A1A1A',
+    backgroundColor: 'transparent',
     color: '#FFFFFF', // Ensure white text for better contrast
     outline: 'none',
     fontFamily: 'var(--font-body)', // Use design system font

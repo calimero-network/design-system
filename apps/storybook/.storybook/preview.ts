@@ -4,48 +4,35 @@ import { cssVariables } from '@calimero-network/mero-tokens';
 // Inject CSS variables directly into the document
 const style = document.createElement('style');
 style.textContent = cssVariables + `
-  /* Calimero brand theme - exact brand gradient background */
+  /* Calimero brand theme - transparent background */
   body {
     font-family: 'Power Grotesk', 'Inter', system-ui, sans-serif;
-    background: var(--color-background-brand);
+    background: transparent;
     color: #FFFFFF;
     min-height: 100vh;
   }
   
   /* Dark theme for charts */
   .dark {
-    background: var(--color-background-brand);
+    background: transparent;
     color: #FFFFFF;
   }
   
-  /* Ensure Storybook canvas has brand background */
+  /* Ensure Storybook canvas has transparent background */
   .sb-show-main {
-    background: var(--color-background-brand) !important;
+    background: transparent !important;
   }
   
   /* Dark theme for Storybook UI */
   .os-content {
-    background: var(--color-background-brand) !important;
+    background: transparent !important;
   }
   
   /* Only override elements that don't have proper component styling */
   .sb-show-main > div {
-    background: var(--color-background-brand) !important;
+    background: transparent !important;
   }
   
-  /* Add subtle texture overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: radial-gradient(circle at 20% 80%, rgba(165, 255, 17, 0.03) 0%, transparent 50%),
-                      radial-gradient(circle at 80% 20%, rgba(165, 255, 17, 0.02) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
-  }
 `;
 document.head.appendChild(style);
 
@@ -60,19 +47,17 @@ const preview: Preview = {
     },
     backgrounds: {
       options: {
-        // 👇 Calimero brand theme options - exact brand colors
-        brand: { name: 'Brand Gradient', value: 'var(--color-background-brand)' },
-        primary: { name: 'Primary', value: 'var(--color-background-primary)' },
-        secondary: { name: 'Secondary', value: 'var(--color-background-secondary)' },
-        tertiary: { name: 'Tertiary', value: 'var(--color-background-tertiary)' },
-        accent: { name: 'Brand Accent', value: 'var(--color-brand-600)' },
+        // 👇 Transparent background options
+        transparent: { name: 'Transparent', value: 'transparent' },
+        white: { name: 'White', value: '#FFFFFF' },
+        black: { name: 'Black', value: '#000000' },
         neutral: { name: 'Neutral 900', value: 'var(--color-neutral-900)' },
-        light: { name: 'Light', value: '#FFFFFF' },
+        accent: { name: 'Brand Accent', value: 'var(--color-brand-600)' },
       },
     }
   },
   initialGlobals: {
-    backgrounds: { value: 'brand' },
+    backgrounds: { value: 'transparent' },
   },
 };
 

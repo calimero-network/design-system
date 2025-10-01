@@ -71,11 +71,11 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(({
 
   const variantStyles = {
     default: {
-      backgroundColor: tokens.color.background.primary.value,
+      backgroundColor: 'transparent',
       border: `1px solid ${error ? tokens.color.semantic.error.value : tokens.color.neutral[600].value}`,
     },
     filled: {
-      backgroundColor: tokens.color.background.tertiary.value,
+      backgroundColor: 'transparent',
       border: `1px solid ${error ? tokens.color.semantic.error.value : 'transparent'}`,
     },
     outlined: {
@@ -117,7 +117,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(({
     top: '1px',
     bottom: '1px',
     width: '32px',
-    backgroundColor: tokens.color.background.tertiary.value,
+    backgroundColor: 'transparent',
     border: 'none',
     color: '#FFFFFF', // White text for better contrast
     cursor: 'pointer',
