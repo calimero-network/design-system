@@ -12,10 +12,10 @@ const config: StorybookConfig = {
   viteFinal: (config) => mergeConfig(config, {
     resolve: {
       alias: {
-        '@calimero-network/mero-tokens': path.resolve(__dirname, '../../packages/tokens/src'),
-        '@calimero-network/mero-ui': path.resolve(__dirname, '../../packages/ui/src'),
-        '@calimero-network/mero-charts': path.resolve(__dirname, '../../packages/charts/src'),
-        '@calimero-network/mero-icons': path.resolve(__dirname, '../../packages/icons/src'),
+        '@calimero-network/mero-tokens': path.resolve(process.cwd(), 'packages/tokens/dist'),
+        '@calimero-network/mero-ui': path.resolve(process.cwd(), 'packages/ui/dist'),
+        '@calimero-network/mero-charts': path.resolve(process.cwd(), 'packages/charts/dist'),
+        '@calimero-network/mero-icons': path.resolve(process.cwd(), 'packages/icons/dist'),
       },
     },
     // Ensure no conflicting plugins or optimizations
@@ -26,17 +26,6 @@ const config: StorybookConfig = {
         '@calimero-network/mero-charts',
         '@calimero-network/mero-icons'
       ],
-    },
-    build: {
-      rollupOptions: {
-        external: (id) => {
-          // Don't externalize our local packages
-          if (id.startsWith('@calimero-network/mero-')) {
-            return false;
-          }
-          return false;
-        },
-      },
     },
   }),
 };
