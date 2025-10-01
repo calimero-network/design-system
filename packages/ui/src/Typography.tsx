@@ -235,7 +235,7 @@ export const Link: React.FC<LinkProps> = ({
       },
     },
     subtle: {
-      color: tokens.color.neutral[300].value,
+      color: tokens.color.neutral[200].value, // Lighter gray for better contrast
       textDecoration: 'none',
       '&:hover': {
         color: '#FFFFFF', // White text for dark theme
@@ -251,8 +251,8 @@ export const Link: React.FC<LinkProps> = ({
   };
 
   const colorStyles = {
-    primary: { color: tokens.color.brand[600].value },
-    secondary: { color: tokens.color.neutral[400].value },
+    primary: { color: '#B8FF2A' }, // Slightly lighter version of brand-600 for better contrast
+    secondary: { color: tokens.color.neutral[200].value }, // Lighter gray for better contrast
     success: { color: tokens.color.semantic.success.value },
     warning: { color: tokens.color.semantic.warning.value },
     error: { color: tokens.color.semantic.error.value },
