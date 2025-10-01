@@ -100,7 +100,7 @@ const combinedTimeSeriesData = [
 export const ChartsOverview: StoryObj = {
   render: () => {
     return (
-      <div style={{ padding: '24px', backgroundColor: '#111827', minHeight: '100vh' }}>
+      <div style={{ padding: '24px', background: 'var(--color-background-brand)', minHeight: '100vh' }}>
         <h1 style={{ fontSize: '32px', fontWeight: 'bold', color: 'white', marginBottom: '32px', textAlign: 'center' }}>
           Calimero Design System - Charts Overview
         </h1>
