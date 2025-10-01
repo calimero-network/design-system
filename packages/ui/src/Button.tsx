@@ -33,7 +33,7 @@ export function Button({
     cursor: disabled ? 'not-allowed' : 'pointer',
     userSelect: 'none',
     transition: 'background-color 120ms ease, border-color 120ms ease, transform 60ms ease',
-    color: '#0B0B0B',
+    color: '#000000', // Pure black for better contrast with bright green
     backgroundColor: 'var(--color-brand-600)',
   };
 
@@ -62,7 +62,7 @@ export function Button({
           hover: 'var(--color-semantic-success)',
           active: 'var(--color-semantic-success)',
           disabled: 'var(--color-semantic-success)',
-          text: '#0B0B0B',
+          text: '#FFFFFF', // White text for better contrast with green
           border: 'transparent',
           borderHover: 'transparent',
           borderActive: 'transparent',
@@ -73,7 +73,7 @@ export function Button({
           hover: 'var(--color-semantic-warning)',
           active: 'var(--color-semantic-warning)',
           disabled: 'var(--color-semantic-warning)',
-          text: '#0B0B0B',
+          text: '#000000', // Black text for better contrast with orange
           border: 'transparent',
           borderHover: 'transparent',
           borderActive: 'transparent',
@@ -84,7 +84,7 @@ export function Button({
           hover: 'var(--color-semantic-error)',
           active: 'var(--color-semantic-error)',
           disabled: 'var(--color-semantic-error)',
-          text: '#FFFFFF',
+          text: '#FFFFFF', // White text for better contrast with red
           border: 'transparent',
           borderHover: 'transparent',
           borderActive: 'transparent',
@@ -95,7 +95,7 @@ export function Button({
           hover: 'var(--color-semantic-info)',
           active: 'var(--color-semantic-info)',
           disabled: 'var(--color-semantic-info)',
-          text: '#0B0B0B',
+          text: '#FFFFFF', // White text for better contrast with blue
           border: 'transparent',
           borderHover: 'transparent',
           borderActive: 'transparent',
@@ -106,7 +106,7 @@ export function Button({
           hover: 'var(--color-brand-100)',
           active: 'var(--color-brand-800)',
           disabled: 'var(--color-brand-900)',
-          text: '#0B0B0B',
+          text: '#000000', // Pure black for better contrast with bright green
           border: 'transparent',
           borderHover: 'transparent',
           borderActive: 'transparent',
