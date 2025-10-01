@@ -74,14 +74,14 @@ export const Progress: React.FC<ProgressProps> = ({
   const labelStyle = {
     fontSize: '14px',
     fontWeight: 500,
-    color: tokens.color.background.primary.value,
+    color: '#FFFFFF', // White text for better contrast with dark background
     marginBottom: '4px',
   };
 
   const valueStyle = {
     fontSize: sizeStyles[size].fontSize,
     fontWeight: 500,
-    color: tokens.color.neutral[300].value,
+    color: '#FFFFFF', // White text for better contrast with dark background
     marginTop: '4px',
   };
 
@@ -160,7 +160,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
   const labelStyle = {
     fontSize: '14px',
     fontWeight: 500,
-    color: tokens.color.background.primary.value,
+    color: '#FFFFFF', // White text for better contrast with dark background
     marginBottom: '8px',
   };
 
@@ -171,7 +171,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
     transform: 'translate(-50%, -50%)',
     fontSize: '14px',
     fontWeight: 600,
-    color: tokens.color.background.primary.value,
+    color: '#FFFFFF', // White text for better contrast with dark background
   };
 
   return (
