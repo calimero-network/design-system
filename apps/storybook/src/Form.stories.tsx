@@ -107,7 +107,7 @@ export const WithFieldset: Story = {
   ),
 };
 
-export const FormGroup: Story = {
+export const FormGroupExample: Story = {
   render: () => (
     <Form style={{ maxWidth: '500px' }}>
       <FormField name="name" label="Full Name" required>
