@@ -14,12 +14,29 @@ const config: StorybookConfig = {
       alias: {
         '@calimero-network/mero-tokens': path.resolve(__dirname, '../../packages/tokens/src'),
         '@calimero-network/mero-ui': path.resolve(__dirname, '../../packages/ui/src'),
-        // Add other aliases as needed
+        '@calimero-network/mero-charts': path.resolve(__dirname, '../../packages/charts/src'),
+        '@calimero-network/mero-icons': path.resolve(__dirname, '../../packages/icons/src'),
       },
     },
     // Ensure no conflicting plugins or optimizations
     optimizeDeps: {
-      include: ['@calimero-network/mero-tokens', '@calimero-network/mero-ui'], // Pre-bundle dependencies
+      include: [
+        '@calimero-network/mero-tokens', 
+        '@calimero-network/mero-ui',
+        '@calimero-network/mero-charts',
+        '@calimero-network/mero-icons'
+      ],
+    },
+    build: {
+      rollupOptions: {
+        external: (id) => {
+          // Don't externalize our local packages
+          if (id.startsWith('@calimero-network/mero-')) {
+            return false;
+          }
+          return false;
+        },
+      },
     },
   }),
 };
