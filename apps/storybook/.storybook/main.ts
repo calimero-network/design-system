@@ -18,18 +18,6 @@ const config: StorybookConfig = {
         '@calimero-network/mero-icons': path.resolve(process.cwd(), 'packages/icons/src'),
       },
     },
-    // Ensure no conflicting plugins or optimizations
-    optimizeDeps: {
-      include: [
-        '@calimero-network/mero-tokens', 
-        '@calimero-network/mero-ui',
-        '@calimero-network/mero-charts',
-        '@calimero-network/mero-icons'
-      ],
-    },
-    define: {
-      'process.env': process.env,
-    },
   }),
 };
 
