@@ -10,13 +10,6 @@ const config: StorybookConfig = {
   "framework": {
     "name": '@storybook/react-vite',
     "options": {}
-  },
-  async viteFinal(config) {
-    return mergeConfig(config, {
-      resolve: {
-        
-      },
-    });
-  },
+  }
 };
 export default config;
