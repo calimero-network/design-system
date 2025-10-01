@@ -80,7 +80,7 @@ export function Checkbox({
               height="10"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#0B0B0B"
+              stroke="#000000"
               strokeWidth="3"
               style={{ display: 'block' }}
             >

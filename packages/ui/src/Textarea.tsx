@@ -80,7 +80,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({
   const baseStyle = {
     width: '100%',
     fontFamily: 'system-ui, sans-serif',
-    color: tokens.color.background.primary.value,
+    color: '#FFFFFF', // White text for better contrast with dark background
     borderRadius: tokens.radius.md.value,
     outline: 'none',
     transition: 'all 0.2s ease',
@@ -106,7 +106,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({
     display: 'block',
     fontSize: '14px',
     fontWeight: 500,
-    color: tokens.color.background.primary.value,
+    color: '#FFFFFF', // White text for better contrast
     marginBottom: '4px',
   };
 

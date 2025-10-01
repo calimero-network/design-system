@@ -87,7 +87,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(({
   const baseStyle = {
     width: '100%',
     fontFamily: 'system-ui, sans-serif',
-    color: tokens.color.background.primary.value,
+    color: '#FFFFFF', // White text for better contrast with dark background
     borderRadius: tokens.radius.md.value,
     outline: 'none',
     transition: 'all 0.2s ease',
@@ -117,7 +117,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(({
     width: '32px',
     backgroundColor: tokens.color.background.tertiary.value,
     border: 'none',
-    color: tokens.color.background.primary.value,
+    color: '#FFFFFF', // White text for better contrast
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
@@ -144,7 +144,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(({
     display: 'block',
     fontSize: '14px',
     fontWeight: 500,
-    color: tokens.color.background.primary.value,
+    color: '#FFFFFF', // White text for better contrast
     marginBottom: '4px',
   };
 
