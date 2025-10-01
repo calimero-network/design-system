@@ -27,7 +27,7 @@ export function Button({
     padding: '0 16px',
     borderRadius: '12px',
     border: '1px solid transparent',
-    fontFamily: 'inherit',
+    fontFamily: 'var(--font-body)',
     fontSize: '14px',
     fontWeight: 600,
     cursor: disabled ? 'not-allowed' : 'pointer',

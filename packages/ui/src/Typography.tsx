@@ -130,6 +130,7 @@ export const Heading: React.FC<HeadingProps> = ({
     ...weightStyles[weight],
     ...colorStyles[color],
     textAlign: align,
+    fontFamily: 'var(--font-heading)',
     margin: 0,
     ...style,
   };

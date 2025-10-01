@@ -4,32 +4,47 @@ import { cssVariables } from '@calimero-network/mero-tokens';
 // Inject CSS variables directly into the document
 const style = document.createElement('style');
 style.textContent = cssVariables + `
-  /* Dark theme styles - minimal overrides since components handle their own styling */
+  /* Calimero brand theme - exact brand gradient background */
   body {
-    font-family: var(--font-body, Inter, system-ui, sans-serif);
-    background-color: var(--color-neutral-900);
+    font-family: 'Power Grotesk', 'Inter', system-ui, sans-serif;
+    background: var(--color-background-brand);
     color: #FFFFFF;
+    min-height: 100vh;
   }
   
   /* Dark theme for charts */
   .dark {
-    background-color: var(--color-neutral-900);
+    background: var(--color-background-brand);
     color: #FFFFFF;
   }
   
-  /* Ensure Storybook canvas has dark background */
+  /* Ensure Storybook canvas has brand background */
   .sb-show-main {
-    background-color: var(--color-neutral-900) !important;
+    background: var(--color-background-brand) !important;
   }
   
   /* Dark theme for Storybook UI */
   .os-content {
-    background-color: var(--color-neutral-900) !important;
+    background: var(--color-background-brand) !important;
   }
   
   /* Only override elements that don't have proper component styling */
   .sb-show-main > div {
-    background-color: var(--color-neutral-900) !important;
+    background: var(--color-background-brand) !important;
+  }
+  
+  /* Add subtle texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle at 20% 80%, rgba(165, 255, 17, 0.03) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 20%, rgba(165, 255, 17, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
   }
 `;
 document.head.appendChild(style);
@@ -45,18 +60,19 @@ const preview: Preview = {
     },
     backgrounds: {
       options: {
-        // 👇 Dark theme options using Alert color scheme
-        dark: { name: 'Dark', value: 'var(--color-neutral-900)' },
+        // 👇 Calimero brand theme options - exact brand colors
+        brand: { name: 'Brand Gradient', value: 'var(--color-background-brand)' },
         primary: { name: 'Primary', value: 'var(--color-background-primary)' },
         secondary: { name: 'Secondary', value: 'var(--color-background-secondary)' },
         tertiary: { name: 'Tertiary', value: 'var(--color-background-tertiary)' },
-        brand: { name: 'Brand', value: 'var(--color-background-brand)' },
+        accent: { name: 'Brand Accent', value: 'var(--color-brand-600)' },
+        neutral: { name: 'Neutral 900', value: 'var(--color-neutral-900)' },
         light: { name: 'Light', value: '#FFFFFF' },
       },
     }
   },
   initialGlobals: {
-    backgrounds: { value: 'dark' },
+    backgrounds: { value: 'brand' },
   },
 };
 
