@@ -186,7 +186,11 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
         position: 'relative', 
         display: 'inline-block',
         backgroundColor: 'var(--color-neutral-900)', // Ensure proper background color
-        borderRadius: '50%' // Make it circular to match the progress circle
+        borderRadius: '50%', // Make it circular to match the progress circle
+        width: sizeValue,
+        height: sizeValue,
+        minWidth: sizeValue,
+        minHeight: sizeValue
       }}>
         <svg
           width={sizeValue}
@@ -196,6 +200,13 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
             backgroundColor: 'var(--color-neutral-900)', // Ensure SVG has proper background
           }}
         >
+          {/* Background circle to ensure proper background color */}
+          <circle
+            cx={sizeValue / 2}
+            cy={sizeValue / 2}
+            r={sizeValue / 2}
+            fill="var(--color-neutral-900)"
+          />
           <circle
             cx={sizeValue / 2}
             cy={sizeValue / 2}
