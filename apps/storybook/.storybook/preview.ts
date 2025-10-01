@@ -33,6 +33,63 @@ style.textContent = cssVariables + `
     background: var(--color-background-brand) !important;
   }
   
+  /* Dark theme for Storybook docs */
+  .docs-story {
+    background: var(--color-background-brand) !important;
+  }
+  
+  .docs-story > div {
+    background: var(--color-background-brand) !important;
+  }
+  
+  /* Dark theme for docs content */
+  .sb-docs-content {
+    background: var(--color-background-brand) !important;
+    color: #FFFFFF !important;
+  }
+  
+  .sb-docs-content h1,
+  .sb-docs-content h2,
+  .sb-docs-content h3,
+  .sb-docs-content h4,
+  .sb-docs-content h5,
+  .sb-docs-content h6 {
+    color: #FFFFFF !important;
+  }
+  
+  .sb-docs-content p,
+  .sb-docs-content li,
+  .sb-docs-content td,
+  .sb-docs-content th {
+    color: #FFFFFF !important;
+  }
+  
+  /* Dark theme for docs tables */
+  .sb-docs-content table {
+    background: var(--color-background-primary) !important;
+    border: 1px solid var(--color-neutral-600) !important;
+  }
+  
+  .sb-docs-content th {
+    background: var(--color-background-secondary) !important;
+    border-bottom: 1px solid var(--color-neutral-600) !important;
+  }
+  
+  .sb-docs-content td {
+    border-bottom: 1px solid var(--color-neutral-700) !important;
+  }
+  
+  /* Dark theme for code blocks */
+  .sb-docs-content pre {
+    background: var(--color-background-primary) !important;
+    border: 1px solid var(--color-neutral-600) !important;
+  }
+  
+  .sb-docs-content code {
+    background: var(--color-background-primary) !important;
+    color: #FFFFFF !important;
+  }
+  
 `;
 document.head.appendChild(style);
 
