@@ -47,6 +47,31 @@ style.textContent = cssVariables + `
   p, .text, .content, .description, .title {
     color: #FFFFFF !important;
   }
+  
+  /* Ensure all divs and containers have proper background for dark theme */
+  div, .container, .wrapper, .card, .panel, .section {
+    background-color: var(--color-neutral-900) !important;
+    color: #FFFFFF !important;
+  }
+  
+  /* Ensure images and their containers have proper backgrounds */
+  img, .image, .img-container, .media-container {
+    background-color: var(--color-neutral-800) !important;
+  }
+  
+  /* Storybook root and all nested elements */
+  #storybook-root, #storybook-root * {
+    background-color: var(--color-neutral-900) !important;
+    color: #FFFFFF !important;
+  }
+  
+  /* Override any transparent or undefined backgrounds */
+  [style*="background-color: transparent"], 
+  [style*="background: transparent"],
+  [style*="background-color: undefined"],
+  [style*="background: undefined"] {
+    background-color: var(--color-neutral-900) !important;
+  }
 `;
 document.head.appendChild(style);
 
