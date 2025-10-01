@@ -1,7 +1,7 @@
 {
   "buildCommand": "pnpm install && pnpm -w build && cd apps/storybook && pnpm build-storybook --debug",
   "outputDirectory": "apps/storybook/storybook-static",
-  "installCommand": "pnpm install",
+  "installCommand": "pnpm install --no-frozen-lockfile",
   "framework": null,
   "build": {
     "env": {
