@@ -38,9 +38,9 @@ export const Text: React.FC<TextProps> = ({
   };
 
   const colorStyles = {
-    primary: { color: tokens.color.background.primary.value },
-    secondary: { color: tokens.color.neutral[400].value },
-    muted: { color: tokens.color.neutral[300].value },
+    primary: { color: '#FFFFFF' }, // White text for dark theme
+    secondary: { color: tokens.color.neutral[300].value },
+    muted: { color: tokens.color.neutral[400].value },
     success: { color: tokens.color.semantic.success.value },
     warning: { color: tokens.color.semantic.warning.value },
     error: { color: tokens.color.semantic.error.value },
@@ -117,9 +117,9 @@ export const Heading: React.FC<HeadingProps> = ({
   };
 
   const colorStyles = {
-    primary: { color: tokens.color.background.primary.value },
-    secondary: { color: tokens.color.neutral[400].value },
-    muted: { color: tokens.color.neutral[300].value },
+    primary: { color: '#FFFFFF' }, // White text for dark theme
+    secondary: { color: tokens.color.neutral[300].value },
+    muted: { color: tokens.color.neutral[400].value },
     success: { color: tokens.color.semantic.success.value },
     warning: { color: tokens.color.semantic.warning.value },
     error: { color: tokens.color.semantic.error.value },
@@ -160,7 +160,7 @@ export const Code: React.FC<CodeProps> = ({
     fontFamily: 'Monaco, Consolas, "Courier New", monospace',
     fontSize: '14px',
     backgroundColor: tokens.color.background.secondary.value,
-    color: tokens.color.background.primary.value,
+    color: '#FFFFFF', // White text for dark theme
     padding: variant === 'inline' ? '2px 6px' : '12px 16px',
     borderRadius: tokens.radius.sm.value,
     border: `1px solid ${tokens.color.neutral[600].value}`,
@@ -228,7 +228,7 @@ export const Link: React.FC<LinkProps> = ({
 
   const variantStyles = {
     default: {
-      color: tokens.color.background.primary.value,
+      color: '#FFFFFF', // White text for dark theme
       textDecoration: 'none',
       '&:hover': {
         textDecoration: 'underline',
@@ -238,11 +238,11 @@ export const Link: React.FC<LinkProps> = ({
       color: tokens.color.neutral[300].value,
       textDecoration: 'none',
       '&:hover': {
-        color: tokens.color.background.primary.value,
+        color: '#FFFFFF', // White text for dark theme
       },
     },
     underline: {
-      color: tokens.color.background.primary.value,
+      color: '#FFFFFF', // White text for dark theme
       textDecoration: 'underline',
       '&:hover': {
         textDecoration: 'none',
