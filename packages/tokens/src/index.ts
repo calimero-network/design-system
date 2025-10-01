@@ -25,6 +25,10 @@ export const cssVariables = `
   --color-brand-700: ${colors.brand['700'].value};
   --color-brand-800: ${colors.brand['800'].value};
   --color-brand-900: ${colors.brand['900'].value};
+  --color-transparent-brand: ${colors.transparent.brand.value};
+  --color-transparent-black-50: ${colors.transparent['black-50'].value};
+  --color-transparent-green-20: ${colors.transparent['green-20'].value};
+  --color-transparent-green-10: ${colors.transparent['green-10'].value};
   --color-background-primary: ${colors.background.primary.value};
   --color-background-secondary: ${colors.background.secondary.value};
   --color-background-tertiary: ${colors.background.tertiary.value};
@@ -41,5 +45,7 @@ export const cssVariables = `
   --space-4: ${spacing['4'].value};
   --space-6: ${spacing['6'].value};
   --font-body: ${fonts.body.value};
+  --font-heading: ${fonts.heading.value};
+  --font-secondary: ${fonts.secondary.value};
 }
 `; 

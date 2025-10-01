@@ -89,7 +89,7 @@ export function Card({
   return (
     <div 
       style={{
-        background: '#1A1A1A', 
+        background: 'transparent', 
         border: noBorder ? 'none' : `1px solid ${color || '#404040'}`,
         borderRadius: variant === "rectangle" ? '4px' : '16px',
         padding: '12px',

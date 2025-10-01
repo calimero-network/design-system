@@ -43,11 +43,13 @@ export function Input({
     padding: '0 12px',
     borderRadius: '12px',
     border: '1px solid #404040',
-    backgroundColor: '#1A1A1A',
-    color: 'white',
+    backgroundColor: 'transparent',
+    color: '#FFFFFF', // Ensure white text for better contrast
     outline: 'none',
-    fontFamily: 'inherit',
+    fontFamily: 'var(--font-body)', // Use design system font
     fontSize: '14px',
+    fontWeight: '400',
+    lineHeight: '1.5',
     transition: 'border-color 120ms ease, box-shadow 120ms ease',
   };
 

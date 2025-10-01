@@ -1,19 +1,95 @@
 import type { Preview } from '@storybook/react-vite';
-import { cssVariables } from '../../../packages/tokens/src';
+import { cssVariables } from '@calimero-network/mero-tokens';
 
 // Inject CSS variables directly into the document
 const style = document.createElement('style');
 style.textContent = cssVariables + `
-  /* Additional styles for charts */
+  /* Calimero brand theme - dark background */
   body {
-    font-family: var(--font-body, Inter, system-ui, sans-serif);
+    font-family: 'Power Grotesk', 'Inter', system-ui, sans-serif;
+    background: var(--color-background-brand);
+    color: #FFFFFF;
+    min-height: 100vh;
   }
   
   /* Dark theme for charts */
   .dark {
-    background-color: #0b0f1a;
-    color: white;
+    background: var(--color-background-brand);
+    color: #FFFFFF;
   }
+  
+  /* Ensure Storybook canvas has dark background */
+  .sb-show-main {
+    background: var(--color-background-brand) !important;
+  }
+  
+  /* Dark theme for Storybook UI */
+  .os-content {
+    background: var(--color-background-brand) !important;
+  }
+  
+  /* Only override elements that don't have proper component styling */
+  .sb-show-main > div {
+    background: var(--color-background-brand) !important;
+  }
+  
+  /* Dark theme for Storybook docs */
+  .docs-story {
+    background: var(--color-background-brand) !important;
+  }
+  
+  .docs-story > div {
+    background: var(--color-background-brand) !important;
+  }
+  
+  /* Dark theme for docs content */
+  .sb-docs-content {
+    background: var(--color-background-brand) !important;
+    color: #FFFFFF !important;
+  }
+  
+  .sb-docs-content h1,
+  .sb-docs-content h2,
+  .sb-docs-content h3,
+  .sb-docs-content h4,
+  .sb-docs-content h5,
+  .sb-docs-content h6 {
+    color: #FFFFFF !important;
+  }
+  
+  .sb-docs-content p,
+  .sb-docs-content li,
+  .sb-docs-content td,
+  .sb-docs-content th {
+    color: #FFFFFF !important;
+  }
+  
+  /* Dark theme for docs tables */
+  .sb-docs-content table {
+    background: var(--color-background-primary) !important;
+    border: 1px solid var(--color-neutral-600) !important;
+  }
+  
+  .sb-docs-content th {
+    background: var(--color-background-secondary) !important;
+    border-bottom: 1px solid var(--color-neutral-600) !important;
+  }
+  
+  .sb-docs-content td {
+    border-bottom: 1px solid var(--color-neutral-700) !important;
+  }
+  
+  /* Dark theme for code blocks */
+  .sb-docs-content pre {
+    background: var(--color-background-primary) !important;
+    border: 1px solid var(--color-neutral-600) !important;
+  }
+  
+  .sb-docs-content code {
+    background: var(--color-background-primary) !important;
+    color: #FFFFFF !important;
+  }
+  
 `;
 document.head.appendChild(style);
 
@@ -28,17 +104,19 @@ const preview: Preview = {
     },
     backgrounds: {
       options: {
-        // 👇 Default options
+        // 👇 Calimero brand theme options - exact brand colors
+        brand: { name: 'Brand Gradient', value: 'var(--color-background-brand)' },
         primary: { name: 'Primary', value: 'var(--color-background-primary)' },
         secondary: { name: 'Secondary', value: 'var(--color-background-secondary)' },
         tertiary: { name: 'Tertiary', value: 'var(--color-background-tertiary)' },
-        brand: { name: 'Brand', value: 'var(--color-background-brand)' },
+        accent: { name: 'Brand Accent', value: 'var(--color-brand-600)' },
+        neutral: { name: 'Neutral 900', value: 'var(--color-neutral-900)' },
         light: { name: 'Light', value: '#FFFFFF' },
       },
     }
   },
   initialGlobals: {
-    backgrounds: { value: 'primary' },
+    backgrounds: { value: 'brand' },
   },
 };
 

@@ -6,12 +6,12 @@
   "version": "0.0.4",
   "description": "Chart components for Calimero design system",
   "main": "./dist/index.js",
-  "module": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
+      "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     }
   },
@@ -26,6 +26,8 @@
   },
   "dependencies": {
     "@calimero-network/mero-ui": "workspace:*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "recharts": "^2.8.0"
   },
   "devDependencies": {
@@ -34,6 +36,6 @@
     "typescript": "^5.0.0"
   },
   "peerDependencies": {
-    "react": "^19.1.1"
+    "react": ">=18 <20"
   }
 }
