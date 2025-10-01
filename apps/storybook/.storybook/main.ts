@@ -14,12 +14,7 @@ const config: StorybookConfig = {
   async viteFinal(config) {
     return mergeConfig(config, {
       resolve: {
-        alias: {
-          '@calimero-network/mero-tokens': '/Users/chefsale/workspace/calimero/design-system/packages/tokens/src/index.ts',
-          '@calimero-network/mero-ui': '/Users/chefsale/workspace/calimero/design-system/packages/ui/src/index.ts',
-          '@calimero-network/mero-icons': '/Users/chefsale/workspace/calimero/design-system/packages/icons/src/index.ts',
-          '@calimero-network/mero-charts': '/Users/chefsale/workspace/calimero/design-system/packages/charts/src/index.ts',
-        },
+        
       },
     });
   },
