@@ -4,17 +4,17 @@ import { cssVariables } from '@calimero-network/mero-tokens';
 // Inject CSS variables directly into the document
 const style = document.createElement('style');
 style.textContent = cssVariables + `
-  /* Dark theme styles using Alert color scheme */
+  /* Dark theme styles with proper light typography */
   body {
     font-family: var(--font-body, Inter, system-ui, sans-serif);
     background-color: var(--color-neutral-900);
-    color: var(--color-neutral-300);
+    color: #FFFFFF;
   }
   
   /* Dark theme for charts */
   .dark {
     background-color: var(--color-neutral-900);
-    color: var(--color-neutral-300);
+    color: #FFFFFF;
   }
   
   /* Ensure Storybook canvas has dark background */
@@ -25,6 +25,16 @@ style.textContent = cssVariables + `
   /* Dark theme for Storybook UI */
   .os-content {
     background-color: var(--color-neutral-900) !important;
+  }
+  
+  /* Ensure all text elements are light for dark theme */
+  h1, h2, h3, h4, h5, h6, p, span, div, a, button, input, textarea, select {
+    color: #FFFFFF !important;
+  }
+  
+  /* Storybook specific text elements */
+  .sb-show-main * {
+    color: #FFFFFF !important;
   }
 `;
 document.head.appendChild(style);
