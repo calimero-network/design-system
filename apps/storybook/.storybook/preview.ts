@@ -4,33 +4,33 @@ import { cssVariables } from '@calimero-network/mero-tokens';
 // Inject CSS variables directly into the document
 const style = document.createElement('style');
 style.textContent = cssVariables + `
-  /* Calimero brand theme - transparent background */
+  /* Calimero brand theme - dark background */
   body {
     font-family: 'Power Grotesk', 'Inter', system-ui, sans-serif;
-    background: transparent;
+    background: var(--color-background-brand);
     color: #FFFFFF;
     min-height: 100vh;
   }
   
   /* Dark theme for charts */
   .dark {
-    background: transparent;
+    background: var(--color-background-brand);
     color: #FFFFFF;
   }
   
-  /* Ensure Storybook canvas has transparent background */
+  /* Ensure Storybook canvas has dark background */
   .sb-show-main {
-    background: transparent !important;
+    background: var(--color-background-brand) !important;
   }
   
   /* Dark theme for Storybook UI */
   .os-content {
-    background: transparent !important;
+    background: var(--color-background-brand) !important;
   }
   
   /* Only override elements that don't have proper component styling */
   .sb-show-main > div {
-    background: transparent !important;
+    background: var(--color-background-brand) !important;
   }
   
 `;
@@ -47,17 +47,19 @@ const preview: Preview = {
     },
     backgrounds: {
       options: {
-        // 👇 Transparent background options
-        transparent: { name: 'Transparent', value: 'transparent' },
-        white: { name: 'White', value: '#FFFFFF' },
-        black: { name: 'Black', value: '#000000' },
-        neutral: { name: 'Neutral 900', value: 'var(--color-neutral-900)' },
+        // 👇 Calimero brand theme options - exact brand colors
+        brand: { name: 'Brand Gradient', value: 'var(--color-background-brand)' },
+        primary: { name: 'Primary', value: 'var(--color-background-primary)' },
+        secondary: { name: 'Secondary', value: 'var(--color-background-secondary)' },
+        tertiary: { name: 'Tertiary', value: 'var(--color-background-tertiary)' },
         accent: { name: 'Brand Accent', value: 'var(--color-brand-600)' },
+        neutral: { name: 'Neutral 900', value: 'var(--color-neutral-900)' },
+        light: { name: 'Light', value: '#FFFFFF' },
       },
     }
   },
   initialGlobals: {
-    backgrounds: { value: 'transparent' },
+    backgrounds: { value: 'brand' },
   },
 };
 
