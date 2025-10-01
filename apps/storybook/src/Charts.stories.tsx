@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Gauge } from "../../../packages/charts/src/Gauge";
-import { Card, CardHeader, CardTitle, CardContent } from "../../../packages/ui/src";
+import { Gauge } from "@calimero-network/mero-charts";
+import { Card, CardHeader, CardTitle, CardContent } from "@calimero-network/mero-ui";
 
 const meta: Meta<typeof Gauge> = {
   title: "CHARTS/Gauge",

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { TimeSeriesWithTable } from "../../../packages/charts/src/CombinedChart";
-import { Card, CardHeader, CardTitle, CardContent } from "../../../packages/ui/src";
-import { calculateMean, calculateLast, calculateMax } from "../../../packages/charts/src/TimeSeries";
+import { TimeSeriesWithTable } from "@calimero-network/mero-charts";
+import { Card, CardHeader, CardTitle, CardContent } from "@calimero-network/mero-ui";
+import { calculateMean, calculateLast, calculateMax } from "@calimero-network/mero-charts";
 
 const meta: Meta<typeof TimeSeriesWithTable> = {
   title: "CHARTS/TimeSeriesWithTable",

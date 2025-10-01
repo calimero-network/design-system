@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { TimeSeries } from "../../../packages/charts/src/TimeSeries";
-import { Card, CardHeader, CardTitle, CardContent } from "../../../packages/ui/src";
+import { TimeSeries } from "@calimero-network/mero-charts";
+import { Card, CardHeader, CardTitle, CardContent } from "@calimero-network/mero-ui";
 
 const meta: Meta<typeof TimeSeries> = {
   title: "CHARTS/TimeSeries",

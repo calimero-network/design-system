@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { VectorTableRaw } from "../../../packages/charts/src/VectorTable";
-import { Card, CardHeader, CardTitle, CardContent } from "../../../packages/ui/src";
-import { calculateMean, calculateLast, calculateMax, type Series } from "../../../packages/charts/src/TimeSeries";
+import { VectorTableRaw } from "@calimero-network/mero-charts";
+import { Card, CardHeader, CardTitle, CardContent } from "@calimero-network/mero-ui";
+import { calculateMean, calculateLast, calculateMax, type Series } from "@calimero-network/mero-charts";
 
 const meta: Meta<typeof VectorTableRaw> = {
   title: "CHARTS/VectorTable",

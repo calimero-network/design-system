@@ -12,7 +12,7 @@ const config: StorybookConfig = {
   viteFinal: (config) => mergeConfig(config, {
     resolve: {
       alias: {
-        '@calimero-network/mero-tokens': path.resolve(__dirname, '../../packages/mero-tokens/src'), // Confirm path is correct
+        '@calimero-network/mero-tokens': path.resolve(__dirname, '../../packages/tokens/src'),
         '@calimero-network/mero-ui': path.resolve(__dirname, '../../packages/ui/src'),
         // Add other aliases as needed
       },

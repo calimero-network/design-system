@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Gauge } from "../../../packages/charts/src/Gauge";
-import { TimeSeries } from "../../../packages/charts/src/TimeSeries";
-import { VectorTableRaw } from "../../../packages/charts/src/VectorTable";
-import { TimeSeriesWithTable } from "../../../packages/charts/src/CombinedChart";
-import { Card, CardHeader, CardTitle, CardContent } from "../../../packages/ui/src";
+import { Gauge } from "@calimero-network/mero-charts";
+import { TimeSeries } from "@calimero-network/mero-charts";
+import { VectorTableRaw } from "@calimero-network/mero-charts";
+import { TimeSeriesWithTable } from "@calimero-network/mero-charts";
+import { Card, CardHeader, CardTitle, CardContent } from "@calimero-network/mero-ui";
 
 const meta: Meta = {
   title: "CHARTS/Overview",
