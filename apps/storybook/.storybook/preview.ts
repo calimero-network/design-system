@@ -28,12 +28,23 @@ style.textContent = cssVariables + `
   }
   
   /* Ensure all text elements are light for dark theme */
-  h1, h2, h3, h4, h5, h6, p, span, div, a, button, input, textarea, select {
+  body h1, body h2, body h3, body h4, body h5, body h6, 
+  body p, body span, body div, body a, body button, 
+  body input, body textarea, body select {
     color: #FFFFFF !important;
   }
   
-  /* Storybook specific text elements */
-  .sb-show-main * {
+  /* Storybook specific text elements - be more specific */
+  .sb-show-main h1, .sb-show-main h2, .sb-show-main h3, 
+  .sb-show-main h4, .sb-show-main h5, .sb-show-main h6,
+  .sb-show-main p, .sb-show-main span, .sb-show-main div,
+  .sb-show-main a, .sb-show-main button, .sb-show-main input,
+  .sb-show-main textarea, .sb-show-main select {
+    color: #FFFFFF !important;
+  }
+  
+  /* Ensure paragraphs and text content are visible */
+  p, .text, .content, .description, .title {
     color: #FFFFFF !important;
   }
 `;
