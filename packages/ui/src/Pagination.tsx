@@ -91,8 +91,10 @@ export function Pagination({
           onClick={handleFirst}
           disabled={disabled || currentPage <= 1}
           style={{ minWidth: '40px', height: '40px', padding: '0 8px' }}
+          aria-label="Go to first page"
+          title="Go to first page"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <polyline points="11,17 6,12 11,7" />
             <polyline points="18,17 13,12 18,7" />
           </svg>
@@ -105,8 +107,10 @@ export function Pagination({
           onClick={handlePrevious}
           disabled={disabled || currentPage <= 1}
           style={{ minWidth: '40px', height: '40px', padding: '0 8px' }}
+          aria-label="Go to previous page"
+          title="Go to previous page"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <polyline points="15,18 9,12 15,6" />
           </svg>
         </Button>
@@ -119,6 +123,7 @@ export function Pagination({
             onClick={() => handlePageClick(1)}
             disabled={disabled}
             style={{ minWidth: '40px', height: '40px' }}
+            aria-label="Go to page 1"
           >
             1
           </Button>
@@ -133,6 +138,8 @@ export function Pagination({
           onClick={() => handlePageClick(page)}
           disabled={disabled}
           style={{ minWidth: '40px', height: '40px' }}
+          aria-label={page === currentPage ? `Current page, page ${page}` : `Go to page ${page}`}
+          aria-current={page === currentPage ? 'page' : undefined}
         >
           {page}
         </Button>
@@ -146,6 +153,7 @@ export function Pagination({
             onClick={() => handlePageClick(totalPages)}
             disabled={disabled}
             style={{ minWidth: '40px', height: '40px' }}
+            aria-label={`Go to page ${totalPages}`}
           >
             {totalPages}
           </Button>
@@ -158,8 +166,10 @@ export function Pagination({
           onClick={handleNext}
           disabled={disabled || currentPage >= totalPages}
           style={{ minWidth: '40px', height: '40px', padding: '0 8px' }}
+          aria-label="Go to next page"
+          title="Go to next page"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <polyline points="9,18 15,12 9,6" />
           </svg>
         </Button>
@@ -171,8 +181,10 @@ export function Pagination({
           onClick={handleLast}
           disabled={disabled || currentPage >= totalPages}
           style={{ minWidth: '40px', height: '40px', padding: '0 8px' }}
+          aria-label="Go to last page"
+          title="Go to last page"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <polyline points="13,17 18,12 13,7" />
             <polyline points="6,17 11,12 6,7" />
           </svg>

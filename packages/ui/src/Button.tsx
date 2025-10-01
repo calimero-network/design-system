@@ -7,6 +7,9 @@ type ButtonProps = React.PropsWithChildren<{
   style?: React.CSSProperties;
   type?: "button" | "submit" | "reset";
   variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
+  'aria-label'?: string;
+  'aria-current'?: 'page' | 'step' | 'location' | 'date' | 'time' | 'true' | 'false';
+  title?: string;
 }>;
 
 export function Button({
@@ -17,6 +20,9 @@ export function Button({
   style,
   type = "button",
   variant = 'primary',
+  'aria-label': ariaLabel,
+  'aria-current': ariaCurrent,
+  title,
 }: ButtonProps) {
   const baseStyles: React.CSSProperties = {
     display: 'inline-flex',
@@ -140,6 +146,9 @@ export function Button({
       onMouseEnter={() => setIsHover(true)}
       style={{ ...baseStyles, backgroundColor: dynamicBackground, borderColor: isSecondary ? dynamicBorder : 'transparent', color: isPrimary ? baseStyles.color as string : dynamicTextColor, ...style }}
       className={className}
+      aria-label={ariaLabel}
+      aria-current={ariaCurrent}
+      title={title}
     >
       {children}
     </button>
