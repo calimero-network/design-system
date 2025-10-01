@@ -10,7 +10,7 @@ const withTokens = (Story: any) => (
 );
 
 const meta: Meta<typeof Button> = {
-  title: 'Foundation/Button',
+  title: 'Forms/Button',
   component: Button,
   decorators: [withTokens],
   parameters: {
