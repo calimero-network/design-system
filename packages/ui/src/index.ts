@@ -2,11 +2,32 @@ export { Card, CardHeader, CardTitle, CardContent } from './Card';
 export { Button } from './Button';
 export { Input } from './Input';
 export { List } from './List';
-export { Table } from './Table';
+export { Table, DataTable, EditableTable } from './Table';
 export { Grid } from './Grid';
 export { GridItem } from './GridItem';
 export { Menu, MenuItem, MenuGroup, MenuDivider } from './Menu';
 export { Navbar, NavbarBrand, NavbarItem, NavbarMenu, NavbarToggle } from './Navbar';
+export { Sidebar, SidebarHeader, SidebarFooter, SidebarBrand, SidebarUser } from './Sidebar';
+export { 
+  Banner, 
+  InfoBanner, 
+  SuccessBanner, 
+  WarningBanner, 
+  ErrorBanner, 
+  AnnouncementBanner, 
+  PromotionBanner 
+} from './Banner';
+export type { BannerProps, BannerVariant, BannerSize, BannerPosition, BannerAction } from './Banner';
+export { NotificationCenter, useNotifications } from './NotificationCenter';
+export type { 
+  NotificationCenterProps, 
+  Notification, 
+  NotificationVariant, 
+  NotificationPriority, 
+  NotificationStatus, 
+  NotificationCategory, 
+  NotificationAction 
+} from './NotificationCenter';
 export { Alert } from './Alert';
 export { Badge, StatusBadge } from './Badge';
 export { Breadcrumbs } from './Breadcrumbs';
@@ -54,7 +75,6 @@ export { Dropdown } from './Dropdown';
 export { Calendar } from './Calendar';
 export { Timeline } from './Timeline';
 export { Tree } from './Tree';
-export { DataTable } from './DataTable';
 export { StatCard } from './StatCard';
 export { TreeTable } from './TreeTable';
 export { MetricCard } from './MetricCard';
