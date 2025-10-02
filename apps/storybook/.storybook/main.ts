@@ -36,6 +36,7 @@ const config: StorybookConfig = {
         alias: {
           'react': 'react',
           'react-dom': 'react-dom',
+          'use-sync-external-store/shim': 'use-sync-external-store/shim/index.js',
         },
       },
       define: {

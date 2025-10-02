@@ -80,7 +80,7 @@ export function Card({
 }: React.PropsWithChildren<{ 
   className?: string;
   tooltip?: string;
-  tooltipIcon?: React.ComponentType<{ size?: number; color?: string; strokeWidth?: number }>;
+  tooltipIcon?: React.ComponentType<{ size?: number | string; color?: string; strokeWidth?: number | string }>;
   color?: string;
   noBorder?: boolean;
   variant?: "rounded" | "rectangle";

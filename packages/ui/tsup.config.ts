@@ -7,7 +7,7 @@ export default defineConfig({
   splitting: false,
   sourcemap: true,
   clean: true,
-  external: ['react', 'react/jsx-runtime', '@calimero-network/mero-icons'],
+  external: ['react', 'react-dom', 'react/jsx-runtime', '@calimero-network/mero-icons'],
   noExternal: [
     '@tiptap/react',
     '@tiptap/starter-kit',
@@ -21,5 +21,21 @@ export default defineConfig({
     return {
       js: format === 'esm' ? '.mjs' : '.js',
     }
+  },
+  esbuildOptions(options) {
+    options.define = {
+      ...options.define,
+      'process.env.NODE_ENV': '"production"',
+    };
+    options.banner = {
+      js: `import * as requireReact from 'react';
+           import * as requireReactDom from 'react-dom';
+           
+           function require(m) {
+             if (m === 'react') return requireReact;
+             if (m === 'react-dom') return requireReactDom;
+             throw new Error(\`Unknown module \${m}\`);
+           }`
+    };
   }
 });
