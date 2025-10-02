@@ -19,6 +19,8 @@ const config: StorybookConfig = {
           '@tiptap/extension-text-align',
           '@tiptap/extension-underline',
           '@tiptap/extension-link',
+          'react',
+          'react-dom',
         ],
       },
       build: {
@@ -30,7 +32,14 @@ const config: StorybookConfig = {
         },
       },
       resolve: {
-        dedupe: ['@tiptap/react', '@tiptap/core'],
+        dedupe: ['@tiptap/react', '@tiptap/core', 'react', 'react-dom'],
+        alias: {
+          'react': 'react',
+          'react-dom': 'react-dom',
+        },
+      },
+      define: {
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
       },
     });
   },
