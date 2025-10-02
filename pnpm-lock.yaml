@@ -63,7 +63,7 @@ importers:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
       storybook:
-        specifier: 9.1.10
+        specifier: ^9.1.10
         version: 9.1.10(@testing-library/dom@10.4.0)(prettier@3.6.2)(vite@7.1.8(yaml@2.8.1))
       svgo:
         specifier: ^4.0.0
