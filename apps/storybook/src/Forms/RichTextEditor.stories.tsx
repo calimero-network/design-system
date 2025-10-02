@@ -1,10 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-// Temporarily disable RichTextEditor import to fix Vercel build
-// import { RichTextEditor } from '@calimero-network/mero-ui';
+import { RichTextEditor } from '@calimero-network/mero-ui';
 import { useState } from 'react';
-
-// Temporary placeholder component
-const RichTextEditor = () => <div>RichTextEditor temporarily disabled for Vercel build</div>;
 
 const meta: Meta<typeof RichTextEditor> = {
   title: 'Forms/RichTextEditor',
