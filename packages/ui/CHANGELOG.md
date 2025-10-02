@@ -1,5 +1,17 @@
 # @calimero-network/mero-ui
 
+## 0.3.1
+
+### Patch Changes
+
+- fix: resolve RichTextEditor build and deployment issues
+  - Bundle Tiptap packages in UI build to fix Storybook module resolution
+  - Add noExternal configuration to tsup.config.ts for Tiptap dependencies
+  - Fix Vercel deployment issues with Tiptap module resolution
+  - Re-enable RichTextEditor component exports and Storybook stories
+  - Storybook build now works successfully with RichTextEditor component
+  - Bundle size increased to ~1.3MB due to Tiptap bundling for better compatibility
+
 ## 0.3.0
 
 ### Minor Changes
