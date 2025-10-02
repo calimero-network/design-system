@@ -1,5 +1,20 @@
 # @calimero-network/mero-ui
 
+## 0.3.0
+
+### Minor Changes
+
+- feat: add RichTextEditor component with Tiptap integration
+  - Add new RichTextEditor component with full rich text editing capabilities
+  - Integrate Tiptap editor with StarterKit and extensions (Color, TextAlign, Underline, Link)
+  - Support for bold, italic, underline, headings, lists, quotes, code blocks
+  - Clean default text-based toolbar icons (B, I, U, H, •, ", </>, 🔗, A, H)
+  - Full TypeScript support with proper prop types
+  - Design system integration with tokens and styling
+  - Storybook stories demonstrating all features
+  - Controlled and uncontrolled component modes
+  - Accessibility features with proper ARIA labels
+
 ## 0.2.0
 
 ### Minor Changes
