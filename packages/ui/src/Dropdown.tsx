@@ -79,7 +79,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
     alignItems: 'center',
     justifyContent: 'space-between',
     fontFamily: 'system-ui, sans-serif',
-    color: tokens.color.background.primary.value,
+    color: tokens.color.neutral[200].value,
     borderRadius: tokens.radius.md.value,
     outline: 'none',
     cursor: disabled ? 'not-allowed' : 'pointer',
@@ -113,7 +113,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
     gap: tokens.space['2'].value,
     padding: '8px 12px',
     fontSize: '14px',
-    color: tokens.color.background.primary.value,
+    color: tokens.color.neutral[200].value,
     cursor: 'pointer',
     transition: 'background-color 0.2s ease',
   };
@@ -196,7 +196,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                   : 'transparent',
                 color: item.disabled
                   ? tokens.color.neutral[300].value
-                  : tokens.color.background.primary.value,
+                  : tokens.color.neutral[200].value,
                 cursor: item.disabled ? 'not-allowed' : 'pointer',
                 opacity: item.disabled ? 0.6 : 1,
               }}

@@ -3,7 +3,7 @@ import { Dropdown, Icon } from '@calimero-network/mero-ui';
 import React, { useState } from 'react';
 
 const meta: Meta<typeof Dropdown> = {
-  title: 'Overlays/Dropdown',
+  title: 'Forms/Dropdown',
   component: Dropdown,
   parameters: {
     layout: 'padded',
