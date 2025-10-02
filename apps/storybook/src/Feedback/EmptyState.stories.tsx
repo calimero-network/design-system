@@ -4,7 +4,7 @@ import { Icon } from '@calimero-network/mero-ui';
 import { Button } from '@calimero-network/mero-ui';
 
 const meta: Meta<typeof EmptyState> = {
-  title: 'Utility/Empty State',
+  title: 'Feedback/Empty State',
   component: EmptyState,
   parameters: {
     layout: 'padded',

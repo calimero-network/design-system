@@ -3,7 +3,7 @@ import { Banner, InfoBanner, SuccessBanner, WarningBanner, ErrorBanner, Announce
 import { useState } from 'react';
 
 const meta: Meta<typeof Banner> = {
-  title: 'Components/Banner',
+  title: 'Feedback/Banner',
   component: Banner,
   parameters: {
     layout: 'padded',

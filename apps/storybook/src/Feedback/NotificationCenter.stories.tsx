@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 import { Button } from '@calimero-network/mero-ui';
 
 const meta: Meta<typeof NotificationCenter> = {
-  title: 'Components/NotificationCenter',
+  title: 'Feedback/NotificationCenter',
   component: NotificationCenter,
   parameters: {
     layout: 'fullscreen',

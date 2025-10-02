@@ -13,7 +13,7 @@ interface User {
 }
 
 const meta: Meta<typeof EditableTable> = {
-  title: 'Components/EditableTable',
+  title: 'Data Display/EditableTable',
   component: EditableTable,
   parameters: {
     layout: 'padded',

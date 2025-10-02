@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Tag } from '@calimero-network/mero-ui';
 
 const meta: Meta<typeof Tag> = {
-  title: 'Utility/Tag',
+  title: 'Forms/Tag',
   component: Tag,
   parameters: {
     layout: 'padded',
