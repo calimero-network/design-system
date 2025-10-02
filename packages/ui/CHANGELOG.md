@@ -1,5 +1,16 @@
 # @calimero-network/mero-ui
 
+## 0.3.2
+
+### Patch Changes
+
+- fix: resolve dynamic require of React issue in UI package
+  - Add esbuild banner to provide require function for React modules
+  - Fix use-sync-external-store dynamic require issue in ESM builds
+  - Update Storybook Vite config to handle module resolution
+  - Downgrade all React packages to version 18 for compatibility
+  - Fix TypeScript types in Card component for tooltipIcon prop
+
 ## 0.3.1
 
 ### Patch Changes
