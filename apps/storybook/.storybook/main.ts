@@ -25,6 +25,18 @@ const config: StorybookConfig = {
         commonjsOptions: {
           include: [/node_modules/],
         },
+        rollupOptions: {
+          external: (id) => {
+            // Don't externalize Tiptap packages
+            if (id.includes('@tiptap/')) {
+              return false;
+            }
+            return false;
+          },
+        },
+      },
+      resolve: {
+        dedupe: ['@tiptap/react', '@tiptap/core'],
       },
     });
   },

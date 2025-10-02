@@ -85,8 +85,9 @@ export { TimePicker } from './TimePicker';
 export { FileUpload } from './FileUpload';
 export { SearchInput } from './SearchInput';
 export { TagInput } from './TagInput';
-export { RichTextEditor } from './RichTextEditor';
-export type { RichTextEditorProps } from './RichTextEditor';
+// Temporarily disable RichTextEditor export to fix Vercel build
+// export { RichTextEditor } from './RichTextEditor';
+// export type { RichTextEditorProps } from './RichTextEditor';
 export { BuildWizard, TextInputStep, SelectStep, CheckboxStep } from './BuildWizard';
 
 // Loading & Feedback Components
