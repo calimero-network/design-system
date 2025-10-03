@@ -26,6 +26,9 @@ export interface RichTextEditorProps {
   minHeight?: number;
   maxHeight?: number;
   onChange?: (html: string) => void;
+  onSend?: (html: string) => void;
+  sendOnEnter?: boolean;
+  clearOnSend?: boolean;
   onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void;
   onBlur?: (event: React.FocusEvent<HTMLDivElement>) => void;
   onSelectionChange?: (selection: Selection | null) => void;
@@ -50,6 +53,9 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(({
   minHeight = 120,
   maxHeight = 400,
   onChange,
+  onSend,
+  sendOnEnter = false,
+  clearOnSend = true,
   onFocus,
   onBlur,
   onSelectionChange,
@@ -91,6 +97,24 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(({
       attributes: {
         class: 'rich-text-editor-content',
         style: 'outline: none; min-height: inherit;',
+      },
+      handleKeyDown: (_view, event) => {
+        if (!sendOnEnter || disabled || readOnly) {
+          return false;
+        }
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          const html = editor?.getHTML() ?? '';
+          onSend?.(html);
+          if (clearOnSend) {
+            editor?.commands.clearContent();
+          }
+          // keep focus in the editor
+          editor?.commands.focus();
+          return true;
+        }
+        // allow Shift+Enter to insert a newline via HardBreak
+        return false;
       },
     },
   });

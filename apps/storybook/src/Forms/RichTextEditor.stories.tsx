@@ -356,3 +356,48 @@ export const FormIntegration: Story = {
     );
   },
 };
+
+// Send on Enter demo
+export const SendOnEnter: Story = {
+  render: () => {
+    const [value, setValue] = useState('');
+    const [sent, setSent] = useState<string[]>([]);
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: 640 }}>
+        <RichTextEditor
+          value={value}
+          onChange={setValue}
+          placeholder="Type a message. Press Enter to send, Shift+Enter for newline."
+          label="Chat Input"
+          sendOnEnter
+          clearOnSend
+          onSend={(html) => {
+            setSent((prev) => [html, ...prev]);
+          }}
+        />
+        <div>
+          <h4>Sent messages</h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {sent.length === 0 && (
+              <span style={{ color: '#A0A0A0' }}>No messages yet. Type and press Enter.</span>
+            )}
+            {sent.map((m, i) => (
+              <div
+                key={i}
+                style={{
+                  backgroundColor: '#1A1A1A',
+                  padding: '12px',
+                  borderRadius: 8,
+                  border: '1px solid #404040',
+                }}
+              >
+                <div dangerouslySetInnerHTML={{ __html: m }} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
