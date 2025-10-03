@@ -362,9 +362,19 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(({
 
   const insertQuote = useCallback(() => {
     if (editor) {
-      editor.chain().focus().toggleBlockquote().run();
+      executeCommand(() => {
+        const state: any = editor.state;
+        const $from = state?.selection?.$from;
+        const inParagraph = $from?.parent?.type?.name === 'paragraph';
+        const hasContentBeforeCursor = typeof $from?.parentOffset === 'number' && $from.parentOffset > 0;
+        const chain = editor.chain();
+        if (inParagraph && hasContentBeforeCursor) {
+          chain.splitBlock();
+        }
+        chain.toggleBlockquote().run();
+      });
     }
-  }, [editor]);
+  }, [editor, executeCommand]);
 
   const insertCode = useCallback(() => {
     if (editor) {
