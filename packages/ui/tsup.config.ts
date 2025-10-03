@@ -1,4 +1,6 @@
 import { defineConfig } from 'tsup';
+import { writeFileSync } from 'fs';
+import { join } from 'path';
 
 export default defineConfig({
   entry: ['src/index.ts'],
@@ -37,5 +39,11 @@ export default defineConfig({
              throw new Error(\`Unknown module \${m}\`);
            }`
     };
+  },
+  onSuccess: async () => {
+    // Generate CSS file with design tokens
+    const { cssVariables } = await import('@calimero-network/mero-tokens');
+    const cssContent = cssVariables;
+    writeFileSync(join(process.cwd(), 'dist', 'styles.css'), cssContent);
   }
 });
