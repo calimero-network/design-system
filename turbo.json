@@ -1,6 +1,13 @@
 {
   "tasks": {
-    "build": { "dependsOn": ["^build"], "outputs": ["dist/**"] },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [
+        "dist/**",
+        "packages/**/dist/**",
+        "apps/storybook/storybook-static/**"
+      ]
+    },
     "dev": { "cache": false },
     "lint": {},
     "test": {},
