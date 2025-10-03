@@ -1,12 +1,18 @@
-import React, { forwardRef, useRef, useEffect, useState, useCallback } from 'react';
-import { tokens } from '@calimero-network/mero-tokens';
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import { TextStyle } from '@tiptap/extension-text-style';
-import { Color } from '@tiptap/extension-color';
-import { TextAlign } from '@tiptap/extension-text-align';
-import { Underline } from '@tiptap/extension-underline';
-import { Link } from '@tiptap/extension-link';
+import React, {
+  forwardRef,
+  useRef,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
+import { tokens } from "@calimero-network/mero-tokens";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { TextStyle } from "@tiptap/extension-text-style";
+import { Color } from "@tiptap/extension-color";
+import { TextAlign } from "@tiptap/extension-text-align";
+import { Underline } from "@tiptap/extension-underline";
+import { Link } from "@tiptap/extension-link";
 // Using default Tiptap icons instead of custom ones
 
 export interface RichTextEditorProps {
@@ -21,8 +27,8 @@ export interface RichTextEditorProps {
   label?: string;
   className?: string;
   style?: React.CSSProperties;
-  size?: 'sm' | 'md' | 'lg';
-  variant?: 'default' | 'filled' | 'outlined';
+  size?: "sm" | "md" | "lg";
+  variant?: "default" | "filled" | "outlined";
   minHeight?: number;
   maxHeight?: number;
   onChange?: (html: string) => void;
@@ -36,496 +42,557 @@ export interface RichTextEditorProps {
   customToolbar?: React.ReactNode;
 }
 
-export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(({
-  value,
-  defaultValue,
-  placeholder,
-  disabled = false,
-  readOnly = false,
-  required = false,
-  error = false,
-  helperText,
-  label,
-  className = '',
-  style = {},
-  size = 'md',
-  variant = 'default',
-  minHeight = 120,
-  maxHeight = 400,
-  onChange,
-  onSend,
-  sendOnEnter = false,
-  clearOnSend = true,
-  onFocus,
-  onBlur,
-  onSelectionChange,
-  toolbar = true,
-  customToolbar,
-}, ref) => {
-  const editorRef = useRef<HTMLDivElement>(null);
-  const [isFocused, setIsFocused] = useState(false);
-  const [currentValue, setCurrentValue] = useState(value || defaultValue || '');
-  const lastSelectionRef = useRef<{ from: number; to: number } | null>(null);
+export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
+  (
+    {
+      value,
+      defaultValue,
+      placeholder,
+      disabled = false,
+      readOnly = false,
+      required = false,
+      error = false,
+      helperText,
+      label,
+      className = "",
+      style = {},
+      size = "md",
+      variant = "default",
+      minHeight = 120,
+      maxHeight = 400,
+      onChange,
+      onSend,
+      sendOnEnter = false,
+      clearOnSend = true,
+      onFocus,
+      onBlur,
+      onSelectionChange,
+      toolbar = true,
+      customToolbar,
+    },
+    ref,
+  ) => {
+    const editorRef = useRef<HTMLDivElement>(null);
+    const [isFocused, setIsFocused] = useState(false);
+    const [currentValue, setCurrentValue] = useState(
+      value || defaultValue || "",
+    );
+    const lastSelectionRef = useRef<{ from: number; to: number } | null>(null);
 
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      TextStyle,
-      Color,
-      TextAlign.configure({
-        types: ['heading', 'paragraph'],
-      }),
-      Underline,
-      Link.configure({
-        openOnClick: false,
-        HTMLAttributes: {
-          class: 'rich-text-link',
+    const editor = useEditor({
+      extensions: [
+        StarterKit,
+        TextStyle,
+        Color,
+        TextAlign.configure({
+          types: ["heading", "paragraph"],
+        }),
+        Underline,
+        Link.configure({
+          openOnClick: false,
+          HTMLAttributes: {
+            class: "rich-text-link",
+          },
+        }),
+      ],
+      content: currentValue,
+      editable: !disabled && !readOnly,
+      onUpdate: ({ editor }) => {
+        const html = editor.getHTML();
+        setCurrentValue(html);
+        onChange?.(html);
+      },
+      onSelectionUpdate: ({ editor }) => {
+        const selection = window.getSelection();
+        // Track last selection positions to restore before toolbar actions
+        const state: any = editor.state;
+        if (state?.selection) {
+          lastSelectionRef.current = {
+            from: state.selection.from,
+            to: state.selection.to,
+          };
+        }
+        onSelectionChange?.(selection);
+      },
+      editorProps: {
+        attributes: {
+          class: "rich-text-editor-content",
+          style: "outline: none; min-height: inherit;",
         },
-      }),
-    ],
-    content: currentValue,
-    editable: !disabled && !readOnly,
-    onUpdate: ({ editor }) => {
-      const html = editor.getHTML();
-      setCurrentValue(html);
-      onChange?.(html);
-    },
-    onSelectionUpdate: ({ editor }) => {
-      const selection = window.getSelection();
-      // Track last selection positions to restore before toolbar actions
-      const state: any = editor.state;
-      if (state?.selection) {
-        lastSelectionRef.current = { from: state.selection.from, to: state.selection.to };
-      }
-      onSelectionChange?.(selection);
-    },
-    editorProps: {
-      attributes: {
-        class: 'rich-text-editor-content',
-        style: 'outline: none; min-height: inherit;',
-      },
-      handleKeyDown: (_view, event) => {
-        if (!sendOnEnter || disabled || readOnly) {
-          return false;
-        }
-        // Shift+Enter: when inside a list, create a new list item
-        if (event.key === 'Enter' && event.shiftKey) {
-          if (editor?.isActive('listItem')) {
-            event.preventDefault();
-            const state: any = editor.state;
-            const $from = state.selection.$from;
-            const isEmptyItem = $from.parent && $from.parent.textContent.length === 0;
-            if (isEmptyItem) {
-              // Exit list on empty item (like double Enter in lists)
-              const lifted = editor.chain().liftListItem('listItem').run();
-              if (!lifted) {
-                editor.chain().toggleBulletList().run();
+        handleKeyDown: (_view, event) => {
+          if (!sendOnEnter || disabled || readOnly) {
+            return false;
+          }
+          // Shift+Enter: when inside a list, create a new list item
+          if (event.key === "Enter" && event.shiftKey) {
+            const state: any = editor?.state;
+            const $from = state?.selection?.$from;
+            const isEmptyParent =
+              $from?.parent && $from.parent.textContent.length === 0;
+            if (editor?.isActive("listItem")) {
+              event.preventDefault();
+              if (isEmptyParent) {
+                // Exit list on empty item (like double Enter in lists)
+                const lifted = editor.chain().liftListItem("listItem").run();
+                if (!lifted) {
+                  editor.chain().toggleBulletList().run();
+                }
+                return true;
               }
-              return true;
+              const handled = editor.chain().splitListItem("listItem").run();
+              if (handled) return true;
+              return false;
             }
-            const handled = editor.chain().splitListItem('listItem').run();
-            if (handled) return true;
+            if (editor?.isActive("blockquote")) {
+              const nodeBefore = $from?.nodeBefore;
+              const isAfterHardBreak =
+                nodeBefore &&
+                nodeBefore.type &&
+                nodeBefore.type.name === "hardBreak";
+              if (isEmptyParent || isAfterHardBreak) {
+                event.preventDefault();
+                // Split current (empty) line, then unwrap the new line to paragraph
+                editor
+                  .chain()
+                  .splitBlock()
+                  .toggleBlockquote()
+                  .setParagraph()
+                  .run();
+                return true;
+              }
+              return false;
+            }
+            return false;
+          }
+          if (event.key === "Enter") {
+            // Only send when cursor is in a TOP-LEVEL paragraph (depth === 1)
+            const state: any = editor?.state;
+            if (!state) return false;
+            const $from = state.selection.$from;
+            const inTopLevelParagraph =
+              $from.depth === 1 &&
+              $from.parent &&
+              $from.parent.type &&
+              $from.parent.type.name === "paragraph";
+            if (!inTopLevelParagraph) return false;
+            event.preventDefault();
+            const html = editor?.getHTML() ?? "";
+            onSend?.(html);
+            if (clearOnSend) {
+              editor?.commands.clearContent();
+            }
+            return true;
           }
           return false;
-        }
-        if (event.key === 'Enter') {
-          // Only send when cursor is in a TOP-LEVEL paragraph (depth === 1)
-          const state: any = editor?.state;
-          if (!state) return false;
-          const $from = state.selection.$from;
-          const inTopLevelParagraph = $from.depth === 1 && $from.parent && $from.parent.type && $from.parent.type.name === 'paragraph';
-          if (!inTopLevelParagraph) return false;
-          event.preventDefault();
-          const html = editor?.getHTML() ?? '';
-          onSend?.(html);
-          if (clearOnSend) {
-            editor?.commands.clearContent();
-          }
-          return true;
-        }
-        return false;
+        },
       },
-    },
-  });
+    });
 
-  // Update editor content when external value changes
-  useEffect(() => {
-    if (value !== undefined && editor && editor.getHTML() !== value) {
-      editor.commands.setContent(value);
-    }
-  }, [value, editor]);
-
-  // Update internal value when external value changes
-  useEffect(() => {
-    if (value !== undefined) {
-      setCurrentValue(value);
-    }
-  }, [value]);
-
-  const sizeStyles = {
-    sm: {
-      padding: '6px 8px',
-      fontSize: '14px',
-      minHeight: `${Math.max(minHeight, 80)}px`,
-    },
-    md: {
-      padding: '8px 12px',
-      fontSize: '16px',
-      minHeight: `${Math.max(minHeight, 120)}px`,
-    },
-    lg: {
-      padding: '12px 16px',
-      fontSize: '18px',
-      minHeight: `${Math.max(minHeight, 160)}px`,
-    },
-  };
-
-  const variantStyles = {
-    default: {
-      backgroundColor: 'transparent',
-      border: `1px solid ${error ? tokens.color.semantic.error.value : tokens.color.neutral[600].value}`,
-    },
-    filled: {
-      backgroundColor: tokens.color.neutral[800].value,
-      border: `1px solid ${error ? tokens.color.semantic.error.value : 'transparent'}`,
-    },
-    outlined: {
-      backgroundColor: 'transparent',
-      border: `2px solid ${error ? tokens.color.semantic.error.value : tokens.color.neutral[600].value}`,
-    },
-  };
-
-  const baseStyle: React.CSSProperties = {
-    width: '100%',
-    fontFamily: 'var(--font-body)',
-    color: '#FFFFFF',
-    borderRadius: tokens.radius.md.value,
-    outline: 'none',
-    transition: 'all 0.2s ease',
-    fontWeight: '400',
-    lineHeight: '1.5',
-    overflow: 'auto',
-    ...sizeStyles[size],
-    ...variantStyles[variant],
-    ...style,
-  };
-
-  const focusStyle = {
-    borderColor: error ? tokens.color.semantic.error.value : tokens.color.brand[600].value,
-    boxShadow: `0 0 0 3px ${error ? tokens.color.brand[100].value : tokens.color.brand[100].value}`,
-  };
-
-  const disabledStyle = {
-    backgroundColor: 'transparent',
-    color: tokens.color.neutral[300].value,
-    cursor: 'not-allowed',
-    opacity: 0.6,
-  };
-
-  const labelStyle: React.CSSProperties = {
-    display: 'block',
-    fontSize: '14px',
-    fontWeight: 500,
-    color: '#FFFFFF',
-    marginBottom: '4px',
-    fontFamily: 'var(--font-body)',
-    lineHeight: '1.4',
-  };
-
-  const helperTextStyle: React.CSSProperties = {
-    fontSize: '12px',
-    color: error ? tokens.color.semantic.error.value : tokens.color.neutral[300].value,
-    marginTop: '4px',
-    fontFamily: 'var(--font-body)',
-    lineHeight: '1.4',
-  };
-
-  const containerStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-  };
-
-  const toolbarStyle: React.CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
-    padding: '8px 12px',
-    backgroundColor: tokens.color.neutral[800].value,
-    border: `1px solid ${tokens.color.neutral[600].value}`,
-    borderBottom: 'none',
-    borderRadius: `${tokens.radius.md.value} ${tokens.radius.md.value} 0 0`,
-    flexWrap: 'wrap',
-  };
-
-  const toolbarButtonStyle: React.CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '6px 8px',
-    backgroundColor: 'transparent',
-    border: 'none',
-    borderRadius: '4px',
-    color: '#FFFFFF',
-    cursor: 'pointer',
-    fontSize: '14px',
-    fontFamily: 'var(--font-body)',
-    transition: 'background-color 0.2s ease',
-    minWidth: '32px',
-    height: '32px',
-  };
-
-  const separatorStyle: React.CSSProperties = {
-    width: '1px',
-    height: '20px',
-    backgroundColor: tokens.color.neutral[600].value,
-    margin: '0 4px',
-  };
-
-  const editorStyle: React.CSSProperties = {
-    ...baseStyle,
-    maxHeight: `${maxHeight}px`,
-    ...(disabled ? disabledStyle : {}),
-    ...(isFocused ? focusStyle : {}),
-  };
-
-  const handleFocus = useCallback((e: React.FocusEvent<HTMLDivElement>) => {
-    setIsFocused(true);
-    onFocus?.(e);
-  }, [onFocus]);
-
-  const handleBlur = useCallback((e: React.FocusEvent<HTMLDivElement>) => {
-    setIsFocused(false);
-    onBlur?.(e);
-  }, [onBlur]);
-
-  const executeCommand = useCallback((command: () => void) => {
-    if (editor && !disabled && !readOnly) {
-      // Use ProseMirror selection directly; it persists across blur
-      const sel: any = editor.state?.selection;
-      const from = sel?.from;
-      const to = sel?.to;
-      editor.commands.focus();
-      if (typeof from === 'number' && typeof to === 'number') {
-        editor.commands.setTextSelection({ from, to });
-      } else if (lastSelectionRef.current) {
-        editor.commands.setTextSelection(lastSelectionRef.current);
+    // Update editor content when external value changes
+    useEffect(() => {
+      if (value !== undefined && editor && editor.getHTML() !== value) {
+        editor.commands.setContent(value);
       }
-      command();
-    }
-  }, [editor, disabled, readOnly]);
+    }, [value, editor]);
 
-  const insertLink = useCallback(() => {
-    const url = prompt('Enter URL:');
-    if (url && editor) {
-      editor.chain().focus().setLink({ href: url }).run();
-    }
-  }, [editor]);
+    // Update internal value when external value changes
+    useEffect(() => {
+      if (value !== undefined) {
+        setCurrentValue(value);
+      }
+    }, [value]);
 
-  const changeTextColor = useCallback(() => {
-    const color = prompt('Enter color (e.g., #ff0000 or red):');
-    if (color && editor) {
-      editor.chain().focus().setColor(color).run();
-    }
-  }, [editor]);
+    const sizeStyles = {
+      sm: {
+        padding: "6px 8px",
+        fontSize: "14px",
+        minHeight: `${Math.max(minHeight, 80)}px`,
+      },
+      md: {
+        padding: "8px 12px",
+        fontSize: "16px",
+        minHeight: `${Math.max(minHeight, 120)}px`,
+      },
+      lg: {
+        padding: "12px 16px",
+        fontSize: "18px",
+        minHeight: `${Math.max(minHeight, 160)}px`,
+      },
+    };
 
-  const changeHighlightColor = useCallback(() => {
-    const color = prompt('Enter highlight color (e.g., #ffff00 or yellow):');
-    if (color && editor) {
-      // For now, just set the text color as highlight functionality requires additional extension
-      editor.chain().focus().setColor(color).run();
-    }
-  }, [editor]);
+    const variantStyles = {
+      default: {
+        backgroundColor: "transparent",
+        border: `1px solid ${error ? tokens.color.semantic.error.value : tokens.color.neutral[600].value}`,
+      },
+      filled: {
+        backgroundColor: tokens.color.neutral[800].value,
+        border: `1px solid ${error ? tokens.color.semantic.error.value : "transparent"}`,
+      },
+      outlined: {
+        backgroundColor: "transparent",
+        border: `2px solid ${error ? tokens.color.semantic.error.value : tokens.color.neutral[600].value}`,
+      },
+    };
 
-  const insertHeading = useCallback(() => {
-    const level = prompt('Enter heading level (1-6):');
-    if (level && ['1', '2', '3', '4', '5', '6'].includes(level) && editor) {
-      editor.chain().focus().toggleHeading({ level: parseInt(level) as 1 | 2 | 3 | 4 | 5 | 6 }).run();
-    }
-  }, [editor]);
+    const baseStyle: React.CSSProperties = {
+      width: "100%",
+      fontFamily: "var(--font-body)",
+      color: "#FFFFFF",
+      borderRadius: tokens.radius.md.value,
+      outline: "none",
+      transition: "all 0.2s ease",
+      fontWeight: "400",
+      lineHeight: "1.5",
+      overflow: "auto",
+      ...sizeStyles[size],
+      ...variantStyles[variant],
+      ...style,
+    };
 
-  const insertList = useCallback(() => {
-    if (editor) {
-      executeCommand(() => {
-        const state: any = editor.state;
-        const $from = state?.selection?.$from;
-        const inParagraph = $from?.parent?.type?.name === 'paragraph';
-        const hasContentBeforeCursor = typeof $from?.parentOffset === 'number' && $from.parentOffset > 0;
-        const chain = editor.chain();
-        if (inParagraph && hasContentBeforeCursor) {
-          chain.splitBlock();
+    const focusStyle = {
+      borderColor: error
+        ? tokens.color.semantic.error.value
+        : tokens.color.brand[600].value,
+      boxShadow: `0 0 0 3px ${error ? tokens.color.brand[100].value : tokens.color.brand[100].value}`,
+    };
+
+    const disabledStyle = {
+      backgroundColor: "transparent",
+      color: tokens.color.neutral[300].value,
+      cursor: "not-allowed",
+      opacity: 0.6,
+    };
+
+    const labelStyle: React.CSSProperties = {
+      display: "block",
+      fontSize: "14px",
+      fontWeight: 500,
+      color: "#FFFFFF",
+      marginBottom: "4px",
+      fontFamily: "var(--font-body)",
+      lineHeight: "1.4",
+    };
+
+    const helperTextStyle: React.CSSProperties = {
+      fontSize: "12px",
+      color: error
+        ? tokens.color.semantic.error.value
+        : tokens.color.neutral[300].value,
+      marginTop: "4px",
+      fontFamily: "var(--font-body)",
+      lineHeight: "1.4",
+    };
+
+    const containerStyle: React.CSSProperties = {
+      display: "flex",
+      flexDirection: "column",
+      width: "100%",
+    };
+
+    const toolbarStyle: React.CSSProperties = {
+      display: "flex",
+      alignItems: "center",
+      gap: "4px",
+      padding: "8px 12px",
+      backgroundColor: tokens.color.neutral[800].value,
+      border: `1px solid ${tokens.color.neutral[600].value}`,
+      borderBottom: "none",
+      borderRadius: `${tokens.radius.md.value} ${tokens.radius.md.value} 0 0`,
+      flexWrap: "wrap",
+    };
+
+    const toolbarButtonStyle: React.CSSProperties = {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "6px 8px",
+      backgroundColor: "transparent",
+      border: "none",
+      borderRadius: "4px",
+      color: "#FFFFFF",
+      cursor: "pointer",
+      fontSize: "14px",
+      fontFamily: "var(--font-body)",
+      transition: "background-color 0.2s ease",
+      minWidth: "32px",
+      height: "32px",
+    };
+
+    const separatorStyle: React.CSSProperties = {
+      width: "1px",
+      height: "20px",
+      backgroundColor: tokens.color.neutral[600].value,
+      margin: "0 4px",
+    };
+
+    const editorStyle: React.CSSProperties = {
+      ...baseStyle,
+      maxHeight: `${maxHeight}px`,
+      ...(disabled ? disabledStyle : {}),
+      ...(isFocused ? focusStyle : {}),
+    };
+
+    const handleFocus = useCallback(
+      (e: React.FocusEvent<HTMLDivElement>) => {
+        setIsFocused(true);
+        onFocus?.(e);
+      },
+      [onFocus],
+    );
+
+    const handleBlur = useCallback(
+      (e: React.FocusEvent<HTMLDivElement>) => {
+        setIsFocused(false);
+        onBlur?.(e);
+      },
+      [onBlur],
+    );
+
+    const executeCommand = useCallback(
+      (command: () => void) => {
+        if (editor && !disabled && !readOnly) {
+          // Use ProseMirror selection directly; it persists across blur
+          const sel: any = editor.state?.selection;
+          const from = sel?.from;
+          const to = sel?.to;
+          editor.commands.focus();
+          if (typeof from === "number" && typeof to === "number") {
+            editor.commands.setTextSelection({ from, to });
+          } else if (lastSelectionRef.current) {
+            editor.commands.setTextSelection(lastSelectionRef.current);
+          }
+          command();
         }
-        chain.toggleBulletList().run();
-      });
-    }
-  }, [editor, executeCommand]);
+      },
+      [editor, disabled, readOnly],
+    );
 
-  const insertQuote = useCallback(() => {
-    if (editor) {
-      executeCommand(() => {
-        const state: any = editor.state;
-        const $from = state?.selection?.$from;
-        const inParagraph = $from?.parent?.type?.name === 'paragraph';
-        const hasContentBeforeCursor = typeof $from?.parentOffset === 'number' && $from.parentOffset > 0;
-        const chain = editor.chain();
-        if (inParagraph && hasContentBeforeCursor) {
-          chain.splitBlock();
+    const insertLink = useCallback(() => {
+      const url = prompt("Enter URL:");
+      if (url && editor) {
+        editor.chain().focus().setLink({ href: url }).run();
+      }
+    }, [editor]);
+
+    const changeTextColor = useCallback(() => {
+      const color = prompt("Enter color (e.g., #ff0000 or red):");
+      if (color && editor) {
+        editor.chain().focus().setColor(color).run();
+      }
+    }, [editor]);
+
+    const changeHighlightColor = useCallback(() => {
+      const color = prompt("Enter highlight color (e.g., #ffff00 or yellow):");
+      if (color && editor) {
+        // For now, just set the text color as highlight functionality requires additional extension
+        editor.chain().focus().setColor(color).run();
+      }
+    }, [editor]);
+
+    const insertHeading = useCallback(() => {
+      const level = prompt("Enter heading level (1-6):");
+      if (level && ["1", "2", "3", "4", "5", "6"].includes(level) && editor) {
+        editor
+          .chain()
+          .focus()
+          .toggleHeading({ level: parseInt(level) as 1 | 2 | 3 | 4 | 5 | 6 })
+          .run();
+      }
+    }, [editor]);
+
+    const insertList = useCallback(() => {
+      if (editor) {
+        executeCommand(() => {
+          const state: any = editor.state;
+          const $from = state?.selection?.$from;
+          const inParagraph = $from?.parent?.type?.name === "paragraph";
+          const hasContentBeforeCursor =
+            typeof $from?.parentOffset === "number" && $from.parentOffset > 0;
+          const chain = editor.chain();
+          if (inParagraph && hasContentBeforeCursor) {
+            chain.splitBlock();
+          }
+          chain.toggleBulletList().run();
+        });
+      }
+    }, [editor, executeCommand]);
+
+    const insertQuote = useCallback(() => {
+      if (editor) {
+        executeCommand(() => {
+          const state: any = editor.state;
+          const $from = state?.selection?.$from;
+          const inParagraph = $from?.parent?.type?.name === "paragraph";
+          const hasContentBeforeCursor =
+            typeof $from?.parentOffset === "number" && $from.parentOffset > 0;
+          const chain = editor.chain();
+          if (inParagraph && hasContentBeforeCursor) {
+            chain.splitBlock();
+          }
+          chain.toggleBlockquote().run();
+        });
+      }
+    }, [editor, executeCommand]);
+
+    const insertCode = useCallback(() => {
+      if (editor) {
+        editor.chain().focus().toggleCodeBlock().run();
+      }
+    }, [editor]);
+
+    const toolbarItems = [
+      {
+        label: "Bold",
+        icon: "B",
+        action: () =>
+          executeCommand(() => editor?.chain().focus().toggleBold().run()),
+        isActive: editor?.isActive("bold"),
+      },
+      {
+        label: "Italic",
+        icon: "I",
+        action: () =>
+          executeCommand(() => editor?.chain().focus().toggleItalic().run()),
+        isActive: editor?.isActive("italic"),
+      },
+      {
+        label: "Underline",
+        icon: "U",
+        action: () =>
+          executeCommand(() => editor?.chain().focus().toggleUnderline().run()),
+        isActive: editor?.isActive("underline"),
+      },
+      { type: "separator" },
+      {
+        label: "Heading",
+        icon: "H",
+        action: insertHeading,
+        isActive: editor?.isActive("heading"),
+      },
+      {
+        label: "List",
+        icon: "•",
+        action: insertList,
+        isActive: editor?.isActive("bulletList"),
+      },
+      {
+        label: "Quote",
+        icon: '"',
+        action: insertQuote,
+        isActive: editor?.isActive("blockquote"),
+      },
+      {
+        label: "Code",
+        icon: "</>",
+        action: insertCode,
+        isActive: editor?.isActive("codeBlock"),
+      },
+      { type: "separator" },
+      {
+        label: "Link",
+        icon: "🔗",
+        action: insertLink,
+        isActive: editor?.isActive("link"),
+      },
+      {
+        label: "Color",
+        icon: "A",
+        action: changeTextColor,
+      },
+      {
+        label: "Highlight",
+        icon: "H",
+        action: changeHighlightColor,
+      },
+    ];
+
+    const renderToolbarItem = useCallback(
+      (item: any, index: number) => {
+        if (item.type === "separator") {
+          return <div key={`separator-${index}`} style={separatorStyle} />;
         }
-        chain.toggleBlockquote().run();
-      });
+
+        const isActive = item.isActive || false;
+
+        return (
+          <button
+            key={`toolbar-${index}`}
+            type="button"
+            style={{
+              ...toolbarButtonStyle,
+              backgroundColor: isActive
+                ? tokens.color.brand[600].value
+                : "transparent",
+            }}
+            onMouseDown={(e) => {
+              // Keep editor selection intact so actions apply at the cursor
+              e.preventDefault();
+              if (!(disabled || readOnly)) {
+                item.action?.();
+              }
+            }}
+            onMouseEnter={(e) => {
+              if (!isActive) {
+                e.currentTarget.style.backgroundColor =
+                  tokens.color.neutral[700].value;
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isActive) {
+                e.currentTarget.style.backgroundColor = "transparent";
+              }
+            }}
+            disabled={disabled || readOnly}
+            title={item.label}
+          >
+            {item.icon}
+          </button>
+        );
+      },
+      [disabled, readOnly, toolbarButtonStyle],
+    );
+
+    if (!editor) {
+      return null;
     }
-  }, [editor, executeCommand]);
-
-  const insertCode = useCallback(() => {
-    if (editor) {
-      editor.chain().focus().toggleCodeBlock().run();
-    }
-  }, [editor]);
-
-  const toolbarItems = [
-    {
-      label: 'Bold',
-      icon: 'B',
-      action: () => executeCommand(() => editor?.chain().focus().toggleBold().run()),
-      isActive: editor?.isActive('bold'),
-    },
-    {
-      label: 'Italic',
-      icon: 'I',
-      action: () => executeCommand(() => editor?.chain().focus().toggleItalic().run()),
-      isActive: editor?.isActive('italic'),
-    },
-    {
-      label: 'Underline',
-      icon: 'U',
-      action: () => executeCommand(() => editor?.chain().focus().toggleUnderline().run()),
-      isActive: editor?.isActive('underline'),
-    },
-    { type: 'separator' },
-    {
-      label: 'Heading',
-      icon: 'H',
-      action: insertHeading,
-      isActive: editor?.isActive('heading'),
-    },
-    {
-      label: 'List',
-      icon: '•',
-      action: insertList,
-      isActive: editor?.isActive('bulletList'),
-    },
-    {
-      label: 'Quote',
-      icon: '"',
-      action: insertQuote,
-      isActive: editor?.isActive('blockquote'),
-    },
-    {
-      label: 'Code',
-      icon: '</>',
-      action: insertCode,
-      isActive: editor?.isActive('codeBlock'),
-    },
-    { type: 'separator' },
-    {
-      label: 'Link',
-      icon: '🔗',
-      action: insertLink,
-      isActive: editor?.isActive('link'),
-    },
-    {
-      label: 'Color',
-      icon: 'A',
-      action: changeTextColor,
-    },
-    {
-      label: 'Highlight',
-      icon: 'H',
-      action: changeHighlightColor,
-    },
-  ];
-
-  const renderToolbarItem = useCallback((item: any, index: number) => {
-    if (item.type === 'separator') {
-      return <div key={`separator-${index}`} style={separatorStyle} />;
-    }
-
-    const isActive = item.isActive || false;
 
     return (
-      <button
-        key={`toolbar-${index}`}
-        type="button"
-        style={{
-          ...toolbarButtonStyle,
-          backgroundColor: isActive ? tokens.color.brand[600].value : 'transparent',
-        }}
-        onMouseDown={(e) => {
-          // Keep editor selection intact so actions apply at the cursor
-          e.preventDefault();
-          if (!(disabled || readOnly)) {
-            item.action?.();
-          }
-        }}
-        onMouseEnter={(e) => {
-          if (!isActive) {
-            e.currentTarget.style.backgroundColor = tokens.color.neutral[700].value;
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (!isActive) {
-            e.currentTarget.style.backgroundColor = 'transparent';
-          }
-        }}
-        disabled={disabled || readOnly}
-        title={item.label}
-      >
-        {item.icon}
-      </button>
-    );
-  }, [disabled, readOnly, toolbarButtonStyle]);
+      <div className={className} style={containerStyle}>
+        {label && (
+          <label style={labelStyle}>
+            {label}
+            {required && (
+              <span
+                style={{
+                  color: tokens.color.semantic.error.value,
+                  marginLeft: "4px",
+                }}
+              >
+                *
+              </span>
+            )}
+          </label>
+        )}
 
-  if (!editor) {
-    return null;
-  }
+        {toolbar && !customToolbar && (
+          <div style={toolbarStyle}>{toolbarItems.map(renderToolbarItem)}</div>
+        )}
 
-  return (
-    <div className={className} style={containerStyle}>
-      {label && (
-        <label style={labelStyle}>
-          {label}
-          {required && <span style={{ color: tokens.color.semantic.error.value, marginLeft: '4px' }}>*</span>}
-        </label>
-      )}
+        {customToolbar && <div style={toolbarStyle}>{customToolbar}</div>}
 
-      {toolbar && !customToolbar && (
-        <div style={toolbarStyle}>
-          {toolbarItems.map(renderToolbarItem)}
+        <div
+          ref={ref || editorRef}
+          style={editorStyle}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+        >
+          <EditorContent editor={editor} />
         </div>
-      )}
-      
-      {customToolbar && (
-        <div style={toolbarStyle}>
-          {customToolbar}
-        </div>
-      )}
 
-      <div
-        ref={ref || editorRef}
-        style={editorStyle}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-      >
-        <EditorContent editor={editor} />
-      </div>
+        {helperText && <div style={helperTextStyle}>{helperText}</div>}
 
-      {helperText && (
-        <div style={helperTextStyle}>
-          {helperText}
-        </div>
-      )}
-
-      <style>{`
+        <style>{`
         .rich-text-editor-content {
           background-color: transparent !important;
           color: #FFFFFF !important;
@@ -640,8 +707,9 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(({
           height: 0;
         }
       `}</style>
-    </div>
-  );
-});
+      </div>
+    );
+  },
+);
 
-RichTextEditor.displayName = 'RichTextEditor';
+RichTextEditor.displayName = "RichTextEditor";
