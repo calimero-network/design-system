@@ -414,7 +414,7 @@ export const SendOnEnter: Story = {
             backgroundColor: "#0E0E0E",
             display: "flex",
             flexDirection: "column",
-            gap: 12,
+            gap: 2,
           }}
         >
           {messages.length === 0 && (
@@ -425,49 +425,42 @@ export const SendOnEnter: Story = {
             </div>
           )}
           <style>{`
-            .msg-row { display: flex; gap: 10px; align-items: flex-start; }
-            .msg-row.out { justify-content: flex-end; }
+            .msg-group { display: flex; gap: 10px; align-items: flex-start; padding: 8px 6px; }
             .msg-avatar {
               width: 28px; height: 28px; border-radius: 6px;
               background: #2C2C2C; color: #EEE; display: flex; align-items: center; justify-content: center;
-              font-size: 14px; font-weight: 700; flex: 0 0 auto;
+              font-size: 12px; font-weight: 700; flex: 0 0 auto;
             }
-            .msg-meta { color: #B5B5B5; font-size: 12px; margin-bottom: 2px; }
-            .msg-bubble {
-              max-width: 68%; padding: 8px 10px; border-radius: 8px; border: 1px solid #2E2E2E;
-              background: #151515; color: #F2F2F2;
-            }
-            .msg-row.out .msg-bubble { background: #1F1F1F; border-color: #333; }
+            .msg-header { color: #DDD; font-size: 13px; display: flex; gap: 8px; align-items: baseline; }
+            .msg-name { font-weight: 700; }
+            .msg-time { font-size: 11px; color: #9A9A9A; }
+            .msg-line { max-width: 72%; color: #F2F2F2; }
             .msg-content p { margin: 0 0 6px 0; }
             .msg-content ul, .msg-content ol { margin: 4px 0 6px 16px; }
             .msg-content li { margin: 2px 0; }
             .msg-content code { background: #1E1E1E; padding: 1px 4px; border-radius: 4px; }
             .msg-content pre { background: #111; padding: 8px; border-radius: 6px; overflow: auto; }
-            .msg-content blockquote {
-              margin: 6px 0; padding: 6px 10px; border-left: 3px solid #A5FF11; background: #111;
-            }
-            .msg-time { font-size: 11px; color: #9A9A9A; margin-left: 6px; }
+            .msg-content blockquote { margin: 6px 0; padding: 6px 10px; border-left: 3px solid #A5FF11; background: #111; }
           `}</style>
-          {messages.map((m) => {
+          {messages.map((m, idx) => {
             const isOut = m.direction === "out";
-            const initials = isOut ? "ME" : "AI";
+            const initials = isOut ? "YOU" : "AI";
             const name = isOut ? "You" : "Assistant";
+            const prev = idx > 0 ? messages[idx - 1] : null;
+            const sameAuthorAsPrev = prev && prev.direction === m.direction;
+            const showHeader = !sameAuthorAsPrev;
             return (
-              <div key={m.id} className={`msg-row ${isOut ? "out" : ""}`}>
-                {!isOut && <div className="msg-avatar">{initials}</div>}
-                <div>
-                  <div className="msg-meta">
-                    <span>{name}</span>
-                    <span className="msg-time">{m.at}</span>
-                  </div>
-                  <div className="msg-bubble">
-                    <div
-                      className="msg-content"
-                      dangerouslySetInnerHTML={{ __html: m.html }}
-                    />
-                  </div>
+              <div key={m.id} className="msg-group">
+                <div className="msg-avatar" style={{ visibility: showHeader ? "visible" : "hidden" }}>{initials.slice(0,2)}</div>
+                <div className="msg-line">
+                  {showHeader && (
+                    <div className="msg-header">
+                      <span className="msg-name">{name}</span>
+                      <span className="msg-time">{m.at}</span>
+                    </div>
+                  )}
+                  <div className="msg-content" dangerouslySetInnerHTML={{ __html: m.html }} />
                 </div>
-                {isOut && <div className="msg-avatar">{initials}</div>}
               </div>
             );
           })}

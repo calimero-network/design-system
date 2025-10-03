@@ -222,16 +222,16 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
 
     const variantStyles = {
       default: {
-        backgroundColor: "transparent",
-        border: `1px solid ${error ? tokens.color.semantic.error.value : tokens.color.neutral[600].value}`,
+        backgroundColor: "#111111",
+        border: `1px solid ${error ? tokens.color.semantic.error.value : "#2A2A2A"}`,
       },
       filled: {
-        backgroundColor: tokens.color.neutral[800].value,
-        border: `1px solid ${error ? tokens.color.semantic.error.value : "transparent"}`,
+        backgroundColor: "#121212",
+        border: `1px solid ${error ? tokens.color.semantic.error.value : "#1F1F1F"}`,
       },
       outlined: {
-        backgroundColor: "transparent",
-        border: `2px solid ${error ? tokens.color.semantic.error.value : tokens.color.neutral[600].value}`,
+        backgroundColor: "#0F0F0F",
+        border: `1px solid ${error ? tokens.color.semantic.error.value : "#303033"}`,
       },
     };
 
@@ -254,7 +254,9 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
       borderColor: error
         ? tokens.color.semantic.error.value
         : tokens.color.brand[600].value,
-      boxShadow: `0 0 0 3px ${error ? tokens.color.brand[100].value : tokens.color.brand[100].value}`,
+      boxShadow: error
+        ? "0 0 0 2px rgba(255,0,0,0.2)"
+        : "0 0 0 2px rgba(165,255,17,0.18)",
     };
 
     const disabledStyle = {
@@ -293,11 +295,11 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
     const toolbarStyle: React.CSSProperties = {
       display: "flex",
       alignItems: "center",
-      gap: "4px",
-      padding: "8px 12px",
-      backgroundColor: tokens.color.neutral[800].value,
-      border: `1px solid ${tokens.color.neutral[600].value}`,
-      borderBottom: "none",
+      gap: "6px",
+      padding: "6px 8px",
+      backgroundColor: "transparent",
+      border: "none",
+      borderBottom: "1px solid #222",
       borderRadius: `${tokens.radius.md.value} ${tokens.radius.md.value} 0 0`,
       flexWrap: "wrap",
     };
@@ -308,15 +310,15 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
       justifyContent: "center",
       padding: "6px 8px",
       backgroundColor: "transparent",
-      border: "none",
-      borderRadius: "4px",
-      color: "#FFFFFF",
+      border: "1px solid transparent",
+      borderRadius: "6px",
+      color: "#EDEDED",
       cursor: "pointer",
-      fontSize: "14px",
+      fontSize: "13px",
       fontFamily: "var(--font-body)",
-      transition: "background-color 0.2s ease",
-      minWidth: "32px",
-      height: "32px",
+      transition: "background-color 0.15s ease, border-color 0.15s ease",
+      minWidth: "28px",
+      height: "28px",
     };
 
     const separatorStyle: React.CSSProperties = {
@@ -521,9 +523,8 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
             type="button"
             style={{
               ...toolbarButtonStyle,
-              backgroundColor: isActive
-                ? tokens.color.brand[600].value
-                : "transparent",
+              backgroundColor: isActive ? "rgba(165,255,17,0.15)" : "transparent",
+              borderColor: isActive ? "rgba(165,255,17,0.35)" : "transparent",
             }}
             onMouseDown={(e) => {
               // Keep editor selection intact so actions apply at the cursor
@@ -534,13 +535,14 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
             }}
             onMouseEnter={(e) => {
               if (!isActive) {
-                e.currentTarget.style.backgroundColor =
-                  tokens.color.neutral[700].value;
+                e.currentTarget.style.backgroundColor = "#1a1a1a";
+                e.currentTarget.style.borderColor = "#2a2a2a";
               }
             }}
             onMouseLeave={(e) => {
               if (!isActive) {
                 e.currentTarget.style.backgroundColor = "transparent";
+                e.currentTarget.style.borderColor = "transparent";
               }
             }}
             disabled={disabled || readOnly}
