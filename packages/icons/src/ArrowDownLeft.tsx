@@ -7,11 +7,14 @@ export type IconProps = React.SVGProps<SVGSVGElement> & {
 };
 
 const ArrowDownLeft = React.forwardRef<SVGSVGElement, IconProps>(
-  ({ size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props }, ref) => {
-    const actualStrokeWidth = absoluteStrokeWidth 
-      ? strokeWidth 
+  (
+    { size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props },
+    ref,
+  ) => {
+    const actualStrokeWidth = absoluteStrokeWidth
+      ? strokeWidth
       : (Number(size) / 24) * Number(strokeWidth);
-    
+
     return (
       <svg
         ref={ref}
@@ -27,12 +30,12 @@ const ArrowDownLeft = React.forwardRef<SVGSVGElement, IconProps>(
         strokeLinejoin="round"
         {...props}
       >
-        <path d="M24 6H34V16"/>
-        <path d="M34 6L18.928 21.072C17.0537 22.9468 16.0006 25.489 16 28.14V42"/>
+        <path d="M24 6H34V16" />
+        <path d="M34 6L18.928 21.072C17.0537 22.9468 16.0006 25.489 16 28.14V42" />
       </svg>
     );
-  }
+  },
 );
 
 ArrowDownLeft.displayName = "ArrowDownLeft";
-export { ArrowDownLeft }; 
+export { ArrowDownLeft };

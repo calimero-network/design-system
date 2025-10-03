@@ -1,15 +1,15 @@
-import React from 'react';
-import { Box, BoxProps } from './Box';
+import React from "react";
+import { Box, BoxProps } from "./Box";
 
-export interface SpacerProps extends Omit<BoxProps, 'children'> {
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-  axis?: 'horizontal' | 'vertical' | 'both';
+export interface SpacerProps extends Omit<BoxProps, "children"> {
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  axis?: "horizontal" | "vertical" | "both";
 }
 
 export const Spacer: React.FC<SpacerProps> = ({
-  size = 'md',
-  axis = 'vertical',
-  className = '',
+  size = "md",
+  axis = "vertical",
+  className = "",
   style = {},
   ...props
 }) => {
@@ -22,17 +22,15 @@ export const Spacer: React.FC<SpacerProps> = ({
   };
 
   const spacerStyle = {
-    flex: 'none',
-    ...(axis === 'horizontal' || axis === 'both' ? { width: spacingMap[size] } : {}),
-    ...(axis === 'vertical' || axis === 'both' ? { height: spacingMap[size] } : {}),
+    flex: "none",
+    ...(axis === "horizontal" || axis === "both"
+      ? { width: spacingMap[size] }
+      : {}),
+    ...(axis === "vertical" || axis === "both"
+      ? { height: spacingMap[size] }
+      : {}),
     ...style,
   };
 
-  return (
-    <Box
-      {...props}
-      className={className}
-      style={spacerStyle}
-    />
-  );
+  return <Box {...props} className={className} style={spacerStyle} />;
 };

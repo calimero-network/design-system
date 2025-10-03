@@ -1,63 +1,63 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { DatePicker } from '@calimero-network/mero-ui';
-import { useState } from 'react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { DatePicker } from "@calimero-network/mero-ui";
+import { useState } from "react";
 
 const meta: Meta<typeof DatePicker> = {
-  title: 'Forms/Date Picker',
+  title: "Forms/Date Picker",
   component: DatePicker,
   parameters: {
-    layout: 'padded',
+    layout: "padded",
   },
   argTypes: {
     value: {
-      control: { type: 'date' },
-      description: 'Selected date',
+      control: { type: "date" },
+      description: "Selected date",
     },
     placeholder: {
-      control: { type: 'text' },
-      description: 'Input placeholder',
+      control: { type: "text" },
+      description: "Input placeholder",
     },
     disabled: {
-      control: { type: 'boolean' },
-      description: 'Disable the picker',
+      control: { type: "boolean" },
+      description: "Disable the picker",
     },
     showTime: {
-      control: { type: 'boolean' },
-      description: 'Show time picker',
+      control: { type: "boolean" },
+      description: "Show time picker",
     },
     timeFormat: {
-      control: { type: 'select' },
-      options: ['12h', '24h'],
-      description: 'Time format',
+      control: { type: "select" },
+      options: ["12h", "24h"],
+      description: "Time format",
     },
     minDate: {
-      control: { type: 'date' },
-      description: 'Minimum selectable date',
+      control: { type: "date" },
+      description: "Minimum selectable date",
     },
     maxDate: {
-      control: { type: 'date' },
-      description: 'Maximum selectable date',
+      control: { type: "date" },
+      description: "Maximum selectable date",
     },
     size: {
-      control: { type: 'select' },
-      options: ['small', 'medium', 'large'],
-      description: 'Input size',
+      control: { type: "select" },
+      options: ["small", "medium", "large"],
+      description: "Input size",
     },
     error: {
-      control: { type: 'boolean' },
-      description: 'Show error state',
+      control: { type: "boolean" },
+      description: "Show error state",
     },
     errorMessage: {
-      control: { type: 'text' },
-      description: 'Error message',
+      control: { type: "text" },
+      description: "Error message",
     },
     label: {
-      control: { type: 'text' },
-      description: 'Input label',
+      control: { type: "text" },
+      description: "Input label",
     },
     required: {
-      control: { type: 'boolean' },
-      description: 'Required field',
+      control: { type: "boolean" },
+      description: "Required field",
     },
   },
 };
@@ -67,40 +67,40 @@ type Story = StoryObj<typeof DatePicker>;
 
 export const Default: Story = {
   args: {
-    placeholder: 'Select a date',
+    placeholder: "Select a date",
   },
 };
 
 export const WithLabel: Story = {
   args: {
-    label: 'Birth Date',
-    placeholder: 'Select your birth date',
+    label: "Birth Date",
+    placeholder: "Select your birth date",
     required: true,
   },
 };
 
 export const WithTime: Story = {
   args: {
-    label: 'Event Date & Time',
-    placeholder: 'Select date and time',
+    label: "Event Date & Time",
+    placeholder: "Select date and time",
     showTime: true,
-    timeFormat: '12h',
+    timeFormat: "12h",
   },
 };
 
 export const WithTime24h: Story = {
   args: {
-    label: 'Meeting Time',
-    placeholder: 'Select date and time',
+    label: "Meeting Time",
+    placeholder: "Select date and time",
     showTime: true,
-    timeFormat: '24h',
+    timeFormat: "24h",
   },
 };
 
 export const WithMinMax: Story = {
   args: {
-    label: 'Appointment Date',
-    placeholder: 'Select appointment date',
+    label: "Appointment Date",
+    placeholder: "Select appointment date",
     minDate: new Date(),
     maxDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
   },
@@ -108,34 +108,34 @@ export const WithMinMax: Story = {
 
 export const Small: Story = {
   args: {
-    label: 'Small Date Picker',
-    size: 'small',
-    placeholder: 'Select date',
+    label: "Small Date Picker",
+    size: "small",
+    placeholder: "Select date",
   },
 };
 
 export const Large: Story = {
   args: {
-    label: 'Large Date Picker',
-    size: 'large',
-    placeholder: 'Select date',
+    label: "Large Date Picker",
+    size: "large",
+    placeholder: "Select date",
   },
 };
 
 export const Disabled: Story = {
   args: {
-    label: 'Disabled Date Picker',
-    placeholder: 'This is disabled',
+    label: "Disabled Date Picker",
+    placeholder: "This is disabled",
     disabled: true,
   },
 };
 
 export const Error: Story = {
   args: {
-    label: 'Date with Error',
-    placeholder: 'Select date',
+    label: "Date with Error",
+    placeholder: "Select date",
     error: true,
-    errorMessage: 'Please select a valid date',
+    errorMessage: "Please select a valid date",
   },
 };
 
@@ -152,8 +152,8 @@ export const Controlled: Story = {
           placeholder="Select a date"
           showTime={true}
         />
-        <div style={{ marginTop: '16px', color: '#FFFFFF' }}>
-          Selected date: {date ? date.toLocaleString() : 'None'}
+        <div style={{ marginTop: "16px", color: "#FFFFFF" }}>
+          Selected date: {date ? date.toLocaleString() : "None"}
         </div>
       </div>
     );
@@ -170,56 +170,64 @@ export const FormExample: Story = {
 
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
-      alert(`Form submitted with:\nStart: ${formData.startDate?.toLocaleDateString()}\nEnd: ${formData.endDate?.toLocaleDateString()}\nEvent: ${formData.eventTime?.toLocaleString()}`);
+      alert(
+        `Form submitted with:\nStart: ${formData.startDate?.toLocaleDateString()}\nEnd: ${formData.endDate?.toLocaleDateString()}\nEvent: ${formData.eventTime?.toLocaleString()}`,
+      );
     };
 
     return (
-      <form onSubmit={handleSubmit} style={{ maxWidth: '400px' }}>
-        <h3 style={{ color: '#FFFFFF', marginBottom: '20px' }}>Event Form</h3>
-        
-        <div style={{ marginBottom: '16px' }}>
+      <form onSubmit={handleSubmit} style={{ maxWidth: "400px" }}>
+        <h3 style={{ color: "#FFFFFF", marginBottom: "20px" }}>Event Form</h3>
+
+        <div style={{ marginBottom: "16px" }}>
           <DatePicker
             label="Start Date"
             value={formData.startDate}
-            onChange={(date) => setFormData(prev => ({ ...prev, startDate: date }))}
+            onChange={(date) =>
+              setFormData((prev) => ({ ...prev, startDate: date }))
+            }
             placeholder="Select start date"
             required
           />
         </div>
-        
-        <div style={{ marginBottom: '16px' }}>
+
+        <div style={{ marginBottom: "16px" }}>
           <DatePicker
             label="End Date"
             value={formData.endDate}
-            onChange={(date) => setFormData(prev => ({ ...prev, endDate: date }))}
+            onChange={(date) =>
+              setFormData((prev) => ({ ...prev, endDate: date }))
+            }
             placeholder="Select end date"
             minDate={formData.startDate || undefined}
             required
           />
         </div>
-        
-        <div style={{ marginBottom: '20px' }}>
+
+        <div style={{ marginBottom: "20px" }}>
           <DatePicker
             label="Event Date & Time"
             value={formData.eventTime}
-            onChange={(date) => setFormData(prev => ({ ...prev, eventTime: date }))}
+            onChange={(date) =>
+              setFormData((prev) => ({ ...prev, eventTime: date }))
+            }
             placeholder="Select event date and time"
             showTime={true}
             timeFormat="12h"
             required
           />
         </div>
-        
+
         <button
           type="submit"
           style={{
-            background: 'var(--color-brand-600)',
-            color: '#000000',
-            border: 'none',
-            padding: '12px 24px',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontWeight: '500',
+            background: "var(--color-brand-600)",
+            color: "#000000",
+            border: "none",
+            padding: "12px 24px",
+            borderRadius: "6px",
+            cursor: "pointer",
+            fontWeight: "500",
           }}
         >
           Submit Event

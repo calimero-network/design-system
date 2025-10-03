@@ -3,14 +3,19 @@ import { Gauge } from "@calimero-network/mero-charts";
 import { TimeSeries } from "@calimero-network/mero-charts";
 import { VectorTableRaw } from "@calimero-network/mero-charts";
 import { TimeSeriesWithTable } from "@calimero-network/mero-charts";
-import { Card, CardHeader, CardTitle, CardContent } from "@calimero-network/mero-ui";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@calimero-network/mero-ui";
 
 const meta: Meta = {
-  title: 'Charts/Overview',
+  title: "Charts/Overview",
   parameters: {
     layout: "fullscreen",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 };
 
 export default meta;
@@ -21,7 +26,7 @@ const gaugeData = {
   min: 0,
   max: 100,
   label: "%",
-  thresholds: { warning: 60, danger: 80 }
+  thresholds: { warning: 60, danger: 80 },
 };
 
 const timeSeriesData = [
@@ -33,9 +38,9 @@ const timeSeriesData = [
       { t: Date.now() - 60000 * 3, y: 48 },
       { t: Date.now() - 60000 * 2, y: 67 },
       { t: Date.now() - 60000 * 1, y: 73 },
-      { t: Date.now(), y: 68 }
+      { t: Date.now(), y: 68 },
     ],
-    fill: true
+    fill: true,
   },
   {
     name: "Memory Usage",
@@ -45,10 +50,10 @@ const timeSeriesData = [
       { t: Date.now() - 60000 * 3, y: 58 },
       { t: Date.now() - 60000 * 2, y: 71 },
       { t: Date.now() - 60000 * 1, y: 69 },
-      { t: Date.now(), y: 75 }
+      { t: Date.now(), y: 75 },
     ],
-    fill: false
-  }
+    fill: false,
+  },
 ];
 
 const vectorTableData = [
@@ -56,20 +61,20 @@ const vectorTableData = [
     name: "10.0.99.165:8429 - /api/v1/query",
     mean: 11.7,
     last: 12.1,
-    max: 12.1
+    max: 12.1,
   },
   {
     name: "10.0.99.165:8429 - /api/v1/write",
     mean: 2.69,
     last: 2.75,
-    max: 2.75
+    max: 2.75,
   },
   {
     name: "10.0.99.165:8429 - /api/v1/query_range",
     mean: 0.408,
     last: 0.467,
-    max: 0.467
-  }
+    max: 0.467,
+  },
 ];
 
 const combinedTimeSeriesData = [
@@ -81,8 +86,8 @@ const combinedTimeSeriesData = [
       { t: Date.now() - 60000 * 3, y: 11.5 },
       { t: Date.now() - 60000 * 2, y: 12.0 },
       { t: Date.now() - 60000 * 1, y: 11.9 },
-      { t: Date.now(), y: 12.1 }
-    ]
+      { t: Date.now(), y: 12.1 },
+    ],
   },
   {
     name: "10.0.99.165:8429 - /api/v1/write",
@@ -92,23 +97,52 @@ const combinedTimeSeriesData = [
       { t: Date.now() - 60000 * 3, y: 2.65 },
       { t: Date.now() - 60000 * 2, y: 2.8 },
       { t: Date.now() - 60000 * 1, y: 2.72 },
-      { t: Date.now(), y: 2.75 }
-    ]
-  }
+      { t: Date.now(), y: 2.75 },
+    ],
+  },
 ];
 
 export const ChartsOverview: StoryObj = {
   render: () => {
     return (
-      <div style={{ padding: '24px', background: 'var(--color-background-brand)', minHeight: '100vh' }}>
-        <h1 style={{ fontSize: '32px', fontWeight: 'bold', color: 'white', marginBottom: '32px', textAlign: 'center' }}>
+      <div
+        style={{
+          padding: "24px",
+          background: "var(--color-background-brand)",
+          minHeight: "100vh",
+        }}
+      >
+        <h1
+          style={{
+            fontSize: "32px",
+            fontWeight: "bold",
+            color: "white",
+            marginBottom: "32px",
+            textAlign: "center",
+          }}
+        >
           Calimero Design System - Charts Overview
         </h1>
 
         {/* Gauge Section */}
-        <section style={{ marginBottom: '48px' }}>
-          <h2 style={{ fontSize: '24px', fontWeight: '600', color: 'white', marginBottom: '24px' }}>Gauge Charts</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+        <section style={{ marginBottom: "48px" }}>
+          <h2
+            style={{
+              fontSize: "24px",
+              fontWeight: "600",
+              color: "white",
+              marginBottom: "24px",
+            }}
+          >
+            Gauge Charts
+          </h2>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: "24px",
+            }}
+          >
             <Card>
               <CardHeader>
                 <CardTitle>System Health</CardTitle>
@@ -122,9 +156,9 @@ export const ChartsOverview: StoryObj = {
                 <CardTitle>Disk Usage</CardTitle>
               </CardHeader>
               <CardContent>
-                <Gauge 
-                  value={45.2} 
-                  label="%" 
+                <Gauge
+                  value={45.2}
+                  label="%"
                   thresholds={{ warning: 70, danger: 90 }}
                 />
               </CardContent>
@@ -134,9 +168,9 @@ export const ChartsOverview: StoryObj = {
                 <CardTitle>Network Load</CardTitle>
               </CardHeader>
               <CardContent>
-                <Gauge 
-                  value={89.7} 
-                  label="%" 
+                <Gauge
+                  value={89.7}
+                  label="%"
                   thresholds={{ warning: 80, danger: 95 }}
                 />
               </CardContent>
@@ -145,16 +179,31 @@ export const ChartsOverview: StoryObj = {
         </section>
 
         {/* Time Series Section */}
-        <section style={{ marginBottom: '48px' }}>
-          <h2 style={{ fontSize: '24px', fontWeight: '600', color: 'white', marginBottom: '24px' }}>Time Series Charts</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '24px' }}>
+        <section style={{ marginBottom: "48px" }}>
+          <h2
+            style={{
+              fontSize: "24px",
+              fontWeight: "600",
+              color: "white",
+              marginBottom: "24px",
+            }}
+          >
+            Time Series Charts
+          </h2>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(500px, 1fr))",
+              gap: "24px",
+            }}
+          >
             <Card>
               <CardHeader>
                 <CardTitle>System Performance</CardTitle>
               </CardHeader>
               <CardContent>
-                <div style={{ height: '240px' }}>
-                  <TimeSeries 
+                <div style={{ height: "240px" }}>
+                  <TimeSeries
                     series={timeSeriesData}
                     yLabel="Percentage"
                     showLegend={true}
@@ -167,12 +216,12 @@ export const ChartsOverview: StoryObj = {
                 <CardTitle>Single Metric</CardTitle>
               </CardHeader>
               <CardContent>
-                <div style={{ height: '240px' }}>
-                  <TimeSeries 
+                <div style={{ height: "240px" }}>
+                  <TimeSeries
                     series={[timeSeriesData[0]]}
                     yLabel="CPU %"
                     showLegend={false}
-                    colors={['#A5FF11']}
+                    colors={["#A5FF11"]}
                   />
                 </div>
               </CardContent>
@@ -181,17 +230,30 @@ export const ChartsOverview: StoryObj = {
         </section>
 
         {/* Vector Table Section */}
-        <section style={{ marginBottom: '48px' }}>
-          <h2 style={{ fontSize: '24px', fontWeight: '600', color: 'white', marginBottom: '24px' }}>Vector Tables</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '24px' }}>
+        <section style={{ marginBottom: "48px" }}>
+          <h2
+            style={{
+              fontSize: "24px",
+              fontWeight: "600",
+              color: "white",
+              marginBottom: "24px",
+            }}
+          >
+            Vector Tables
+          </h2>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(500px, 1fr))",
+              gap: "24px",
+            }}
+          >
             <Card>
               <CardHeader>
                 <CardTitle>API Performance Metrics</CardTitle>
               </CardHeader>
               <CardContent>
-                <VectorTableRaw 
-                  data={vectorTableData}
-                />
+                <VectorTableRaw data={vectorTableData} />
               </CardContent>
             </Card>
             <Card>
@@ -199,9 +261,9 @@ export const ChartsOverview: StoryObj = {
                 <CardTitle>Custom Colors</CardTitle>
               </CardHeader>
               <CardContent>
-                <VectorTableRaw 
+                <VectorTableRaw
                   data={vectorTableData}
-                  colors={['#A5FF11', '#fbbf24', '#3b82f6']}
+                  colors={["#A5FF11", "#fbbf24", "#3b82f6"]}
                 />
               </CardContent>
             </Card>
@@ -209,15 +271,26 @@ export const ChartsOverview: StoryObj = {
         </section>
 
         {/* TimeSeries with Table Section */}
-        <section style={{ marginBottom: '48px' }}>
-          <h2 style={{ fontSize: '24px', fontWeight: '600', color: 'white', marginBottom: '24px' }}>TimeSeries with Table</h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+        <section style={{ marginBottom: "48px" }}>
+          <h2
+            style={{
+              fontSize: "24px",
+              fontWeight: "600",
+              color: "white",
+              marginBottom: "24px",
+            }}
+          >
+            TimeSeries with Table
+          </h2>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "32px" }}
+          >
             <Card>
               <CardHeader>
                 <CardTitle>API Performance Overview</CardTitle>
               </CardHeader>
               <CardContent>
-                <TimeSeriesWithTable 
+                <TimeSeriesWithTable
                   timeSeriesData={combinedTimeSeriesData}
                   timeSeriesYLabel="req/s"
                   layout="side-by-side"
@@ -230,7 +303,7 @@ export const ChartsOverview: StoryObj = {
                 <CardTitle>Metrics with Table Below</CardTitle>
               </CardHeader>
               <CardContent>
-                <TimeSeriesWithTable 
+                <TimeSeriesWithTable
                   timeSeriesData={combinedTimeSeriesData}
                   timeSeriesYLabel="req/s"
                   layout="table-below"

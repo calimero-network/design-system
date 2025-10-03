@@ -1,19 +1,26 @@
-import React from 'react';
-import { tokens } from '@calimero-network/mero-tokens';
+import React from "react";
+import { tokens } from "@calimero-network/mero-tokens";
 
 export interface SpinnerProps {
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-  color?: 'primary' | 'secondary' | 'muted' | 'success' | 'warning' | 'error' | 'current';
-  thickness?: 'thin' | 'medium' | 'thick';
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  color?:
+    | "primary"
+    | "secondary"
+    | "muted"
+    | "success"
+    | "warning"
+    | "error"
+    | "current";
+  thickness?: "thin" | "medium" | "thick";
   className?: string;
   style?: React.CSSProperties;
 }
 
 export const Spinner: React.FC<SpinnerProps> = ({
-  size = 'md',
-  color = 'primary',
-  thickness = 'medium',
-  className = '',
+  size = "md",
+  color = "primary",
+  thickness = "medium",
+  className = "",
   style = {},
 }) => {
   const sizeMap = {
@@ -37,7 +44,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
     success: tokens.color.semantic.success.value,
     warning: tokens.color.semantic.warning.value,
     error: tokens.color.semantic.error.value,
-    current: 'currentColor',
+    current: "currentColor",
   };
 
   const spinnerSize = sizeMap[size];
@@ -46,20 +53,20 @@ export const Spinner: React.FC<SpinnerProps> = ({
   const circumference = 2 * Math.PI * radius;
 
   const spinnerStyle = {
-    display: 'inline-block',
+    display: "inline-block",
     width: spinnerSize,
     height: spinnerSize,
     ...style,
   };
 
   const circleStyle = {
-    fill: 'none',
+    fill: "none",
     stroke: colorMap[color],
     strokeWidth,
-    strokeLinecap: 'round' as const,
+    strokeLinecap: "round" as const,
     strokeDasharray: circumference,
     strokeDashoffset: circumference * 0.25,
-    animation: 'spinner-rotate 1s linear infinite',
+    animation: "spinner-rotate 1s linear infinite",
   };
 
   return (

@@ -7,11 +7,14 @@ export type IconProps = React.SVGProps<SVGSVGElement> & {
 };
 
 const CheckSquare = React.forwardRef<SVGSVGElement, IconProps>(
-  ({ size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props }, ref) => {
-    const actualStrokeWidth = absoluteStrokeWidth 
-      ? strokeWidth 
+  (
+    { size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props },
+    ref,
+  ) => {
+    const actualStrokeWidth = absoluteStrokeWidth
+      ? strokeWidth
       : (Number(size) / 24) * Number(strokeWidth);
-    
+
     return (
       <svg
         ref={ref}
@@ -27,12 +30,12 @@ const CheckSquare = React.forwardRef<SVGSVGElement, IconProps>(
         strokeLinejoin="round"
         {...props}
       >
-        <path d="M14 24L24 34L44 14"/>
-        <path d="M4 24L14 34M24 24L34 14"/>
+        <path d="M14 24L24 34L44 14" />
+        <path d="M4 24L14 34M24 24L34 14" />
       </svg>
     );
-  }
+  },
 );
 
 CheckSquare.displayName = "CheckSquare";
-export { CheckSquare }; 
+export { CheckSquare };

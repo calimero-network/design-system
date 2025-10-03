@@ -7,14 +7,23 @@ export type IconProps = React.SVGProps<SVGSVGElement> & {
 };
 
 export const IconBase = React.forwardRef<SVGSVGElement, IconProps>(
-  ({ size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, children, ...props }, ref) => {
+  (
+    {
+      size = 24,
+      strokeWidth = 1.5,
+      absoluteStrokeWidth = false,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
     // Calculate the actual stroke width based on absoluteStrokeWidth setting
     // When absoluteStrokeWidth is false, stroke width scales with size (24px = 1.5, so scale proportionally)
     // When absoluteStrokeWidth is true, stroke width remains constant
-    const actualStrokeWidth = absoluteStrokeWidth 
-      ? strokeWidth 
+    const actualStrokeWidth = absoluteStrokeWidth
+      ? strokeWidth
       : (Number(size) / 24) * Number(strokeWidth);
-    
+
     return (
       <svg
         ref={ref}
@@ -33,6 +42,6 @@ export const IconBase = React.forwardRef<SVGSVGElement, IconProps>(
         {children}
       </svg>
     );
-  }
+  },
 );
-IconBase.displayName = "IconBase"; 
+IconBase.displayName = "IconBase";

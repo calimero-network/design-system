@@ -7,11 +7,14 @@ export type IconProps = React.SVGProps<SVGSVGElement> & {
 };
 
 const Heart = React.forwardRef<SVGSVGElement, IconProps>(
-  ({ size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props }, ref) => {
-    const actualStrokeWidth = absoluteStrokeWidth 
-      ? strokeWidth 
+  (
+    { size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props },
+    ref,
+  ) => {
+    const actualStrokeWidth = absoluteStrokeWidth
+      ? strokeWidth
       : (Number(size) / 24) * Number(strokeWidth);
-    
+
     return (
       <svg
         ref={ref}
@@ -27,19 +30,19 @@ const Heart = React.forwardRef<SVGSVGElement, IconProps>(
         strokeLinejoin="round"
         {...props}
       >
-        <path d="M24 20V28"/>
-        <path d="M20 26L28 22"/>
-        <path d="M20 22L28 26"/>
-        <path d="M10 20V28"/>
-        <path d="M6 26L14 22"/>
-        <path d="M6 22L14 26"/>
-        <path d="M38 20V28"/>
-        <path d="M34 26L42 22"/>
-        <path d="M34 22L42 26"/>
+        <path d="M24 20V28" />
+        <path d="M20 26L28 22" />
+        <path d="M20 22L28 26" />
+        <path d="M10 20V28" />
+        <path d="M6 26L14 22" />
+        <path d="M6 22L14 26" />
+        <path d="M38 20V28" />
+        <path d="M34 26L42 22" />
+        <path d="M34 22L42 26" />
       </svg>
     );
-  }
+  },
 );
 
 Heart.displayName = "Heart";
-export { Heart }; 
+export { Heart };

@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Pagination } from '@calimero-network/mero-ui';
-import React from 'react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Pagination } from "@calimero-network/mero-ui";
+import React from "react";
 
 const meta: Meta<typeof Pagination> = {
-  title: 'Navigation/Pagination',
+  title: "Navigation/Pagination",
   component: Pagination,
-  parameters: { layout: 'centered' },
+  parameters: { layout: "centered" },
 };
 
 export default meta;
@@ -16,11 +16,7 @@ export const Basic: Story = {
   render: () => {
     const [page, setPage] = React.useState(1);
     return (
-      <Pagination
-        currentPage={page}
-        totalPages={10}
-        onPageChange={setPage}
-      />
+      <Pagination currentPage={page} totalPages={10} onPageChange={setPage} />
     );
   },
 };

@@ -4,7 +4,10 @@
     { "name": "removeDimensions" },
     { "name": "removeXMLNS" },
     { "name": "convertPathData" },
-    { "name": "removeAttrs", "params": { "attrs": "(id|class|data-name|fill)" } },
+    {
+      "name": "removeAttrs",
+      "params": { "attrs": "(id|class|data-name|fill)" }
+    },
     { "name": "removeUselessStrokeAndFill" }
   ]
-} 
+}

@@ -1,9 +1,11 @@
-import type { Preview } from '@storybook/react-vite';
-import { cssVariables } from '@calimero-network/mero-tokens';
+import type { Preview } from "@storybook/react-vite";
+import { cssVariables } from "@calimero-network/mero-tokens";
 
 // Inject CSS variables directly into the document
-const style = document.createElement('style');
-style.textContent = cssVariables + `
+const style = document.createElement("style");
+style.textContent =
+  cssVariables +
+  `
   /* Calimero brand theme - dark background */
   body {
     font-family: 'Power Grotesk', 'Inter', system-ui, sans-serif;
@@ -95,7 +97,7 @@ document.head.appendChild(style);
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: '^on[A-Z].*' },
+    actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -105,18 +107,27 @@ const preview: Preview = {
     backgrounds: {
       options: {
         // 👇 Calimero brand theme options - exact brand colors
-        brand: { name: 'Brand Gradient', value: 'var(--color-background-brand)' },
-        primary: { name: 'Primary', value: 'var(--color-background-primary)' },
-        secondary: { name: 'Secondary', value: 'var(--color-background-secondary)' },
-        tertiary: { name: 'Tertiary', value: 'var(--color-background-tertiary)' },
-        accent: { name: 'Brand Accent', value: 'var(--color-brand-600)' },
-        neutral: { name: 'Neutral 900', value: 'var(--color-neutral-900)' },
-        light: { name: 'Light', value: '#FFFFFF' },
+        brand: {
+          name: "Brand Gradient",
+          value: "var(--color-background-brand)",
+        },
+        primary: { name: "Primary", value: "var(--color-background-primary)" },
+        secondary: {
+          name: "Secondary",
+          value: "var(--color-background-secondary)",
+        },
+        tertiary: {
+          name: "Tertiary",
+          value: "var(--color-background-tertiary)",
+        },
+        accent: { name: "Brand Accent", value: "var(--color-brand-600)" },
+        neutral: { name: "Neutral 900", value: "var(--color-neutral-900)" },
+        light: { name: "Light", value: "#FFFFFF" },
       },
-    }
+    },
   },
   initialGlobals: {
-    backgrounds: { value: 'brand' },
+    backgrounds: { value: "brand" },
   },
 };
 

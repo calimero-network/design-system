@@ -7,11 +7,14 @@ export type IconProps = React.SVGProps<SVGSVGElement> & {
 };
 
 const Star = React.forwardRef<SVGSVGElement, IconProps>(
-  ({ size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props }, ref) => {
-    const actualStrokeWidth = absoluteStrokeWidth 
-      ? strokeWidth 
+  (
+    { size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props },
+    ref,
+  ) => {
+    const actualStrokeWidth = absoluteStrokeWidth
+      ? strokeWidth
       : (Number(size) / 24) * Number(strokeWidth);
-    
+
     return (
       <svg
         ref={ref}
@@ -27,15 +30,15 @@ const Star = React.forwardRef<SVGSVGElement, IconProps>(
         strokeLinejoin="round"
         {...props}
       >
-        <path d="M24 24V6"/>
-        <path d="M24 24L6 19"/>
-        <path d="M24 24L42 19"/>
-        <path d="M24 24L36 41"/>
-        <path d="M24 24L12 41"/>
+        <path d="M24 24V6" />
+        <path d="M24 24L6 19" />
+        <path d="M24 24L42 19" />
+        <path d="M24 24L36 41" />
+        <path d="M24 24L12 41" />
       </svg>
     );
-  }
+  },
 );
 
 Star.displayName = "Star";
-export { Star }; 
+export { Star };

@@ -1,5 +1,5 @@
-import React from 'react';
-import { tokens } from '@calimero-network/mero-tokens';
+import React from "react";
+import { tokens } from "@calimero-network/mero-tokens";
 
 export interface SearchHighlightProps {
   text: string;
@@ -15,15 +15,22 @@ export function SearchHighlight({
   searchTerm,
   highlightColor = tokens.color.brand[600].value,
   caseSensitive = false,
-  className = '',
+  className = "",
   style = {},
 }: SearchHighlightProps) {
   if (!searchTerm.trim()) {
-    return <span className={className} style={style}>{text}</span>;
+    return (
+      <span className={className} style={style}>
+        {text}
+      </span>
+    );
   }
 
-  const flags = caseSensitive ? 'g' : 'gi';
-  const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, flags);
+  const flags = caseSensitive ? "g" : "gi";
+  const regex = new RegExp(
+    `(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
+    flags,
+  );
   const parts = text.split(regex);
 
   return (
@@ -33,13 +40,17 @@ export function SearchHighlight({
         return (
           <span
             key={index}
-            style={isMatch ? {
-              backgroundColor: highlightColor + '40',
-              color: highlightColor,
-              fontWeight: 600,
-              padding: '1px 2px',
-              borderRadius: '2px',
-            } : {}}
+            style={
+              isMatch
+                ? {
+                    backgroundColor: highlightColor + "40",
+                    color: highlightColor,
+                    fontWeight: 600,
+                    padding: "1px 2px",
+                    borderRadius: "2px",
+                  }
+                : {}
+            }
           >
             {part}
           </span>

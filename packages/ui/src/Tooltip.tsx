@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { tokens } from '@calimero-network/mero-tokens';
+import React, { useState, useRef, useEffect } from "react";
+import { tokens } from "@calimero-network/mero-tokens";
 
 export interface TooltipProps {
   children: React.ReactNode;
   content: React.ReactNode;
-  placement?: 'top' | 'bottom' | 'left' | 'right';
-  trigger?: 'hover' | 'click' | 'focus';
+  placement?: "top" | "bottom" | "left" | "right";
+  trigger?: "hover" | "click" | "focus";
   delay?: number;
   disabled?: boolean;
   className?: string;
@@ -15,11 +15,11 @@ export interface TooltipProps {
 export const Tooltip: React.FC<TooltipProps> = ({
   children,
   content,
-  placement = 'top',
-  trigger = 'hover',
+  placement = "top",
+  trigger = "hover",
   delay = 200,
   disabled = false,
-  className = '',
+  className = "",
   style = {},
 }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -34,26 +34,39 @@ export const Tooltip: React.FC<TooltipProps> = ({
     const triggerRect = triggerRef.current.getBoundingClientRect();
     const tooltipRect = tooltipRef.current.getBoundingClientRect();
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    const scrollLeft =
+      window.pageXOffset || document.documentElement.scrollLeft;
 
     let top = 0;
     let left = 0;
 
     switch (placement) {
-      case 'top':
+      case "top":
         top = triggerRect.top + scrollTop - tooltipRect.height - 8;
-        left = triggerRect.left + scrollLeft + (triggerRect.width - tooltipRect.width) / 2;
+        left =
+          triggerRect.left +
+          scrollLeft +
+          (triggerRect.width - tooltipRect.width) / 2;
         break;
-      case 'bottom':
+      case "bottom":
         top = triggerRect.bottom + scrollTop + 8;
-        left = triggerRect.left + scrollLeft + (triggerRect.width - tooltipRect.width) / 2;
+        left =
+          triggerRect.left +
+          scrollLeft +
+          (triggerRect.width - tooltipRect.width) / 2;
         break;
-      case 'left':
-        top = triggerRect.top + scrollTop + (triggerRect.height - tooltipRect.height) / 2;
+      case "left":
+        top =
+          triggerRect.top +
+          scrollTop +
+          (triggerRect.height - tooltipRect.height) / 2;
         left = triggerRect.left + scrollLeft - tooltipRect.width - 8;
         break;
-      case 'right':
-        top = triggerRect.top + scrollTop + (triggerRect.height - tooltipRect.height) / 2;
+      case "right":
+        top =
+          triggerRect.top +
+          scrollTop +
+          (triggerRect.height - tooltipRect.height) / 2;
         left = triggerRect.right + scrollLeft + 8;
         break;
     }
@@ -63,11 +76,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
 
   const showTooltip = () => {
     if (disabled) return;
-    
+
     if (timeoutRef.current) {
       window.clearTimeout(timeoutRef.current);
     }
-    
+
     timeoutRef.current = window.setTimeout(() => {
       setIsVisible(true);
       setTimeout(updatePosition, 0);
@@ -82,19 +95,19 @@ export const Tooltip: React.FC<TooltipProps> = ({
   };
 
   const handleMouseEnter = () => {
-    if (trigger === 'hover') {
+    if (trigger === "hover") {
       showTooltip();
     }
   };
 
   const handleMouseLeave = () => {
-    if (trigger === 'hover') {
+    if (trigger === "hover") {
       hideTooltip();
     }
   };
 
   const handleClick = () => {
-    if (trigger === 'click') {
+    if (trigger === "click") {
       if (isVisible) {
         hideTooltip();
       } else {
@@ -104,13 +117,13 @@ export const Tooltip: React.FC<TooltipProps> = ({
   };
 
   const handleFocus = () => {
-    if (trigger === 'focus') {
+    if (trigger === "focus") {
       showTooltip();
     }
   };
 
   const handleBlur = () => {
-    if (trigger === 'focus') {
+    if (trigger === "focus") {
       hideTooltip();
     }
   };
@@ -120,13 +133,13 @@ export const Tooltip: React.FC<TooltipProps> = ({
       updatePosition();
       const handleScroll = () => updatePosition();
       const handleResize = () => updatePosition();
-      
-      window.addEventListener('scroll', handleScroll);
-      window.addEventListener('resize', handleResize);
-      
+
+      window.addEventListener("scroll", handleScroll);
+      window.addEventListener("resize", handleResize);
+
       return () => {
-        window.removeEventListener('scroll', handleScroll);
-        window.removeEventListener('resize', handleResize);
+        window.removeEventListener("scroll", handleScroll);
+        window.removeEventListener("resize", handleResize);
       };
     }
   }, [isVisible, placement]);
@@ -140,62 +153,63 @@ export const Tooltip: React.FC<TooltipProps> = ({
   }, []);
 
   const tooltipStyle: React.CSSProperties = {
-    position: 'absolute',
+    position: "absolute",
     top: position.top,
     left: position.left,
     zIndex: 1000,
-    padding: '8px 12px',
+    padding: "8px 12px",
     backgroundColor: tokens.color.neutral[900].value,
     color: tokens.color.neutral[200].value,
-    fontSize: '14px',
+    fontSize: "14px",
     borderRadius: tokens.radius.sm.value,
-    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-    whiteSpace: 'nowrap' as const,
+    boxShadow:
+      "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+    whiteSpace: "nowrap" as const,
     opacity: isVisible ? 1 : 0,
-    visibility: isVisible ? 'visible' as const : 'hidden' as const,
-    transition: 'opacity 0.2s ease, visibility 0.2s ease',
+    visibility: isVisible ? ("visible" as const) : ("hidden" as const),
+    transition: "opacity 0.2s ease, visibility 0.2s ease",
     ...style,
   };
 
   const arrowStyle = {
-    position: 'absolute' as const,
+    position: "absolute" as const,
     width: 0,
     height: 0,
-    border: '4px solid transparent',
+    border: "4px solid transparent",
   };
 
   const getArrowStyle = () => {
     switch (placement) {
-      case 'top':
+      case "top":
         return {
           ...arrowStyle,
-          top: '100%',
-          left: '50%',
-          transform: 'translateX(-50%)',
+          top: "100%",
+          left: "50%",
+          transform: "translateX(-50%)",
           borderTopColor: tokens.color.neutral[900].value,
         };
-      case 'bottom':
+      case "bottom":
         return {
           ...arrowStyle,
-          bottom: '100%',
-          left: '50%',
-          transform: 'translateX(-50%)',
+          bottom: "100%",
+          left: "50%",
+          transform: "translateX(-50%)",
           borderBottomColor: tokens.color.neutral[900].value,
         };
-      case 'left':
+      case "left":
         return {
           ...arrowStyle,
-          left: '100%',
-          top: '50%',
-          transform: 'translateY(-50%)',
+          left: "100%",
+          top: "50%",
+          transform: "translateY(-50%)",
           borderLeftColor: tokens.color.neutral[900].value,
         };
-      case 'right':
+      case "right":
         return {
           ...arrowStyle,
-          right: '100%',
-          top: '50%',
-          transform: 'translateY(-50%)',
+          right: "100%",
+          top: "50%",
+          transform: "translateY(-50%)",
           borderRightColor: tokens.color.neutral[900].value,
         };
     }
@@ -210,17 +224,13 @@ export const Tooltip: React.FC<TooltipProps> = ({
         onClick={handleClick}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        style={{ display: 'inline-block' }}
+        style={{ display: "inline-block" }}
       >
         {children}
       </div>
-      
+
       {isVisible && (
-        <div
-          ref={tooltipRef}
-          className={className}
-          style={tooltipStyle}
-        >
+        <div ref={tooltipRef} className={className} style={tooltipStyle}>
           {content}
           <div style={getArrowStyle()} />
         </div>

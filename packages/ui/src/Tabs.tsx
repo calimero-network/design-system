@@ -1,6 +1,6 @@
 import React from "react";
 
-export type TabItem = { id: string; label: string; disabled?: boolean; };
+export type TabItem = { id: string; label: string; disabled?: boolean };
 
 export type TabsProps = {
   tabs: TabItem[];
@@ -12,9 +12,19 @@ export type TabsProps = {
   children?: React.ReactNode;
 };
 
-export function Tabs({ tabs, value, defaultValue, onValueChange, className = "", style, children }: TabsProps) {
-  const isControlled = typeof value === 'string';
-  const [internal, setInternal] = React.useState<string>(defaultValue || tabs[0]?.id);
+export function Tabs({
+  tabs,
+  value,
+  defaultValue,
+  onValueChange,
+  className = "",
+  style,
+  children,
+}: TabsProps) {
+  const isControlled = typeof value === "string";
+  const [internal, setInternal] = React.useState<string>(
+    defaultValue || tabs[0]?.id,
+  );
   const active = isControlled ? (value as string) : internal;
 
   const setActive = (id: string) => {
@@ -23,11 +33,11 @@ export function Tabs({ tabs, value, defaultValue, onValueChange, className = "",
   };
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    const currentIndex = tabs.findIndex(t => t.id === active);
-    if (event.key === 'ArrowRight') {
+    const currentIndex = tabs.findIndex((t) => t.id === active);
+    if (event.key === "ArrowRight") {
       const next = (currentIndex + 1) % tabs.length;
       setActive(tabs[next].id);
-    } else if (event.key === 'ArrowLeft') {
+    } else if (event.key === "ArrowLeft") {
       const prev = (currentIndex - 1 + tabs.length) % tabs.length;
       setActive(tabs[prev].id);
     }
@@ -35,8 +45,18 @@ export function Tabs({ tabs, value, defaultValue, onValueChange, className = "",
 
   return (
     <div className={className} style={style}>
-      <div role="tablist" aria-orientation="horizontal" onKeyDown={onKeyDown} style={{ display: 'flex', gap: '8px', borderBottom: '1px solid var(--color-neutral-600)', paddingBottom: '4px' }}>
-        {tabs.map(tab => {
+      <div
+        role="tablist"
+        aria-orientation="horizontal"
+        onKeyDown={onKeyDown}
+        style={{
+          display: "flex",
+          gap: "8px",
+          borderBottom: "1px solid var(--color-neutral-600)",
+          paddingBottom: "4px",
+        }}
+      >
+        {tabs.map((tab) => {
           const isActive = tab.id === active;
           return (
             <button
@@ -47,15 +67,17 @@ export function Tabs({ tabs, value, defaultValue, onValueChange, className = "",
               disabled={tab.disabled}
               onClick={() => setActive(tab.id)}
               style={{
-                background: 'transparent',
-                border: 'none',
-                borderBottom: isActive ? '2px solid var(--color-brand-600)' : '2px solid transparent',
-                color: isActive ? '#FFFFFF' : 'var(--color-neutral-300)',
-                padding: '8px 12px',
-                fontFamily: 'var(--font-body)',
+                background: "transparent",
+                border: "none",
+                borderBottom: isActive
+                  ? "2px solid var(--color-brand-600)"
+                  : "2px solid transparent",
+                color: isActive ? "#FFFFFF" : "var(--color-neutral-300)",
+                padding: "8px 12px",
+                fontFamily: "var(--font-body)",
                 fontWeight: 600,
-                fontSize: '13px',
-                cursor: tab.disabled ? 'not-allowed' : 'pointer'
+                fontSize: "13px",
+                cursor: tab.disabled ? "not-allowed" : "pointer",
               }}
             >
               {tab.label}
@@ -76,7 +98,13 @@ export type TabPanelProps = {
   children?: React.ReactNode;
 };
 
-export function TabPanel({ when, active, className = "", style, children }: TabPanelProps) {
+export function TabPanel({
+  when,
+  active,
+  className = "",
+  style,
+  children,
+}: TabPanelProps) {
   const isActive = active === when;
   return (
     <div
@@ -84,7 +112,7 @@ export function TabPanel({ when, active, className = "", style, children }: TabP
       id={`panel-${when}`}
       hidden={!isActive}
       className={className}
-      style={{ paddingTop: '12px', ...style }}
+      style={{ paddingTop: "12px", ...style }}
     >
       {isActive ? children : null}
     </div>

@@ -7,11 +7,14 @@ export type IconProps = React.SVGProps<SVGSVGElement> & {
 };
 
 const Download = React.forwardRef<SVGSVGElement, IconProps>(
-  ({ size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props }, ref) => {
-    const actualStrokeWidth = absoluteStrokeWidth 
-      ? strokeWidth 
+  (
+    { size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props },
+    ref,
+  ) => {
+    const actualStrokeWidth = absoluteStrokeWidth
+      ? strokeWidth
       : (Number(size) / 24) * Number(strokeWidth);
-    
+
     return (
       <svg
         ref={ref}
@@ -27,14 +30,14 @@ const Download = React.forwardRef<SVGSVGElement, IconProps>(
         strokeLinejoin="round"
         {...props}
       >
-        <path d="M8 40H40"/>
-        <path d="M24 28V8"/>
-        <path d="M24 28L32 20"/>
-        <path d="M24 28L16 20"/>
+        <path d="M8 40H40" />
+        <path d="M24 28V8" />
+        <path d="M24 28L32 20" />
+        <path d="M24 28L16 20" />
       </svg>
     );
-  }
+  },
 );
 
 Download.displayName = "Download";
-export { Download }; 
+export { Download };

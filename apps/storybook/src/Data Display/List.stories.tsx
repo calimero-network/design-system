@@ -10,13 +10,13 @@ const withTokens = (Story: any) => (
 );
 
 const meta: Meta<typeof List> = {
-  title: 'Data Display/List',
+  title: "Data Display/List",
   component: List,
   decorators: [withTokens],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs']
+  tags: ["autodocs"],
 };
 
 export default meta;
@@ -24,9 +24,9 @@ export default meta;
 type Story = StoryObj<typeof List>;
 
 const items = [
-  { id: 1, content: 'First item', hint: 'Hint A' },
-  { id: 2, content: 'Second item', hint: 'Hint B' },
-  { id: 3, content: 'Third item', hint: 'Hint C' },
+  { id: 1, content: "First item", hint: "Hint A" },
+  { id: 2, content: "Second item", hint: "Hint B" },
+  { id: 3, content: "Third item", hint: "Hint C" },
 ];
 
 export const Solid: Story = {
@@ -34,7 +34,7 @@ export const Solid: Story = {
     <div style={{ width: 360 }}>
       <List items={items} variant="solid" />
     </div>
-  )
+  ),
 };
 
 export const GhostWithDividers: Story = {
@@ -42,7 +42,5 @@ export const GhostWithDividers: Story = {
     <div style={{ width: 360 }}>
       <List items={items} variant="ghost" divider />
     </div>
-  )
+  ),
 };
-
-

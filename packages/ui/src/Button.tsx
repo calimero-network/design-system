@@ -6,9 +6,16 @@ type ButtonProps = React.PropsWithChildren<{
   className?: string;
   style?: React.CSSProperties;
   type?: "button" | "submit" | "reset";
-  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
-  'aria-label'?: string;
-  'aria-current'?: 'page' | 'step' | 'location' | 'date' | 'time' | 'true' | 'false';
+  variant?: "primary" | "secondary" | "success" | "warning" | "error" | "info";
+  "aria-label"?: string;
+  "aria-current"?:
+    | "page"
+    | "step"
+    | "location"
+    | "date"
+    | "time"
+    | "true"
+    | "false";
   title?: string;
 }>;
 
@@ -19,103 +26,104 @@ export function Button({
   className = "",
   style,
   type = "button",
-  variant = 'primary',
-  'aria-label': ariaLabel,
-  'aria-current': ariaCurrent,
+  variant = "primary",
+  "aria-label": ariaLabel,
+  "aria-current": ariaCurrent,
   title,
 }: ButtonProps) {
   const baseStyles: React.CSSProperties = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '8px',
-    height: '40px',
-    padding: '0 16px',
-    borderRadius: '12px',
-    border: '1px solid transparent',
-    fontFamily: 'var(--font-body)',
-    fontSize: '14px',
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "8px",
+    height: "40px",
+    padding: "0 16px",
+    borderRadius: "12px",
+    border: "1px solid transparent",
+    fontFamily: "var(--font-body)",
+    fontSize: "14px",
     fontWeight: 600,
-    cursor: disabled ? 'not-allowed' : 'pointer',
-    userSelect: 'none',
-    transition: 'background-color 120ms ease, border-color 120ms ease, transform 60ms ease',
-    color: '#000000', // Pure black for better contrast with bright green
-    backgroundColor: 'var(--color-brand-600)',
+    cursor: disabled ? "not-allowed" : "pointer",
+    userSelect: "none",
+    transition:
+      "background-color 120ms ease, border-color 120ms ease, transform 60ms ease",
+    color: "#000000", // Pure black for better contrast with bright green
+    backgroundColor: "var(--color-brand-600)",
   };
 
   const [isActive, setIsActive] = React.useState(false);
   const [isHover, setIsHover] = React.useState(false);
 
   // Determine palette based on variant
-  const isPrimary = variant === 'primary';
-  const isSecondary = variant === 'secondary';
+  const isPrimary = variant === "primary";
+  const isSecondary = variant === "secondary";
   const palette = (() => {
     switch (variant) {
-      case 'secondary':
+      case "secondary":
         return {
-          base: '#1A1A1A',
-          hover: '#2A2A2A',
-          active: '#111111',
-          disabled: '#0F0F0F',
-          text: '#FFFFFF',
-          border: '#404040',
-          borderHover: '#505050',
-          borderActive: '#5A5A5A',
+          base: "#1A1A1A",
+          hover: "#2A2A2A",
+          active: "#111111",
+          disabled: "#0F0F0F",
+          text: "#FFFFFF",
+          border: "#404040",
+          borderHover: "#505050",
+          borderActive: "#5A5A5A",
         };
-      case 'success':
+      case "success":
         return {
-          base: 'var(--color-semantic-success)',
-          hover: 'var(--color-semantic-success)',
-          active: 'var(--color-semantic-success)',
-          disabled: 'var(--color-semantic-success)',
-          text: '#FFFFFF', // White text for better contrast with green
-          border: 'transparent',
-          borderHover: 'transparent',
-          borderActive: 'transparent',
+          base: "var(--color-semantic-success)",
+          hover: "var(--color-semantic-success)",
+          active: "var(--color-semantic-success)",
+          disabled: "var(--color-semantic-success)",
+          text: "#FFFFFF", // White text for better contrast with green
+          border: "transparent",
+          borderHover: "transparent",
+          borderActive: "transparent",
         };
-      case 'warning':
+      case "warning":
         return {
-          base: 'var(--color-semantic-warning)',
-          hover: 'var(--color-semantic-warning)',
-          active: 'var(--color-semantic-warning)',
-          disabled: 'var(--color-semantic-warning)',
-          text: '#000000', // Black text for better contrast with orange
-          border: 'transparent',
-          borderHover: 'transparent',
-          borderActive: 'transparent',
+          base: "var(--color-semantic-warning)",
+          hover: "var(--color-semantic-warning)",
+          active: "var(--color-semantic-warning)",
+          disabled: "var(--color-semantic-warning)",
+          text: "#000000", // Black text for better contrast with orange
+          border: "transparent",
+          borderHover: "transparent",
+          borderActive: "transparent",
         };
-      case 'error':
+      case "error":
         return {
-          base: 'var(--color-semantic-error)',
-          hover: 'var(--color-semantic-error)',
-          active: 'var(--color-semantic-error)',
-          disabled: 'var(--color-semantic-error)',
-          text: '#FFFFFF', // White text for better contrast with red
-          border: 'transparent',
-          borderHover: 'transparent',
-          borderActive: 'transparent',
+          base: "var(--color-semantic-error)",
+          hover: "var(--color-semantic-error)",
+          active: "var(--color-semantic-error)",
+          disabled: "var(--color-semantic-error)",
+          text: "#FFFFFF", // White text for better contrast with red
+          border: "transparent",
+          borderHover: "transparent",
+          borderActive: "transparent",
         };
-      case 'info':
+      case "info":
         return {
-          base: 'var(--color-semantic-info)',
-          hover: 'var(--color-semantic-info)',
-          active: 'var(--color-semantic-info)',
-          disabled: 'var(--color-semantic-info)',
-          text: '#FFFFFF', // White text for better contrast with blue
-          border: 'transparent',
-          borderHover: 'transparent',
-          borderActive: 'transparent',
+          base: "var(--color-semantic-info)",
+          hover: "var(--color-semantic-info)",
+          active: "var(--color-semantic-info)",
+          disabled: "var(--color-semantic-info)",
+          text: "#FFFFFF", // White text for better contrast with blue
+          border: "transparent",
+          borderHover: "transparent",
+          borderActive: "transparent",
         };
       default:
         return {
-          base: 'var(--color-brand-600)',
-          hover: 'var(--color-brand-100)',
-          active: 'var(--color-brand-800)',
-          disabled: 'var(--color-brand-900)',
-          text: '#000000', // Pure black for better contrast with bright green
-          border: 'transparent',
-          borderHover: 'transparent',
-          borderActive: 'transparent',
+          base: "var(--color-brand-600)",
+          hover: "var(--color-brand-100)",
+          active: "var(--color-brand-800)",
+          disabled: "var(--color-brand-900)",
+          text: "#000000", // Pure black for better contrast with bright green
+          border: "transparent",
+          borderHover: "transparent",
+          borderActive: "transparent",
         };
     }
   })();
@@ -142,9 +150,18 @@ export function Button({
       onClick={onClick}
       onMouseDown={() => setIsActive(true)}
       onMouseUp={() => setIsActive(false)}
-      onMouseLeave={() => { setIsActive(false); setIsHover(false); }}
+      onMouseLeave={() => {
+        setIsActive(false);
+        setIsHover(false);
+      }}
       onMouseEnter={() => setIsHover(true)}
-      style={{ ...baseStyles, backgroundColor: dynamicBackground, borderColor: isSecondary ? dynamicBorder : 'transparent', color: isPrimary ? baseStyles.color as string : dynamicTextColor, ...style }}
+      style={{
+        ...baseStyles,
+        backgroundColor: dynamicBackground,
+        borderColor: isSecondary ? dynamicBorder : "transparent",
+        color: isPrimary ? (baseStyles.color as string) : dynamicTextColor,
+        ...style,
+      }}
       className={className}
       aria-label={ariaLabel}
       aria-current={ariaCurrent}
@@ -154,5 +171,3 @@ export function Button({
     </button>
   );
 }
-
-

@@ -22,27 +22,28 @@ export function Navbar({
   variant = "default",
   size = "md",
   fixed = false,
-  position = "top"
+  position = "top",
 }: NavbarProps) {
   const height = size === "sm" ? "48px" : size === "lg" ? "72px" : "60px";
-  const padding = size === "sm" ? "0 16px" : size === "lg" ? "0 32px" : "0 24px";
-  
+  const padding =
+    size === "sm" ? "0 16px" : size === "lg" ? "0 32px" : "0 24px";
+
   const baseStyles: React.CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
     height,
     padding,
-    backgroundColor: '#1A1A1A',
-    borderBottom: variant === "minimal" ? 'none' : '1px solid #404040',
-    boxShadow: variant === "elevated" ? '0 2px 8px rgba(0, 0, 0, 0.3)' : 'none',
-    position: fixed ? 'fixed' : 'relative',
+    backgroundColor: "#1A1A1A",
+    borderBottom: variant === "minimal" ? "none" : "1px solid #404040",
+    boxShadow: variant === "elevated" ? "0 2px 8px rgba(0, 0, 0, 0.3)" : "none",
+    position: fixed ? "fixed" : "relative",
     top: fixed && position === "top" ? 0 : undefined,
     bottom: fixed && position === "bottom" ? 0 : undefined,
     left: fixed ? 0 : undefined,
     right: fixed ? 0 : undefined,
-    zIndex: fixed ? 1000 : 'auto'
+    zIndex: fixed ? 1000 : "auto",
   };
 
   return (
@@ -50,7 +51,7 @@ export function Navbar({
       className={className}
       style={{
         ...baseStyles,
-        ...style
+        ...style,
       }}
     >
       {children}
@@ -77,25 +78,27 @@ export function NavbarBrand({
   text,
   onClick,
   className = "",
-  style
+  style,
 }: NavbarBrandProps) {
   return (
     <div
       className={className}
       onClick={onClick}
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '12px',
-        cursor: onClick ? 'pointer' : 'default',
-        color: 'white',
-        fontSize: '18px',
-        fontWeight: '600',
-        textDecoration: 'none',
-        ...style
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
+        cursor: onClick ? "pointer" : "default",
+        color: "white",
+        fontSize: "18px",
+        fontWeight: "600",
+        textDecoration: "none",
+        ...style,
       }}
     >
-      {logo && <div style={{ display: 'flex', alignItems: 'center' }}>{logo}</div>}
+      {logo && (
+        <div style={{ display: "flex", alignItems: "center" }}>{logo}</div>
+      )}
       {text && <span>{text}</span>}
       {children}
     </div>
@@ -124,7 +127,7 @@ export function NavbarItem({
   className = "",
   style,
   icon,
-  disabled = false
+  disabled = false,
 }: NavbarItemProps) {
   const handleClick = () => {
     if (!disabled && onClick) {
@@ -137,35 +140,33 @@ export function NavbarItem({
       className={className}
       onClick={handleClick}
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        padding: '8px 16px',
-        borderRadius: '6px',
-        cursor: disabled ? 'not-allowed' : 'pointer',
-        color: disabled ? '#6B7280' : active ? '#FFFFFF' : '#E5E7EB',
-        backgroundColor: active ? '#374151' : 'transparent',
-        fontSize: '14px',
-        fontWeight: active ? '500' : '400',
-        textDecoration: 'none',
-        transition: 'all 0.15s ease',
-        ...style
+        display: "flex",
+        alignItems: "center",
+        gap: "8px",
+        padding: "8px 16px",
+        borderRadius: "6px",
+        cursor: disabled ? "not-allowed" : "pointer",
+        color: disabled ? "#6B7280" : active ? "#FFFFFF" : "#E5E7EB",
+        backgroundColor: active ? "#374151" : "transparent",
+        fontSize: "14px",
+        fontWeight: active ? "500" : "400",
+        textDecoration: "none",
+        transition: "all 0.15s ease",
+        ...style,
       }}
       onMouseEnter={(e) => {
         if (!disabled && !active) {
-          e.currentTarget.style.backgroundColor = '#374151';
+          e.currentTarget.style.backgroundColor = "#374151";
         }
       }}
       onMouseLeave={(e) => {
         if (!disabled && !active) {
-          e.currentTarget.style.backgroundColor = 'transparent';
+          e.currentTarget.style.backgroundColor = "transparent";
         }
       }}
     >
       {icon && (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          {icon}
-        </div>
+        <div style={{ display: "flex", alignItems: "center" }}>{icon}</div>
       )}
       {children}
     </div>
@@ -185,19 +186,24 @@ export function NavbarMenu({
   children,
   align = "left",
   className = "",
-  style
+  style,
 }: NavbarMenuProps) {
-  const justifyContent = align === "left" ? "flex-start" : align === "center" ? "center" : "flex-end";
+  const justifyContent =
+    align === "left"
+      ? "flex-start"
+      : align === "center"
+        ? "center"
+        : "flex-end";
 
   return (
     <div
       className={className}
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
+        display: "flex",
+        alignItems: "center",
+        gap: "8px",
         justifyContent,
-        ...style
+        ...style,
       }}
     >
       {children}
@@ -220,54 +226,54 @@ export function NavbarToggle({
   isOpen = false,
   onToggle,
   className = "",
-  style
+  style,
 }: NavbarToggleProps) {
   return (
     <button
       className={className}
       onClick={onToggle}
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '32px',
-        height: '32px',
-        background: 'transparent',
-        border: 'none',
-        cursor: 'pointer',
-        padding: '4px',
-        ...style
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "32px",
+        height: "32px",
+        background: "transparent",
+        border: "none",
+        cursor: "pointer",
+        padding: "4px",
+        ...style,
       }}
     >
       <div
         style={{
-          width: '20px',
-          height: '2px',
-          backgroundColor: 'white',
-          margin: '2px 0',
-          transition: 'all 0.3s ease',
-          transform: isOpen ? 'rotate(45deg) translate(5px, 5px)' : 'none'
+          width: "20px",
+          height: "2px",
+          backgroundColor: "white",
+          margin: "2px 0",
+          transition: "all 0.3s ease",
+          transform: isOpen ? "rotate(45deg) translate(5px, 5px)" : "none",
         }}
       />
       <div
         style={{
-          width: '20px',
-          height: '2px',
-          backgroundColor: 'white',
-          margin: '2px 0',
-          transition: 'all 0.3s ease',
-          opacity: isOpen ? 0 : 1
+          width: "20px",
+          height: "2px",
+          backgroundColor: "white",
+          margin: "2px 0",
+          transition: "all 0.3s ease",
+          opacity: isOpen ? 0 : 1,
         }}
       />
       <div
         style={{
-          width: '20px',
-          height: '2px',
-          backgroundColor: 'white',
-          margin: '2px 0',
-          transition: 'all 0.3s ease',
-          transform: isOpen ? 'rotate(-45deg) translate(7px, -6px)' : 'none'
+          width: "20px",
+          height: "2px",
+          backgroundColor: "white",
+          margin: "2px 0",
+          transition: "all 0.3s ease",
+          transform: isOpen ? "rotate(-45deg) translate(7px, -6px)" : "none",
         }}
       />
     </button>

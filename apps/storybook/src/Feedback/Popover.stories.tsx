@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Popover, Button, Text, Box, Stack } from '@calimero-network/mero-ui';
-import React from 'react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Popover, Button, Text, Box, Stack } from "@calimero-network/mero-ui";
+import React from "react";
 
 const meta: Meta<typeof Popover> = {
-  title: 'Feedback/Popover',
+  title: "Feedback/Popover",
   component: Popover,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 };
 
 export default meta;
@@ -32,7 +32,7 @@ export const WithRichContent: Story = {
   render: () => (
     <Popover
       content={
-        <Box padding="lg" style={{ minWidth: '200px' }}>
+        <Box padding="lg" style={{ minWidth: "200px" }}>
           <Stack gap="sm">
             <Text weight="bold">Settings</Text>
             <Text size="sm">Configure your preferences</Text>
@@ -50,7 +50,7 @@ export const WithRichContent: Story = {
 
 export const DifferentPlacements: Story = {
   render: () => (
-    <Box style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+    <Box style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
       <Popover
         placement="top"
         content={
@@ -61,7 +61,7 @@ export const DifferentPlacements: Story = {
       >
         <Button>Top</Button>
       </Popover>
-      
+
       <Popover
         placement="bottom"
         content={
@@ -72,7 +72,7 @@ export const DifferentPlacements: Story = {
       >
         <Button>Bottom</Button>
       </Popover>
-      
+
       <Popover
         placement="left"
         content={
@@ -83,7 +83,7 @@ export const DifferentPlacements: Story = {
       >
         <Button>Left</Button>
       </Popover>
-      
+
       <Popover
         placement="right"
         content={

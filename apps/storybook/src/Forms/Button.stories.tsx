@@ -10,13 +10,13 @@ const withTokens = (Story: any) => (
 );
 
 const meta: Meta<typeof Button> = {
-  title: 'Forms/Button',
+  title: "Forms/Button",
   component: Button,
   decorators: [withTokens],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs']
+  tags: ["autodocs"],
 };
 
 export default meta;
@@ -25,32 +25,32 @@ type Story = StoryObj<typeof Button>;
 
 export const Primary: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: 16 }}>
+    <div style={{ display: "flex", gap: 16 }}>
       <Button>Click me</Button>
       <Button disabled>Disabled</Button>
     </div>
-  )
+  ),
 };
 
 export const States: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <div style={{ display: 'flex', gap: 16 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div style={{ display: "flex", gap: 16 }}>
         <Button>Primary</Button>
         <Button disabled>Primary Disabled</Button>
       </div>
-      <div style={{ display: 'flex', gap: 16 }}>
+      <div style={{ display: "flex", gap: 16 }}>
         <Button variant="secondary">Secondary</Button>
-        <Button variant="secondary" disabled>Secondary Disabled</Button>
+        <Button variant="secondary" disabled>
+          Secondary Disabled
+        </Button>
       </div>
-      <div style={{ display: 'flex', gap: 16 }}>
+      <div style={{ display: "flex", gap: 16 }}>
         <Button variant="success">Success</Button>
         <Button variant="warning">Warning</Button>
         <Button variant="error">Error</Button>
         <Button variant="info">Info</Button>
       </div>
     </div>
-  )
+  ),
 };
-
-

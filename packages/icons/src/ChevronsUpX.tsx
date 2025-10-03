@@ -7,11 +7,14 @@ export type IconProps = React.SVGProps<SVGSVGElement> & {
 };
 
 const ChevronsUpX = React.forwardRef<SVGSVGElement, IconProps>(
-  ({ size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props }, ref) => {
-    const actualStrokeWidth = absoluteStrokeWidth 
-      ? strokeWidth 
+  (
+    { size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props },
+    ref,
+  ) => {
+    const actualStrokeWidth = absoluteStrokeWidth
+      ? strokeWidth
       : (Number(size) / 24) * Number(strokeWidth);
-    
+
     return (
       <svg
         ref={ref}
@@ -27,13 +30,13 @@ const ChevronsUpX = React.forwardRef<SVGSVGElement, IconProps>(
         strokeLinejoin="round"
         {...props}
       >
-        <path d="M10 10V40H16"/>
-        <path d="M32 8H38V30M38 38V40H32"/>
-        <path d="M6 6L42 42"/>
+        <path d="M10 10V40H16" />
+        <path d="M32 8H38V30M38 38V40H32" />
+        <path d="M6 6L42 42" />
       </svg>
     );
-  }
+  },
 );
 
 ChevronsUpX.displayName = "ChevronsUpX";
-export { ChevronsUpX }; 
+export { ChevronsUpX };

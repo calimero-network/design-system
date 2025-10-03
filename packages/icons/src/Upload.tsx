@@ -7,11 +7,14 @@ export type IconProps = React.SVGProps<SVGSVGElement> & {
 };
 
 const Upload = React.forwardRef<SVGSVGElement, IconProps>(
-  ({ size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props }, ref) => {
-    const actualStrokeWidth = absoluteStrokeWidth 
-      ? strokeWidth 
+  (
+    { size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props },
+    ref,
+  ) => {
+    const actualStrokeWidth = absoluteStrokeWidth
+      ? strokeWidth
       : (Number(size) / 24) * Number(strokeWidth);
-    
+
     return (
       <svg
         ref={ref}
@@ -27,14 +30,14 @@ const Upload = React.forwardRef<SVGSVGElement, IconProps>(
         strokeLinejoin="round"
         {...props}
       >
-        <path d="M24 20V40"/>
-        <path d="M24 20L32 28"/>
-        <path d="M24 20L16 28"/>
-        <path d="M8 8H40"/>
+        <path d="M24 20V40" />
+        <path d="M24 20L32 28" />
+        <path d="M24 20L16 28" />
+        <path d="M8 8H40" />
       </svg>
     );
-  }
+  },
 );
 
 Upload.displayName = "Upload";
-export { Upload }; 
+export { Upload };

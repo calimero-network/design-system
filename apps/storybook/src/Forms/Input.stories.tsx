@@ -10,13 +10,13 @@ const withTokens = (Story: any) => (
 );
 
 const meta: Meta<typeof Input> = {
-  title: 'Forms/Input',
+  title: "Forms/Input",
   component: Input,
   decorators: [withTokens],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs']
+  tags: ["autodocs"],
 };
 
 export default meta;
@@ -28,16 +28,16 @@ export const Basic: Story = {
     <div style={{ width: 320 }}>
       <Input placeholder="Type something..." />
     </div>
-  )
+  ),
 };
 
 export const States: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: 320 }}>
+    <div
+      style={{ display: "flex", flexDirection: "column", gap: 16, width: 320 }}
+    >
       <Input placeholder="Default" />
       <Input placeholder="Disabled" disabled />
     </div>
-  )
+  ),
 };
-
-

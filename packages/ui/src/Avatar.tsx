@@ -1,12 +1,12 @@
-import React from 'react';
-import { tokens } from '@calimero-network/mero-tokens';
+import React from "react";
+import { tokens } from "@calimero-network/mero-tokens";
 
 export interface AvatarProps {
   src?: string;
   alt?: string;
   name?: string;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-  shape?: 'circle' | 'square';
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+  shape?: "circle" | "square";
   fallback?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
@@ -16,10 +16,10 @@ export const Avatar: React.FC<AvatarProps> = ({
   src,
   alt,
   name,
-  size = 'md',
-  shape = 'circle',
+  size = "md",
+  shape = "circle",
   fallback,
-  className = '',
+  className = "",
   style = {},
 }) => {
   const sizeMap = {
@@ -28,7 +28,7 @@ export const Avatar: React.FC<AvatarProps> = ({
     md: 40,
     lg: 48,
     xl: 64,
-    '2xl': 80,
+    "2xl": 80,
   };
 
   const avatarSize = sizeMap[size];
@@ -36,34 +36,34 @@ export const Avatar: React.FC<AvatarProps> = ({
   const baseStyle = {
     width: avatarSize,
     height: avatarSize,
-    borderRadius: shape === 'circle' ? '50%' : tokens.radius.md.value,
+    borderRadius: shape === "circle" ? "50%" : tokens.radius.md.value,
     backgroundColor: tokens.color.neutral[600].value,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
     flexShrink: 0,
     ...style,
   };
 
   const imageStyle = {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover' as const,
+    width: "100%",
+    height: "100%",
+    objectFit: "cover" as const,
   };
 
   const fallbackStyle = {
     fontSize: avatarSize * 0.4,
     fontWeight: 600,
     color: tokens.color.neutral[200].value,
-    textTransform: 'uppercase' as const,
+    textTransform: "uppercase" as const,
   };
 
   const getInitials = (name: string) => {
     return name
-      .split(' ')
-      .map(word => word.charAt(0))
-      .join('')
+      .split(" ")
+      .map((word) => word.charAt(0))
+      .join("")
       .slice(0, 2);
   };
 
@@ -71,15 +71,11 @@ export const Avatar: React.FC<AvatarProps> = ({
     if (fallback) {
       return fallback;
     }
-    
+
     if (name) {
-      return (
-        <span style={fallbackStyle}>
-          {getInitials(name)}
-        </span>
-      );
+      return <span style={fallbackStyle}>{getInitials(name)}</span>;
     }
-    
+
     return (
       <svg
         width={avatarSize * 0.5}
@@ -101,11 +97,11 @@ export const Avatar: React.FC<AvatarProps> = ({
       {src ? (
         <img
           src={src}
-          alt={alt || name || 'Avatar'}
+          alt={alt || name || "Avatar"}
           style={imageStyle}
           onError={(e) => {
             // Hide image on error and show fallback
-            e.currentTarget.style.display = 'none';
+            e.currentTarget.style.display = "none";
           }}
         />
       ) : null}

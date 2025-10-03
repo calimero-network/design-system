@@ -19,22 +19,28 @@ pnpm add @calimero-network/mero-ui
 **Important**: You must import the CSS variables for proper styling. Choose one of the following methods:
 
 #### Option A: Import CSS file directly
+
 ```css
 /* In your main CSS file */
-@import '@calimero-network/mero-ui/styles.css';
+@import "@calimero-network/mero-ui/styles.css";
 ```
 
 #### Option B: Import in HTML
+
 ```html
-<link rel="stylesheet" href="node_modules/@calimero-network/mero-ui/dist/styles.css">
+<link
+  rel="stylesheet"
+  href="node_modules/@calimero-network/mero-ui/dist/styles.css"
+/>
 ```
 
 #### Option C: Programmatic injection
+
 ```javascript
-import { cssVariables } from '@calimero-network/mero-ui';
+import { cssVariables } from "@calimero-network/mero-ui";
 
 // Inject CSS variables into your document
-const style = document.createElement('style');
+const style = document.createElement("style");
 style.textContent = cssVariables;
 document.head.appendChild(style);
 ```
@@ -42,14 +48,16 @@ document.head.appendChild(style);
 ### 2. Import and use components
 
 ```jsx
-import React from 'react';
-import { Button, Card, Text, Input } from '@calimero-network/mero-ui';
+import React from "react";
+import { Button, Card, Text, Input } from "@calimero-network/mero-ui";
 
 function App() {
   return (
     <div>
       <Card>
-        <Text size="lg" weight="bold">Welcome to Calimero UI</Text>
+        <Text size="lg" weight="bold">
+          Welcome to Calimero UI
+        </Text>
         <Input placeholder="Enter your name" />
         <Button variant="primary">Get Started</Button>
       </Card>
@@ -63,6 +71,7 @@ export default App;
 ## Available Components
 
 ### Layout & Structure
+
 - **Box** - Flexible container component
 - **Flex** - Flexbox container
 - **Stack** - Vertical/horizontal stack layout
@@ -74,6 +83,7 @@ export default App;
 - **AuthLayout** - Authentication page layout
 
 ### Navigation
+
 - **Navbar** - Top navigation bar
 - **Sidebar** - Side navigation panel
 - **Breadcrumbs** - Navigation breadcrumbs
@@ -83,6 +93,7 @@ export default App;
 - **CommandPalette** - Command search interface
 
 ### Forms & Input
+
 - **Input** - Text input field
 - **Textarea** - Multi-line text input
 - **NumberInput** - Numeric input with controls
@@ -100,6 +111,7 @@ export default App;
 - **BuildWizard** - Multi-step form wizard
 
 ### Data Display
+
 - **Table** - Data tables with sorting and filtering
 - **DataTable** - Advanced data table
 - **EditableTable** - Editable data table
@@ -115,6 +127,7 @@ export default App;
 - **Skeleton** - Loading placeholders
 
 ### Feedback & Status
+
 - **Alert** - Alert messages
 - **Banner** - Banner notifications
 - **Toast** - Toast notifications
@@ -128,6 +141,7 @@ export default App;
 - **Tooltip** - Tooltip overlays
 
 ### Media & Content
+
 - **Avatar** - User avatar display
 - **Image** - Image component
 - **Icon** - Icon component
@@ -135,12 +149,14 @@ export default App;
 - **FilePreview** - File preview component
 
 ### Typography
+
 - **Text** - Text component with variants
 - **Heading** - Heading components
 - **Code** - Code display
 - **Link** - Link component
 
 ### Utility
+
 - **Tag** - Tag component
 - **CopyToClipboard** - Copy to clipboard utility
 - **SearchHighlight** - Search result highlighting
@@ -150,53 +166,57 @@ export default App;
 The package includes comprehensive design tokens for consistent styling:
 
 ### Colors
+
 ```javascript
-import { colors } from '@calimero-network/mero-ui';
+import { colors } from "@calimero-network/mero-ui";
 
 // Brand colors
-colors.brand[600] // Primary brand color
-colors.brand[700] // Darker brand color
+colors.brand[600]; // Primary brand color
+colors.brand[700]; // Darker brand color
 
 // Neutral colors
-colors.neutral[200] // Light gray
-colors.neutral[800] // Dark gray
+colors.neutral[200]; // Light gray
+colors.neutral[800]; // Dark gray
 
 // Semantic colors
-colors.semantic.success // Success green
-colors.semantic.error   // Error red
-colors.semantic.warning // Warning orange
-colors.semantic.info    // Info blue
+colors.semantic.success; // Success green
+colors.semantic.error; // Error red
+colors.semantic.warning; // Warning orange
+colors.semantic.info; // Info blue
 
 // Background colors
-colors.background.primary   // Primary background
-colors.background.secondary // Secondary background
+colors.background.primary; // Primary background
+colors.background.secondary; // Secondary background
 ```
 
 ### Spacing
-```javascript
-import { spacing } from '@calimero-network/mero-ui';
 
-spacing[2] // 0.5rem
-spacing[4] // 1rem
-spacing[6] // 1.5rem
+```javascript
+import { spacing } from "@calimero-network/mero-ui";
+
+spacing[2]; // 0.5rem
+spacing[4]; // 1rem
+spacing[6]; // 1.5rem
 ```
 
 ### Typography
-```javascript
-import { fonts } from '@calimero-network/mero-ui';
 
-fonts.body     // Main body font
-fonts.heading  // Heading font
-fonts.secondary // Secondary font
+```javascript
+import { fonts } from "@calimero-network/mero-ui";
+
+fonts.body; // Main body font
+fonts.heading; // Heading font
+fonts.secondary; // Secondary font
 ```
 
 ### Border Radius
-```javascript
-import { radius } from '@calimero-network/mero-ui';
 
-radius.sm // 8px
-radius.md // 12px
-radius.lg // 16px
+```javascript
+import { radius } from "@calimero-network/mero-ui";
+
+radius.sm; // 8px
+radius.md; // 12px
+radius.lg; // 16px
 ```
 
 ## CSS Variables
@@ -217,18 +237,22 @@ All design tokens are available as CSS variables:
 ### Available CSS Variables
 
 #### Colors
+
 - `--color-neutral-200` to `--color-neutral-900`
 - `--color-brand-100`, `--color-brand-600` to `--color-brand-900`
 - `--color-background-primary`, `--color-background-secondary`, `--color-background-tertiary`
 - `--color-semantic-success`, `--color-semantic-warning`, `--color-semantic-error`, `--color-semantic-info`
 
 #### Spacing
+
 - `--space-2`, `--space-3`, `--space-4`, `--space-6`
 
 #### Border Radius
+
 - `--radius-sm`, `--radius-md`, `--radius-lg`
 
 #### Fonts
+
 - `--font-body`, `--font-heading`, `--font-secondary`
 
 ## Theming
@@ -250,6 +274,7 @@ const MyButton: React.FC<ButtonProps> = ({ variant, children, ...props }) => {
 ## Accessibility
 
 All components are built with accessibility in mind, including:
+
 - Proper ARIA attributes
 - Keyboard navigation support
 - Screen reader compatibility

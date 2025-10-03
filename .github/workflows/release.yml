@@ -3,11 +3,11 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Dry run (no actual publish)'
+        description: "Dry run (no actual publish)"
         required: false
         default: false
         type: boolean
@@ -29,9 +29,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'pnpm'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "20"
+          cache: "pnpm"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -80,13 +80,13 @@ jobs:
           release_name: Release ${{ github.ref }}
           body: |
             ## Calimero Design System Release
-            
+
             This release includes:
             - @calimero-network/mero-icons: Icon components
             - @calimero-network/mero-ui: UI primitives with enhanced tooltips
             - @calimero-network/mero-charts: Chart components (Gauge, TimeSeries, VectorTable, TimeSeriesWithTable)
             - @calimero-network/mero-tokens: Design tokens
-            
+
             ### New Features:
             - Complete charts package with fillable areas
             - Custom tooltip component for Card

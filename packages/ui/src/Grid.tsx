@@ -49,5 +49,3 @@ export function Grid({
 }
 
 export default Grid;
-
-

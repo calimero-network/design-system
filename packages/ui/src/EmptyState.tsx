@@ -1,17 +1,17 @@
-import React from 'react';
-import { tokens } from '@calimero-network/mero-tokens';
-import { Icon } from './Icon';
-import { Text, Heading } from './Typography';
-import { Button } from './Button';
+import React from "react";
+import { tokens } from "@calimero-network/mero-tokens";
+import { Icon } from "./Icon";
+import { Text, Heading } from "./Typography";
+import { Button } from "./Button";
 
 export interface EmptyStateProps {
   icon?: React.ReactNode;
   title: string;
   description?: string;
   action?: React.ReactNode;
-  size?: 'sm' | 'md' | 'lg';
-  variant?: 'default' | 'minimal' | 'card';
-  type?: 'empty' | 'error' | 'not-found' | 'loading';
+  size?: "sm" | "md" | "lg";
+  variant?: "default" | "minimal" | "card";
+  type?: "empty" | "error" | "not-found" | "loading";
   className?: string;
   style?: React.CSSProperties;
 }
@@ -22,7 +22,7 @@ export interface ErrorViewProps {
   message?: string;
   actionLabel?: string;
   onAction?: () => void;
-  variant?: 'error' | 'empty' | 'not-found';
+  variant?: "error" | "empty" | "not-found";
   icon?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
@@ -34,33 +34,33 @@ export function EmptyState({
   title,
   description,
   action,
-  size = 'md',
-  variant = 'default',
-  type = 'empty',
-  className = '',
+  size = "md",
+  variant = "default",
+  type = "empty",
+  className = "",
   style = {},
 }: EmptyStateProps) {
   const sizeStyles = {
     sm: {
-      padding: '24px',
-      iconSize: 'md' as const,
-      titleSize: 'md' as const,
-      descriptionSize: 'sm' as const,
-      gap: '12px',
+      padding: "24px",
+      iconSize: "md" as const,
+      titleSize: "md" as const,
+      descriptionSize: "sm" as const,
+      gap: "12px",
     },
     md: {
-      padding: '32px',
-      iconSize: 'lg' as const,
-      titleSize: 'lg' as const,
-      descriptionSize: 'md' as const,
-      gap: '16px',
+      padding: "32px",
+      iconSize: "lg" as const,
+      titleSize: "lg" as const,
+      descriptionSize: "md" as const,
+      gap: "16px",
     },
     lg: {
-      padding: '48px',
-      iconSize: 'xl' as const,
-      titleSize: 'xl' as const,
-      descriptionSize: 'lg' as const,
-      gap: '20px',
+      padding: "48px",
+      iconSize: "xl" as const,
+      titleSize: "xl" as const,
+      descriptionSize: "lg" as const,
+      gap: "20px",
     },
   };
 
@@ -69,27 +69,39 @@ export function EmptyState({
   // Type-specific configurations
   const getTypeConfig = () => {
     switch (type) {
-      case 'error':
+      case "error":
         return {
-          defaultIcon: <Icon name="alert-circle" size={currentSize.iconSize} color="error" />,
+          defaultIcon: (
+            <Icon
+              name="alert-circle"
+              size={currentSize.iconSize}
+              color="error"
+            />
+          ),
           titleColor: tokens.color.semantic.error.value,
           descriptionColor: tokens.color.neutral[300].value,
         };
-      case 'not-found':
+      case "not-found":
         return {
-          defaultIcon: <Icon name="search" size={currentSize.iconSize} color="muted" />,
+          defaultIcon: (
+            <Icon name="search" size={currentSize.iconSize} color="muted" />
+          ),
           titleColor: tokens.color.neutral[200].value,
           descriptionColor: tokens.color.neutral[400].value,
         };
-      case 'loading':
+      case "loading":
         return {
-          defaultIcon: <Icon name="loader" size={currentSize.iconSize} color="muted" />,
+          defaultIcon: (
+            <Icon name="loader" size={currentSize.iconSize} color="muted" />
+          ),
           titleColor: tokens.color.neutral[200].value,
           descriptionColor: tokens.color.neutral[400].value,
         };
       default: // empty
         return {
-          defaultIcon: <Icon name="inbox" size={currentSize.iconSize} color="muted" />,
+          defaultIcon: (
+            <Icon name="inbox" size={currentSize.iconSize} color="muted" />
+          ),
           titleColor: tokens.color.neutral[200].value,
           descriptionColor: tokens.color.neutral[400].value,
         };
@@ -100,77 +112,81 @@ export function EmptyState({
   const displayIcon = icon || typeConfig.defaultIcon;
 
   const containerStyles: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center",
     padding: currentSize.padding,
     gap: currentSize.gap,
     ...style,
   };
 
-  const cardStyles: React.CSSProperties = variant === 'card' ? {
-    background: 'var(--color-background-primary)',
-    border: `1px solid ${tokens.color.neutral[700].value}`,
-    borderRadius: '12px',
-    ...containerStyles,
-  } : containerStyles;
+  const cardStyles: React.CSSProperties =
+    variant === "card"
+      ? {
+          background: "var(--color-background-primary)",
+          border: `1px solid ${tokens.color.neutral[700].value}`,
+          borderRadius: "12px",
+          ...containerStyles,
+        }
+      : containerStyles;
 
-  const minimalStyles: React.CSSProperties = variant === 'minimal' ? {
-    padding: '16px',
-    ...containerStyles,
-  } : cardStyles;
+  const minimalStyles: React.CSSProperties =
+    variant === "minimal"
+      ? {
+          padding: "16px",
+          ...containerStyles,
+        }
+      : cardStyles;
 
   return (
     <div className={className} style={minimalStyles}>
-      <div style={{ 
-        color: typeConfig.titleColor,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
+      <div
+        style={{
+          color: typeConfig.titleColor,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         {displayIcon}
       </div>
-      
-      <Heading 
+
+      <Heading
         size={currentSize.titleSize}
-        style={{ 
+        style={{
           margin: 0,
           color: typeConfig.titleColor,
         }}
       >
         {title}
       </Heading>
-      
+
       {description && (
-        <Text 
+        <Text
           size={currentSize.descriptionSize}
-          style={{ 
+          style={{
             margin: 0,
             color: typeConfig.descriptionColor,
-            maxWidth: variant === 'minimal' ? '300px' : '400px',
+            maxWidth: variant === "minimal" ? "300px" : "400px",
           }}
         >
           {description}
         </Text>
       )}
-      
-      {action && (
-        <div style={{ marginTop: '8px' }}>
-          {action}
-        </div>
-      )}
+
+      {action && <div style={{ marginTop: "8px" }}>{action}</div>}
     </div>
   );
 }
 
 // Predefined empty states for common use cases
-export function EmptySearchState({ 
-  searchTerm, 
-  onClear, 
-  ...props 
-}: Omit<EmptyStateProps, 'icon' | 'title' | 'description'> & {
+export function EmptySearchState({
+  searchTerm,
+  onClear,
+  ...props
+}: Omit<EmptyStateProps, "icon" | "title" | "description"> & {
   searchTerm?: string;
   onClear?: () => void;
 }) {
@@ -178,21 +194,27 @@ export function EmptySearchState({
     <EmptyState
       icon={<Icon name="search" size="lg" color="muted" />}
       title="No results found"
-      description={searchTerm ? `No results found for "${searchTerm}"` : 'Try adjusting your search terms'}
-      action={onClear && (
-        <Button variant="secondary" onClick={onClear}>
-          Clear search
-        </Button>
-      )}
+      description={
+        searchTerm
+          ? `No results found for "${searchTerm}"`
+          : "Try adjusting your search terms"
+      }
+      action={
+        onClear && (
+          <Button variant="secondary" onClick={onClear}>
+            Clear search
+          </Button>
+        )
+      }
       {...props}
     />
   );
 }
 
-export function EmptyDataState({ 
-  onRefresh, 
-  ...props 
-}: Omit<EmptyStateProps, 'icon' | 'title' | 'description'> & {
+export function EmptyDataState({
+  onRefresh,
+  ...props
+}: Omit<EmptyStateProps, "icon" | "title" | "description"> & {
   onRefresh?: () => void;
 }) {
   return (
@@ -200,11 +222,13 @@ export function EmptyDataState({
       icon={<Icon name="database" size="lg" color="muted" />}
       title="No data available"
       description="There's no data to display at the moment"
-      action={onRefresh && (
-        <Button variant="primary" onClick={onRefresh}>
-          Refresh
-        </Button>
-      )}
+      action={
+        onRefresh && (
+          <Button variant="primary" onClick={onRefresh}>
+            Refresh
+          </Button>
+        )
+      }
       {...props}
     />
   );
@@ -216,16 +240,16 @@ export function ErrorView({
   message = "An unexpected error occurred. Please try again.",
   actionLabel = "Try Again",
   onAction,
-  variant = 'error',
+  variant = "error",
   icon,
   className = "",
   style,
-  showAction = true
+  showAction = true,
 }: ErrorViewProps) {
   const typeMap = {
-    'error': 'error' as const,
-    'empty': 'empty' as const,
-    'not-found': 'not-found' as const,
+    error: "error" as const,
+    empty: "empty" as const,
+    "not-found": "not-found" as const,
   };
 
   return (
@@ -233,11 +257,14 @@ export function ErrorView({
       icon={icon}
       title={title}
       description={message}
-      action={showAction && onAction && (
-        <Button variant="primary" onClick={onAction}>
-          {actionLabel}
-        </Button>
-      )}
+      action={
+        showAction &&
+        onAction && (
+          <Button variant="primary" onClick={onAction}>
+            {actionLabel}
+          </Button>
+        )
+      }
       type={typeMap[variant]}
       className={className}
       style={style}
@@ -245,10 +272,10 @@ export function ErrorView({
   );
 }
 
-export function EmptyView(props: Omit<ErrorViewProps, 'variant'>) {
+export function EmptyView(props: Omit<ErrorViewProps, "variant">) {
   return <ErrorView {...props} variant="empty" />;
 }
 
-export function NotFoundView(props: Omit<ErrorViewProps, 'variant'>) {
+export function NotFoundView(props: Omit<ErrorViewProps, "variant">) {
   return <ErrorView {...props} variant="not-found" />;
 }

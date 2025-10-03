@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { EditableTable, TableColumn } from '@calimero-network/mero-ui';
+import type { Meta, StoryObj } from "@storybook/react";
+import { EditableTable, TableColumn } from "@calimero-network/mero-ui";
 
 interface User {
   id: string;
@@ -13,68 +13,70 @@ interface User {
 }
 
 const meta: Meta<typeof EditableTable> = {
-  title: 'Data Display/EditableTable',
+  title: "Data Display/EditableTable",
   component: EditableTable,
   parameters: {
-    layout: 'padded',
+    layout: "padded",
     docs: {
       description: {
-        component: 'A powerful table component with inline editing capabilities. Supports various input types, validation, and real-time data updates.',
+        component:
+          "A powerful table component with inline editing capabilities. Supports various input types, validation, and real-time data updates.",
       },
     },
   },
   argTypes: {
     data: {
-      description: 'Array of data objects to display in the table',
-      control: 'object',
+      description: "Array of data objects to display in the table",
+      control: "object",
     },
     columns: {
-      description: 'Column configuration defining how each field should be displayed and edited',
-      control: 'object',
+      description:
+        "Column configuration defining how each field should be displayed and edited",
+      control: "object",
     },
     onDataChange: {
-      description: 'Callback fired when data is modified',
-      action: 'data changed',
+      description: "Callback fired when data is modified",
+      action: "data changed",
     },
     onRowAdd: {
-      description: 'Callback fired when a new row is added',
-      action: 'row added',
+      description: "Callback fired when a new row is added",
+      action: "row added",
     },
     onRowDelete: {
-      description: 'Callback fired when a row is deleted',
-      action: 'row deleted',
+      description: "Callback fired when a row is deleted",
+      action: "row deleted",
     },
     onRowUpdate: {
-      description: 'Callback fired when a row is updated',
-      action: 'row updated',
+      description: "Callback fired when a row is updated",
+      action: "row updated",
     },
     disabled: {
-      description: 'Disable all editing functionality',
-      control: 'boolean',
+      description: "Disable all editing functionality",
+      control: "boolean",
     },
     loading: {
-      description: 'Show loading state',
-      control: 'boolean',
+      description: "Show loading state",
+      control: "boolean",
     },
     showAddButton: {
-      description: 'Show the add row button',
-      control: 'boolean',
+      description: "Show the add row button",
+      control: "boolean",
     },
     showDeleteButton: {
-      description: 'Show delete buttons for each row',
-      control: 'boolean',
+      description: "Show delete buttons for each row",
+      control: "boolean",
     },
     zebra: {
-      description: 'Apply zebra striping to rows',
-      control: 'boolean',
+      description: "Apply zebra striping to rows",
+      control: "boolean",
     },
     compact: {
-      description: 'Use compact spacing',
-      control: 'boolean',
+      description: "Use compact spacing",
+      control: "boolean",
     },
     stickyHeader: {
-      description: 'Make header sticky',
-      control: 'boolean',
+      description: "Make header sticky",
+      control: "boolean",
     },
   },
 };
@@ -85,118 +87,118 @@ type Story = StoryObj<typeof EditableTable>;
 // Sample data
 const sampleUsers: User[] = [
   {
-    id: '1',
-    name: 'John Doe',
-    email: 'john.doe@example.com',
+    id: "1",
+    name: "John Doe",
+    email: "john.doe@example.com",
     age: 28,
-    role: 'admin',
-    status: 'active',
-    bio: 'Software engineer with 5 years of experience in React and TypeScript.',
-    joinDate: '2023-01-15',
+    role: "admin",
+    status: "active",
+    bio: "Software engineer with 5 years of experience in React and TypeScript.",
+    joinDate: "2023-01-15",
   },
   {
-    id: '2',
-    name: 'Jane Smith',
-    email: 'jane.smith@example.com',
+    id: "2",
+    name: "Jane Smith",
+    email: "jane.smith@example.com",
     age: 32,
-    role: 'user',
-    status: 'active',
-    bio: 'Product manager passionate about user experience and data-driven decisions.',
-    joinDate: '2023-03-22',
+    role: "user",
+    status: "active",
+    bio: "Product manager passionate about user experience and data-driven decisions.",
+    joinDate: "2023-03-22",
   },
   {
-    id: '3',
-    name: 'Bob Johnson',
-    email: 'bob.johnson@example.com',
+    id: "3",
+    name: "Bob Johnson",
+    email: "bob.johnson@example.com",
     age: 45,
-    role: 'moderator',
-    status: 'inactive',
-    bio: 'Senior developer specializing in backend systems and database optimization.',
-    joinDate: '2022-11-08',
+    role: "moderator",
+    status: "inactive",
+    bio: "Senior developer specializing in backend systems and database optimization.",
+    joinDate: "2022-11-08",
   },
 ];
 
 // Column definitions
 const userColumns: TableColumn<User>[] = [
   {
-    key: 'name',
-    title: 'Name',
+    key: "name",
+    title: "Name",
     editable: true,
-    type: 'text',
+    type: "text",
     required: true,
-    placeholder: 'Enter full name',
+    placeholder: "Enter full name",
     validate: (value) => {
       if (!value || value.trim().length < 2) {
-        return 'Name must be at least 2 characters';
+        return "Name must be at least 2 characters";
       }
       return null;
     },
   },
   {
-    key: 'email',
-    title: 'Email',
+    key: "email",
+    title: "Email",
     editable: true,
-    type: 'email',
+    type: "email",
     required: true,
-    placeholder: 'Enter email address',
+    placeholder: "Enter email address",
     validate: (value) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!value || !emailRegex.test(value)) {
-        return 'Please enter a valid email address';
+        return "Please enter a valid email address";
       }
       return null;
     },
   },
   {
-    key: 'age',
-    title: 'Age',
+    key: "age",
+    title: "Age",
     editable: true,
-    type: 'number',
+    type: "number",
     required: true,
     min: 18,
     max: 100,
     validate: (value) => {
       if (!value || value < 18 || value > 100) {
-        return 'Age must be between 18 and 100';
+        return "Age must be between 18 and 100";
       }
       return null;
     },
   },
   {
-    key: 'role',
-    title: 'Role',
+    key: "role",
+    title: "Role",
     editable: true,
-    type: 'select',
+    type: "select",
     options: [
-      { value: 'admin', label: 'Administrator' },
-      { value: 'moderator', label: 'Moderator' },
-      { value: 'user', label: 'User' },
+      { value: "admin", label: "Administrator" },
+      { value: "moderator", label: "Moderator" },
+      { value: "user", label: "User" },
     ],
   },
   {
-    key: 'status',
-    title: 'Status',
+    key: "status",
+    title: "Status",
     editable: true,
-    type: 'select',
+    type: "select",
     options: [
-      { value: 'active', label: 'Active' },
-      { value: 'inactive', label: 'Inactive' },
-      { value: 'pending', label: 'Pending' },
+      { value: "active", label: "Active" },
+      { value: "inactive", label: "Inactive" },
+      { value: "pending", label: "Pending" },
     ],
   },
   {
-    key: 'bio',
-    title: 'Bio',
+    key: "bio",
+    title: "Bio",
     editable: true,
-    type: 'textarea',
+    type: "textarea",
     rows: 2,
-    placeholder: 'Enter a brief bio',
+    placeholder: "Enter a brief bio",
   },
   {
-    key: 'joinDate',
-    title: 'Join Date',
+    key: "joinDate",
+    title: "Join Date",
     editable: true,
-    type: 'date',
+    type: "date",
   },
 ];
 
@@ -236,7 +238,8 @@ export const StickyHeader: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Table with sticky header that remains visible when scrolling through long data sets.',
+        story:
+          "Table with sticky header that remains visible when scrolling through long data sets.",
       },
     },
   },
@@ -252,7 +255,7 @@ export const Disabled: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Disabled table where editing is not allowed.',
+        story: "Disabled table where editing is not allowed.",
       },
     },
   },
@@ -268,7 +271,7 @@ export const Loading: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Table in loading state with no data.',
+        story: "Table in loading state with no data.",
       },
     },
   },
@@ -285,7 +288,7 @@ export const ReadOnly: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Read-only table without add or delete functionality.',
+        story: "Read-only table without add or delete functionality.",
       },
     },
   },
@@ -301,7 +304,7 @@ export const Empty: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Empty table with custom empty state message.',
+        story: "Empty table with custom empty state message.",
       },
     },
   },
@@ -310,69 +313,70 @@ export const Empty: Story = {
 // Different input types showcase
 const showcaseData = [
   {
-    id: '1',
-    textField: 'Sample text',
+    id: "1",
+    textField: "Sample text",
     numberField: 42,
-    selectField: 'option2',
-    textareaField: 'This is a longer text that can span multiple lines and provides more space for detailed information.',
-    dateField: '2024-01-15',
-    emailField: 'test@example.com',
-    urlField: 'https://example.com',
+    selectField: "option2",
+    textareaField:
+      "This is a longer text that can span multiple lines and provides more space for detailed information.",
+    dateField: "2024-01-15",
+    emailField: "test@example.com",
+    urlField: "https://example.com",
   },
 ];
 
-const showcaseColumns: TableColumn<typeof showcaseData[0]>[] = [
+const showcaseColumns: TableColumn<(typeof showcaseData)[0]>[] = [
   {
-    key: 'textField',
-    title: 'Text Input',
+    key: "textField",
+    title: "Text Input",
     editable: true,
-    type: 'text',
-    placeholder: 'Enter text',
+    type: "text",
+    placeholder: "Enter text",
   },
   {
-    key: 'numberField',
-    title: 'Number Input',
+    key: "numberField",
+    title: "Number Input",
     editable: true,
-    type: 'number',
+    type: "number",
     min: 0,
     max: 100,
     step: 1,
   },
   {
-    key: 'selectField',
-    title: 'Select Dropdown',
+    key: "selectField",
+    title: "Select Dropdown",
     editable: true,
-    type: 'select',
+    type: "select",
     options: [
-      { value: 'option1', label: 'Option 1' },
-      { value: 'option2', label: 'Option 2' },
-      { value: 'option3', label: 'Option 3' },
+      { value: "option1", label: "Option 1" },
+      { value: "option2", label: "Option 2" },
+      { value: "option3", label: "Option 3" },
     ],
   },
   {
-    key: 'textareaField',
-    title: 'Textarea',
+    key: "textareaField",
+    title: "Textarea",
     editable: true,
-    type: 'textarea',
+    type: "textarea",
     rows: 3,
   },
   {
-    key: 'dateField',
-    title: 'Date Picker',
+    key: "dateField",
+    title: "Date Picker",
     editable: true,
-    type: 'date',
+    type: "date",
   },
   {
-    key: 'emailField',
-    title: 'Email Input',
+    key: "emailField",
+    title: "Email Input",
     editable: true,
-    type: 'email',
+    type: "email",
   },
   {
-    key: 'urlField',
-    title: 'URL Input',
+    key: "urlField",
+    title: "URL Input",
     editable: true,
-    type: 'url',
+    type: "url",
   },
 ];
 
@@ -384,7 +388,8 @@ export const InputTypesShowcase: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Showcase of different input types available in the EditableTable component.',
+        story:
+          "Showcase of different input types available in the EditableTable component.",
       },
     },
   },
@@ -393,60 +398,60 @@ export const InputTypesShowcase: Story = {
 // Custom validation example
 const validationData = [
   {
-    id: '1',
-    username: 'user1',
-    email: 'user1@example.com',
+    id: "1",
+    username: "user1",
+    email: "user1@example.com",
     score: 85,
   },
   {
-    id: '2',
-    username: 'a', // Invalid: too short
-    email: 'invalid-email', // Invalid: not a valid email
+    id: "2",
+    username: "a", // Invalid: too short
+    email: "invalid-email", // Invalid: not a valid email
     score: 150, // Invalid: too high
   },
 ];
 
-const validationColumns: TableColumn<typeof validationData[0]>[] = [
+const validationColumns: TableColumn<(typeof validationData)[0]>[] = [
   {
-    key: 'username',
-    title: 'Username',
+    key: "username",
+    title: "Username",
     editable: true,
-    type: 'text',
+    type: "text",
     required: true,
     validate: (value) => {
       if (!value || value.length < 3) {
-        return 'Username must be at least 3 characters';
+        return "Username must be at least 3 characters";
       }
       if (!/^[a-zA-Z0-9_]+$/.test(value)) {
-        return 'Username can only contain letters, numbers, and underscores';
+        return "Username can only contain letters, numbers, and underscores";
       }
       return null;
     },
   },
   {
-    key: 'email',
-    title: 'Email',
+    key: "email",
+    title: "Email",
     editable: true,
-    type: 'email',
+    type: "email",
     required: true,
     validate: (value) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!value || !emailRegex.test(value)) {
-        return 'Please enter a valid email address';
+        return "Please enter a valid email address";
       }
       return null;
     },
   },
   {
-    key: 'score',
-    title: 'Score',
+    key: "score",
+    title: "Score",
     editable: true,
-    type: 'number',
+    type: "number",
     min: 0,
     max: 100,
     validate: (value) => {
       if (value < 0 || value > 100) {
-        return 'Score must be between 0 and 100';
+        return "Score must be between 0 and 100";
       }
       return null;
     },
@@ -461,7 +466,8 @@ export const ValidationExample: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Example showing custom validation with error messages for different field types.',
+        story:
+          "Example showing custom validation with error messages for different field types.",
       },
     },
   },

@@ -1,17 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from './Button';
-import { Icon } from './Icon';
+import React, { useState, useEffect } from "react";
+import { Button } from "./Button";
+import { Icon } from "./Icon";
 
-export type BannerVariant = 'info' | 'success' | 'warning' | 'error' | 'announcement' | 'promotion';
+export type BannerVariant =
+  | "info"
+  | "success"
+  | "warning"
+  | "error"
+  | "announcement"
+  | "promotion";
 
-export type BannerSize = 'sm' | 'md' | 'lg';
+export type BannerSize = "sm" | "md" | "lg";
 
-export type BannerPosition = 'top' | 'bottom' | 'inline';
+export type BannerPosition = "top" | "bottom" | "inline";
 
 export interface BannerAction {
   label: string;
   onClick: () => void;
-  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
+  variant?: "primary" | "secondary" | "success" | "warning" | "error" | "info";
   disabled?: boolean;
 }
 
@@ -56,110 +62,116 @@ export interface BannerProps {
   borderColor?: string;
 }
 
-const variantToColors: Record<BannerVariant, { 
-  border: string; 
-  bg: string; 
-  text: string; 
-  icon: string;
-  title: string;
-}> = {
+const variantToColors: Record<
+  BannerVariant,
+  {
+    border: string;
+    bg: string;
+    text: string;
+    icon: string;
+    title: string;
+  }
+> = {
   info: {
-    border: 'var(--color-semantic-info)',
-    bg: 'rgba(59, 130, 246, 0.08)',
-    text: 'var(--color-neutral-300)',
-    icon: 'var(--color-semantic-info)',
-    title: '#FFFFFF'
+    border: "var(--color-semantic-info)",
+    bg: "rgba(59, 130, 246, 0.08)",
+    text: "var(--color-neutral-300)",
+    icon: "var(--color-semantic-info)",
+    title: "#FFFFFF",
   },
   success: {
-    border: 'var(--color-semantic-success)',
-    bg: 'rgba(22, 163, 74, 0.08)',
-    text: 'var(--color-neutral-300)',
-    icon: 'var(--color-semantic-success)',
-    title: '#FFFFFF'
+    border: "var(--color-semantic-success)",
+    bg: "rgba(22, 163, 74, 0.08)",
+    text: "var(--color-neutral-300)",
+    icon: "var(--color-semantic-success)",
+    title: "#FFFFFF",
   },
   warning: {
-    border: 'var(--color-semantic-warning)',
-    bg: 'rgba(245, 158, 11, 0.08)',
-    text: 'var(--color-neutral-300)',
-    icon: 'var(--color-semantic-warning)',
-    title: '#FFFFFF'
+    border: "var(--color-semantic-warning)",
+    bg: "rgba(245, 158, 11, 0.08)",
+    text: "var(--color-neutral-300)",
+    icon: "var(--color-semantic-warning)",
+    title: "#FFFFFF",
   },
   error: {
-    border: 'var(--color-semantic-error)',
-    bg: 'rgba(239, 68, 68, 0.08)',
-    text: 'var(--color-neutral-300)',
-    icon: 'var(--color-semantic-error)',
-    title: '#FFFFFF'
+    border: "var(--color-semantic-error)",
+    bg: "rgba(239, 68, 68, 0.08)",
+    text: "var(--color-neutral-300)",
+    icon: "var(--color-semantic-error)",
+    title: "#FFFFFF",
   },
   announcement: {
-    border: 'var(--color-brand-600)',
-    bg: 'rgba(139, 92, 246, 0.08)',
-    text: 'var(--color-neutral-300)',
-    icon: 'var(--color-brand-600)',
-    title: '#FFFFFF'
+    border: "var(--color-brand-600)",
+    bg: "rgba(139, 92, 246, 0.08)",
+    text: "var(--color-neutral-300)",
+    icon: "var(--color-brand-600)",
+    title: "#FFFFFF",
   },
   promotion: {
-    border: 'var(--color-semantic-warning)',
-    bg: 'linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(251, 191, 36, 0.1) 100%)',
-    text: 'var(--color-neutral-300)',
-    icon: 'var(--color-semantic-warning)',
-    title: '#FFFFFF'
-  }
+    border: "var(--color-semantic-warning)",
+    bg: "linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(251, 191, 36, 0.1) 100%)",
+    text: "var(--color-neutral-300)",
+    icon: "var(--color-semantic-warning)",
+    title: "#FFFFFF",
+  },
 };
 
-const sizeToStyles: Record<BannerSize, { 
-  padding: string; 
-  fontSize: string; 
-  iconSize: number;
-  gap: string;
-}> = {
+const sizeToStyles: Record<
+  BannerSize,
+  {
+    padding: string;
+    fontSize: string;
+    iconSize: number;
+    gap: string;
+  }
+> = {
   sm: {
-    padding: '8px 12px',
-    fontSize: '13px',
+    padding: "8px 12px",
+    fontSize: "13px",
     iconSize: 16,
-    gap: '8px'
+    gap: "8px",
   },
   md: {
-    padding: '12px 16px',
-    fontSize: '14px',
+    padding: "12px 16px",
+    fontSize: "14px",
     iconSize: 20,
-    gap: '12px'
+    gap: "12px",
   },
   lg: {
-    padding: '16px 20px',
-    fontSize: '15px',
+    padding: "16px 20px",
+    fontSize: "15px",
     iconSize: 24,
-    gap: '16px'
-  }
+    gap: "16px",
+  },
 };
 
 const positionToStyles: Record<BannerPosition, React.CSSProperties> = {
   top: {
-    position: 'fixed',
+    position: "fixed",
     top: 0,
     left: 0,
     right: 0,
     zIndex: 1000,
-    width: '100%'
+    width: "100%",
   },
   bottom: {
-    position: 'fixed',
+    position: "fixed",
     bottom: 0,
     left: 0,
     right: 0,
     zIndex: 1000,
-    width: '100%'
+    width: "100%",
   },
   inline: {
-    position: 'relative',
-    width: '100%'
-  }
+    position: "relative",
+    width: "100%",
+  },
 };
 
 export const Banner: React.FC<BannerProps> = ({
-  variant = 'info',
-  size = 'md',
-  position = 'inline',
+  variant = "info",
+  size = "md",
+  position = "inline",
   title,
   description,
   icon,
@@ -169,13 +181,13 @@ export const Banner: React.FC<BannerProps> = ({
   actions = [],
   visible = true,
   children,
-  className = '',
+  className = "",
   style = {},
   sticky = false,
   animated = true,
   backgroundColor,
   textColor,
-  borderColor
+  borderColor,
 }) => {
   const [isVisible, setIsVisible] = useState(visible);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -224,11 +236,11 @@ export const Banner: React.FC<BannerProps> = ({
       viewBox: "0 0 24 24",
       fill: "none",
       stroke: "currentColor",
-      strokeWidth: "2"
+      strokeWidth: "2",
     };
 
     switch (variant) {
-      case 'error':
+      case "error":
         return (
           <svg {...iconProps}>
             <circle cx="12" cy="12" r="10" />
@@ -236,7 +248,7 @@ export const Banner: React.FC<BannerProps> = ({
             <line x1="9" y1="9" x2="15" y2="15" />
           </svg>
         );
-      case 'warning':
+      case "warning":
         return (
           <svg {...iconProps}>
             <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
@@ -244,20 +256,20 @@ export const Banner: React.FC<BannerProps> = ({
             <line x1="12" y1="17" x2="12.01" y2="17" />
           </svg>
         );
-      case 'success':
+      case "success":
         return (
           <svg {...iconProps}>
             <circle cx="12" cy="12" r="10" />
             <path d="m9 12 2 2 4-4" />
           </svg>
         );
-      case 'announcement':
+      case "announcement":
         return (
           <svg {...iconProps}>
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
           </svg>
         );
-      case 'promotion':
+      case "promotion":
         return (
           <svg {...iconProps}>
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -277,23 +289,23 @@ export const Banner: React.FC<BannerProps> = ({
   if (!isVisible) return null;
 
   const bannerStyle: React.CSSProperties = {
-    display: 'flex',
-    alignItems: 'flex-start',
+    display: "flex",
+    alignItems: "flex-start",
     gap: sizeStyles.gap,
     padding: sizeStyles.padding,
-    borderRadius: 'var(--radius-md)',
+    borderRadius: "var(--radius-md)",
     border: `1px solid ${borderColor || palette.border}`,
     background: backgroundColor || palette.bg,
     color: textColor || palette.text,
-    fontFamily: 'var(--font-body)',
+    fontFamily: "var(--font-body)",
     fontSize: sizeStyles.fontSize,
     lineHeight: 1.5,
-    transition: animated ? 'all 0.2s ease-in-out' : 'none',
-    transform: isAnimating ? 'translateY(-100%)' : 'translateY(0)',
+    transition: animated ? "all 0.2s ease-in-out" : "none",
+    transform: isAnimating ? "translateY(-100%)" : "translateY(0)",
     opacity: isAnimating ? 0 : 1,
-    ...(sticky ? { position: 'sticky', top: 0, zIndex: 100 } : {}),
+    ...(sticky ? { position: "sticky", top: 0, zIndex: 100 } : {}),
     ...positionStyles,
-    ...style
+    ...style,
   };
 
   return (
@@ -304,33 +316,39 @@ export const Banner: React.FC<BannerProps> = ({
       className={className}
     >
       {/* Icon */}
-      <div style={{ 
-        lineHeight: 0, 
-        color: palette.icon,
-        flexShrink: 0,
-        marginTop: title ? '2px' : '0px'
-      }}>
+      <div
+        style={{
+          lineHeight: 0,
+          color: palette.icon,
+          flexShrink: 0,
+          marginTop: title ? "2px" : "0px",
+        }}
+      >
         {icon || getDefaultIcon()}
       </div>
 
       {/* Content */}
       <div style={{ flex: 1, minWidth: 0 }}>
         {title && (
-          <div style={{ 
-            color: palette.title, 
-            fontWeight: 600, 
-            fontSize: sizeStyles.fontSize,
-            marginBottom: description || children ? '4px' : 0 
-          }}>
+          <div
+            style={{
+              color: palette.title,
+              fontWeight: 600,
+              fontSize: sizeStyles.fontSize,
+              marginBottom: description || children ? "4px" : 0,
+            }}
+          >
             {title}
           </div>
         )}
         {(description || children) && (
-          <div style={{ 
-            fontSize: sizeStyles.fontSize,
-            lineHeight: 1.5,
-            color: textColor || palette.text
-          }}>
+          <div
+            style={{
+              fontSize: sizeStyles.fontSize,
+              lineHeight: 1.5,
+              color: textColor || palette.text,
+            }}
+          >
             {description || children}
           </div>
         )}
@@ -338,23 +356,31 @@ export const Banner: React.FC<BannerProps> = ({
 
       {/* Actions */}
       {actions.length > 0 && (
-        <div style={{ 
-          display: 'flex', 
-          gap: '8px', 
-          alignItems: 'center',
-          flexShrink: 0,
-          marginLeft: '8px'
-        }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            alignItems: "center",
+            flexShrink: 0,
+            marginLeft: "8px",
+          }}
+        >
           {actions.map((action, index) => (
             <Button
               key={index}
-              variant={action.variant || 'secondary'}
+              variant={action.variant || "secondary"}
               onClick={() => handleActionClick(action)}
               disabled={action.disabled}
               style={{
-                fontSize: size === 'sm' ? '12px' : size === 'lg' ? '14px' : '13px',
-                padding: size === 'sm' ? '4px 8px' : size === 'lg' ? '8px 16px' : '6px 12px',
-                minHeight: 'auto'
+                fontSize:
+                  size === "sm" ? "12px" : size === "lg" ? "14px" : "13px",
+                padding:
+                  size === "sm"
+                    ? "4px 8px"
+                    : size === "lg"
+                      ? "8px 16px"
+                      : "6px 12px",
+                minHeight: "auto",
               }}
             >
               {action.label}
@@ -369,22 +395,22 @@ export const Banner: React.FC<BannerProps> = ({
           aria-label="Close banner"
           onClick={handleClose}
           style={{
-            background: 'transparent',
-            border: 'none',
+            background: "transparent",
+            border: "none",
             color: palette.icon,
-            cursor: 'pointer',
-            padding: '4px',
+            cursor: "pointer",
+            padding: "4px",
             lineHeight: 0,
             flexShrink: 0,
-            borderRadius: '4px',
-            transition: 'background-color 0.2s ease',
-            marginLeft: '8px'
+            borderRadius: "4px",
+            transition: "background-color 0.2s ease",
+            marginLeft: "8px",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+            e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'transparent';
+            e.currentTarget.style.backgroundColor = "transparent";
           }}
         >
           <Icon name="close" size="sm" />
@@ -395,28 +421,28 @@ export const Banner: React.FC<BannerProps> = ({
 };
 
 // Convenience components for common banner types
-export const InfoBanner: React.FC<Omit<BannerProps, 'variant'>> = (props) => (
+export const InfoBanner: React.FC<Omit<BannerProps, "variant">> = (props) => (
   <Banner {...props} variant="info" />
 );
 
-export const SuccessBanner: React.FC<Omit<BannerProps, 'variant'>> = (props) => (
-  <Banner {...props} variant="success" />
-);
+export const SuccessBanner: React.FC<Omit<BannerProps, "variant">> = (
+  props,
+) => <Banner {...props} variant="success" />;
 
-export const WarningBanner: React.FC<Omit<BannerProps, 'variant'>> = (props) => (
-  <Banner {...props} variant="warning" />
-);
+export const WarningBanner: React.FC<Omit<BannerProps, "variant">> = (
+  props,
+) => <Banner {...props} variant="warning" />;
 
-export const ErrorBanner: React.FC<Omit<BannerProps, 'variant'>> = (props) => (
+export const ErrorBanner: React.FC<Omit<BannerProps, "variant">> = (props) => (
   <Banner {...props} variant="error" />
 );
 
-export const AnnouncementBanner: React.FC<Omit<BannerProps, 'variant'>> = (props) => (
-  <Banner {...props} variant="announcement" />
-);
+export const AnnouncementBanner: React.FC<Omit<BannerProps, "variant">> = (
+  props,
+) => <Banner {...props} variant="announcement" />;
 
-export const PromotionBanner: React.FC<Omit<BannerProps, 'variant'>> = (props) => (
-  <Banner {...props} variant="promotion" />
-);
+export const PromotionBanner: React.FC<Omit<BannerProps, "variant">> = (
+  props,
+) => <Banner {...props} variant="promotion" />;
 
 export default Banner;

@@ -6,7 +6,7 @@ type LayoutProps = React.PropsWithChildren<{
   maxWidth?: string | number;
   padding?: string | number;
   centered?: boolean;
-  variant?: 'auth' | 'default';
+  variant?: "auth" | "default";
 }>;
 
 export function Layout({
@@ -16,29 +16,26 @@ export function Layout({
   maxWidth = "400px",
   padding = "24px",
   centered = true,
-  variant = 'auth'
+  variant = "auth",
 }: LayoutProps) {
   const baseStyles: React.CSSProperties = {
-    width: '100%',
-    maxWidth: typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth,
-    padding: typeof padding === 'number' ? `${padding}px` : padding,
-    fontFamily: 'var(--font-body)',
+    width: "100%",
+    maxWidth: typeof maxWidth === "number" ? `${maxWidth}px` : maxWidth,
+    padding: typeof padding === "number" ? `${padding}px` : padding,
+    fontFamily: "var(--font-body)",
     ...(centered && {
-      margin: '0 auto',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: variant === 'auth' ? '100vh' : 'auto',
+      margin: "0 auto",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      minHeight: variant === "auth" ? "100vh" : "auto",
     }),
-    ...style
+    ...style,
   };
 
   return (
-    <div
-      className={className}
-      style={baseStyles}
-    >
+    <div className={className} style={baseStyles}>
       {children}
     </div>
   );
@@ -52,13 +49,13 @@ export function AuthLayout({
   maxWidth = "400px",
   padding = "32px",
   ...props
-}: Omit<LayoutProps, 'variant' | 'centered'>) {
+}: Omit<LayoutProps, "variant" | "centered">) {
   const authStyles: React.CSSProperties = {
-    background: 'var(--color-background-primary)',
-    borderRadius: 'var(--radius-lg)',
-    border: '1px solid var(--color-neutral-600)',
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-    ...style
+    background: "var(--color-background-primary)",
+    borderRadius: "var(--radius-lg)",
+    border: "1px solid var(--color-neutral-600)",
+    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+    ...style,
   };
 
   return (
@@ -84,7 +81,7 @@ export function Container({
   maxWidth = "1200px",
   padding = "16px",
   ...props
-}: Omit<LayoutProps, 'variant' | 'centered'>) {
+}: Omit<LayoutProps, "variant" | "centered">) {
   return (
     <Layout
       {...props}

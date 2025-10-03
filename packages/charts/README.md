@@ -21,19 +21,19 @@ import { Gauge, GaugeCard } from '@calimero/charts';
 <Gauge value={75} label="CPU" />
 
 // Gauge with custom thresholds
-<Gauge 
-  value={85} 
-  min={0} 
-  max={100} 
+<Gauge
+  value={85}
+  min={0}
+  max={100}
   thresholds={{ good: 60, warning: 80, max: 100 }}
   decimals={1}
 />
 
 // Gauge in a card
-<GaugeCard 
-  title="CPU Usage" 
-  value={73.4} 
-  suffix="%" 
+<GaugeCard
+  title="CPU Usage"
+  value={73.4}
+  suffix="%"
 />
 ```
 
@@ -51,7 +51,7 @@ import { Gauge, GaugeCard } from '@calimero/charts';
 A line chart component for displaying time-series data using Recharts.
 
 ```tsx
-import { SeriesCard, Series } from '@calimero/charts';
+import { SeriesCard, Series } from "@calimero/charts";
 
 const data: Series[] = [
   {
@@ -59,16 +59,12 @@ const data: Series[] = [
     data: [
       { t: Date.now() - 60000, y: 12.5 },
       { t: Date.now() - 30000, y: 15.2 },
-      { t: Date.now(), y: 13.8 }
-    ]
-  }
+      { t: Date.now(), y: 13.8 },
+    ],
+  },
 ];
 
-<SeriesCard 
-  title="API Requests" 
-  series={data} 
-  yLabel="req/s" 
-/>
+<SeriesCard title="API Requests" series={data} yLabel="req/s" />;
 ```
 
 #### Props
@@ -82,7 +78,7 @@ const data: Series[] = [
 A table component for displaying Prometheus-style instant vector data.
 
 ```tsx
-import { VectorTable, PromVectorResult } from '@calimero/charts';
+import { VectorTable, PromVectorResult } from "@calimero/charts";
 
 const vector: PromVectorResult = {
   status: "success",
@@ -90,22 +86,19 @@ const vector: PromVectorResult = {
     resultType: "vector",
     result: [
       {
-        metric: { 
-          instance: "10.0.99.165:8429", 
-          container: "vmsingle", 
-          reason: "unsupported", 
-          path: "*" 
+        metric: {
+          instance: "10.0.99.165:8429",
+          container: "vmsingle",
+          reason: "unsupported",
+          path: "*",
         },
-        value: [1756235265, "0"]
-      }
-    ]
-  }
+        value: [1756235265, "0"],
+      },
+    ],
+  },
 };
 
-<VectorTable 
-  title="HTTP Request Errors" 
-  vector={vector} 
-/>
+<VectorTable title="HTTP Request Errors" vector={vector} />;
 ```
 
 #### Props
@@ -118,9 +111,9 @@ const vector: PromVectorResult = {
 Use the `ChartsDemo` component to see all chart types in action:
 
 ```tsx
-import { ChartsDemo } from '@calimero/charts';
+import { ChartsDemo } from "@calimero/charts";
 
-<ChartsDemo />
+<ChartsDemo />;
 ```
 
 ## Card Primitives
@@ -128,16 +121,14 @@ import { ChartsDemo } from '@calimero/charts';
 The package also exports card primitives that can be used independently:
 
 ```tsx
-import { Card, CardHeader, CardTitle, CardContent } from '@calimero/charts';
+import { Card, CardHeader, CardTitle, CardContent } from "@calimero/charts";
 
 <Card>
   <CardHeader>
     <CardTitle>Custom Content</CardTitle>
   </CardHeader>
-  <CardContent>
-    Your content here
-  </CardContent>
-</Card>
+  <CardContent>Your content here</CardContent>
+</Card>;
 ```
 
 ## Styling
@@ -145,6 +136,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@calimero/charts';
 The charts use Calimero design tokens for consistent theming:
 
 ### Colors
+
 - **Success**: `#16a34a` (green) - Good zone
 - **Warning**: `#f59e0b` (orange) - Warning zone
 - **Error**: `#ef4444` (red) - Critical zone

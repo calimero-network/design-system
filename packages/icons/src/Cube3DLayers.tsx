@@ -7,11 +7,14 @@ export type IconProps = React.SVGProps<SVGSVGElement> & {
 };
 
 const Cube3DLayers = React.forwardRef<SVGSVGElement, IconProps>(
-  ({ size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props }, ref) => {
-    const actualStrokeWidth = absoluteStrokeWidth 
-      ? strokeWidth 
+  (
+    { size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props },
+    ref,
+  ) => {
+    const actualStrokeWidth = absoluteStrokeWidth
+      ? strokeWidth
       : (Number(size) / 24) * Number(strokeWidth);
-    
+
     return (
       <svg
         ref={ref}
@@ -27,13 +30,13 @@ const Cube3DLayers = React.forwardRef<SVGSVGElement, IconProps>(
         strokeLinejoin="round"
         {...props}
       >
-        <path d="M24 8L8 16L24 24L40 16L24 8Z"/>
-        <path d="M8 24L24 32L40 24"/>
-        <path d="M8 32L24 40L40 32"/>
+        <path d="M24 8L8 16L24 24L40 16L24 8Z" />
+        <path d="M8 24L24 32L40 24" />
+        <path d="M8 32L24 40L40 32" />
       </svg>
     );
-  }
+  },
 );
 
 Cube3DLayers.displayName = "Cube3DLayers";
-export { Cube3DLayers }; 
+export { Cube3DLayers };

@@ -1,11 +1,11 @@
-import React from 'react';
-import { tokens } from '@calimero-network/mero-tokens';
+import React from "react";
+import { tokens } from "@calimero-network/mero-tokens";
 
 export interface ProgressProps {
   value: number;
   max?: number;
-  size?: 'sm' | 'md' | 'lg';
-  variant?: 'default' | 'success' | 'warning' | 'error';
+  size?: "sm" | "md" | "lg";
+  variant?: "default" | "success" | "warning" | "error";
   showValue?: boolean;
   label?: string;
   className?: string;
@@ -15,27 +15,27 @@ export interface ProgressProps {
 export const Progress: React.FC<ProgressProps> = ({
   value,
   max = 100,
-  size = 'md',
-  variant = 'default',
+  size = "md",
+  variant = "default",
   showValue = false,
   label,
-  className = '',
+  className = "",
   style = {},
 }) => {
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
 
   const sizeStyles = {
     sm: {
-      height: '4px',
-      fontSize: '12px',
+      height: "4px",
+      fontSize: "12px",
     },
     md: {
-      height: '8px',
-      fontSize: '14px',
+      height: "8px",
+      fontSize: "14px",
     },
     lg: {
-      height: '12px',
-      fontSize: '16px',
+      height: "12px",
+      fontSize: "16px",
     },
   };
 
@@ -55,51 +55,43 @@ export const Progress: React.FC<ProgressProps> = ({
   };
 
   const containerStyle = {
-    width: '100%',
+    width: "100%",
     backgroundColor: tokens.color.background.tertiary.value,
-    borderRadius: '9999px',
-    overflow: 'hidden',
+    borderRadius: "9999px",
+    overflow: "hidden",
     ...sizeStyles[size],
     ...style,
   };
 
   const progressStyle = {
-    height: '100%',
+    height: "100%",
     width: `${percentage}%`,
     backgroundColor: variantStyles[variant].backgroundColor,
-    borderRadius: '9999px',
-    transition: 'width 0.3s ease',
+    borderRadius: "9999px",
+    transition: "width 0.3s ease",
   };
 
   const labelStyle = {
-    fontSize: '14px',
+    fontSize: "14px",
     fontWeight: 500,
-    color: '#FFFFFF', // White text for better contrast with dark background
-    marginBottom: '4px',
+    color: "#FFFFFF", // White text for better contrast with dark background
+    marginBottom: "4px",
   };
 
   const valueStyle = {
     fontSize: sizeStyles[size].fontSize,
     fontWeight: 500,
-    color: '#FFFFFF', // White text for better contrast with dark background
-    marginTop: '4px',
+    color: "#FFFFFF", // White text for better contrast with dark background
+    marginTop: "4px",
   };
 
   return (
     <div className={className}>
-      {label && (
-        <div style={labelStyle}>
-          {label}
-        </div>
-      )}
+      {label && <div style={labelStyle}>{label}</div>}
       <div style={containerStyle}>
         <div style={progressStyle} />
       </div>
-      {showValue && (
-        <div style={valueStyle}>
-          {Math.round(percentage)}%
-        </div>
-      )}
+      {showValue && <div style={valueStyle}>{Math.round(percentage)}%</div>}
     </div>
   );
 };
@@ -107,8 +99,8 @@ export const Progress: React.FC<ProgressProps> = ({
 export interface CircularProgressProps {
   value: number;
   max?: number;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
-  variant?: 'default' | 'success' | 'warning' | 'error';
+  size?: "sm" | "md" | "lg" | "xl";
+  variant?: "default" | "success" | "warning" | "error";
   showValue?: boolean;
   label?: string;
   className?: string;
@@ -118,11 +110,11 @@ export interface CircularProgressProps {
 export const CircularProgress: React.FC<CircularProgressProps> = ({
   value,
   max = 100,
-  size = 'md',
-  variant = 'default',
+  size = "md",
+  variant = "default",
   showValue = false,
   label,
-  className = '',
+  className = "",
   style = {},
 }) => {
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
@@ -147,57 +139,55 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
   };
 
   const containerStyle = {
-    display: 'inline-flex',
-    flexDirection: 'column' as const,
-    alignItems: 'center',
-    backgroundColor: 'var(--color-neutral-900)', // Ensure proper background color
+    display: "inline-flex",
+    flexDirection: "column" as const,
+    alignItems: "center",
+    backgroundColor: "var(--color-neutral-900)", // Ensure proper background color
     ...style,
   };
 
   const svgStyle = {
-    transform: 'rotate(-90deg)',
+    transform: "rotate(-90deg)",
   };
 
   const labelStyle = {
-    fontSize: '14px',
+    fontSize: "14px",
     fontWeight: 500,
-    color: '#FFFFFF', // White text for better contrast with dark background
-    marginBottom: '8px',
+    color: "#FFFFFF", // White text for better contrast with dark background
+    marginBottom: "8px",
   };
 
   const valueStyle = {
-    position: 'absolute' as const,
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    fontSize: '14px',
+    position: "absolute" as const,
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    fontSize: "14px",
     fontWeight: 600,
-    color: '#FFFFFF', // White text for better contrast with dark background
+    color: "#FFFFFF", // White text for better contrast with dark background
   };
 
   return (
     <div className={className} style={containerStyle}>
-      {label && (
-        <div style={labelStyle}>
-          {label}
-        </div>
-      )}
-      <div style={{ 
-        position: 'relative', 
-        display: 'inline-block',
-        backgroundColor: 'var(--color-neutral-900)', // Ensure proper background color
-        borderRadius: '50%', // Make it circular to match the progress circle
-        width: sizeValue,
-        height: sizeValue,
-        minWidth: sizeValue,
-        minHeight: sizeValue
-      }}>
+      {label && <div style={labelStyle}>{label}</div>}
+      <div
+        style={{
+          position: "relative",
+          display: "inline-block",
+          backgroundColor: "var(--color-neutral-900)", // Ensure proper background color
+          borderRadius: "50%", // Make it circular to match the progress circle
+          width: sizeValue,
+          height: sizeValue,
+          minWidth: sizeValue,
+          minHeight: sizeValue,
+        }}
+      >
         <svg
           width={sizeValue}
           height={sizeValue}
           style={{
             ...svgStyle,
-            backgroundColor: 'var(--color-neutral-900)', // Ensure SVG has proper background
+            backgroundColor: "var(--color-neutral-900)", // Ensure SVG has proper background
           }}
         >
           {/* Background circle to ensure proper background color */}
@@ -226,15 +216,11 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
             strokeDashoffset={strokeDashoffset}
             strokeLinecap="round"
             style={{
-              transition: 'stroke-dashoffset 0.3s ease',
+              transition: "stroke-dashoffset 0.3s ease",
             }}
           />
         </svg>
-        {showValue && (
-          <div style={valueStyle}>
-            {Math.round(percentage)}%
-          </div>
-        )}
+        {showValue && <div style={valueStyle}>{Math.round(percentage)}%</div>}
       </div>
     </div>
   );

@@ -7,11 +7,14 @@ export type IconProps = React.SVGProps<SVGSVGElement> & {
 };
 
 const LockBoxEdge = React.forwardRef<SVGSVGElement, IconProps>(
-  ({ size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props }, ref) => {
-    const actualStrokeWidth = absoluteStrokeWidth 
-      ? strokeWidth 
+  (
+    { size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props },
+    ref,
+  ) => {
+    const actualStrokeWidth = absoluteStrokeWidth
+      ? strokeWidth
       : (Number(size) / 24) * Number(strokeWidth);
-    
+
     return (
       <svg
         ref={ref}
@@ -27,11 +30,11 @@ const LockBoxEdge = React.forwardRef<SVGSVGElement, IconProps>(
         strokeLinejoin="round"
         {...props}
       >
-        <path d="M26 6V20H38L22 42V28H10L26 6Z"/>
+        <path d="M26 6V20H38L22 42V28H10L26 6Z" />
       </svg>
     );
-  }
+  },
 );
 
 LockBoxEdge.displayName = "LockBoxEdge";
-export { LockBoxEdge }; 
+export { LockBoxEdge };

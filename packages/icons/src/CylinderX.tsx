@@ -7,11 +7,14 @@ export type IconProps = React.SVGProps<SVGSVGElement> & {
 };
 
 const CylinderX = React.forwardRef<SVGSVGElement, IconProps>(
-  ({ size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props }, ref) => {
-    const actualStrokeWidth = absoluteStrokeWidth 
-      ? strokeWidth 
+  (
+    { size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props },
+    ref,
+  ) => {
+    const actualStrokeWidth = absoluteStrokeWidth
+      ? strokeWidth
       : (Number(size) / 24) * Number(strokeWidth);
-    
+
     return (
       <svg
         ref={ref}
@@ -27,14 +30,14 @@ const CylinderX = React.forwardRef<SVGSVGElement, IconProps>(
         strokeLinejoin="round"
         {...props}
       >
-        <path d="M12 12C12 8.68629 14.6863 6 18 6H30C33.3137 6 36 8.68629 36 12V36C36 39.3137 33.3137 42 30 42H18C14.6863 42 12 39.3137 12 36V12Z"/>
-        <path d="M12 12C12 15.3137 14.6863 18 18 18H30C33.3137 18 36 15.3137 36 12"/>
-        <path d="M18 30L30 18"/>
-        <path d="M30 30L18 18"/>
+        <path d="M12 12C12 8.68629 14.6863 6 18 6H30C33.3137 6 36 8.68629 36 12V36C36 39.3137 33.3137 42 30 42H18C14.6863 42 12 39.3137 12 36V12Z" />
+        <path d="M12 12C12 15.3137 14.6863 18 18 18H30C33.3137 18 36 15.3137 36 12" />
+        <path d="M18 30L30 18" />
+        <path d="M30 30L18 18" />
       </svg>
     );
-  }
+  },
 );
 
 CylinderX.displayName = "CylinderX";
-export { CylinderX }; 
+export { CylinderX };

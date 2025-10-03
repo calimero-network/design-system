@@ -1,60 +1,61 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { RichTextEditor } from '@calimero-network/mero-ui';
-import { useState } from 'react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { RichTextEditor } from "@calimero-network/mero-ui";
+import { useState } from "react";
 
 const meta: Meta<typeof RichTextEditor> = {
-  title: 'Forms/RichTextEditor',
+  title: "Forms/RichTextEditor",
   component: RichTextEditor,
   parameters: {
-    layout: 'padded',
+    layout: "padded",
     docs: {
       description: {
-        component: 'A rich text editor component that allows users to create and edit HTML content with a toolbar for formatting options.',
+        component:
+          "A rich text editor component that allows users to create and edit HTML content with a toolbar for formatting options.",
       },
     },
   },
   argTypes: {
     value: {
-      control: 'text',
-      description: 'The HTML content value of the editor',
+      control: "text",
+      description: "The HTML content value of the editor",
     },
     placeholder: {
-      control: 'text',
-      description: 'Placeholder text when editor is empty',
+      control: "text",
+      description: "Placeholder text when editor is empty",
     },
     disabled: {
-      control: 'boolean',
-      description: 'Whether the editor is disabled',
+      control: "boolean",
+      description: "Whether the editor is disabled",
     },
     readOnly: {
-      control: 'boolean',
-      description: 'Whether the editor is read-only',
+      control: "boolean",
+      description: "Whether the editor is read-only",
     },
     error: {
-      control: 'boolean',
-      description: 'Whether the editor has an error state',
+      control: "boolean",
+      description: "Whether the editor has an error state",
     },
     size: {
-      control: 'select',
-      options: ['sm', 'md', 'lg'],
-      description: 'Size of the editor',
+      control: "select",
+      options: ["sm", "md", "lg"],
+      description: "Size of the editor",
     },
     variant: {
-      control: 'select',
-      options: ['default', 'filled', 'outlined'],
-      description: 'Visual variant of the editor',
+      control: "select",
+      options: ["default", "filled", "outlined"],
+      description: "Visual variant of the editor",
     },
     toolbar: {
-      control: 'boolean',
-      description: 'Whether to show the toolbar',
+      control: "boolean",
+      description: "Whether to show the toolbar",
     },
     minHeight: {
-      control: 'number',
-      description: 'Minimum height of the editor in pixels',
+      control: "number",
+      description: "Minimum height of the editor in pixels",
     },
     maxHeight: {
-      control: 'number',
-      description: 'Maximum height of the editor in pixels',
+      control: "number",
+      description: "Maximum height of the editor in pixels",
     },
   },
 };
@@ -65,25 +66,26 @@ type Story = StoryObj<typeof RichTextEditor>;
 // Basic usage
 export const Default: Story = {
   args: {
-    placeholder: 'Start typing your content here...',
-    label: 'Rich Text Editor',
-    helperText: 'Use the toolbar to format your text',
+    placeholder: "Start typing your content here...",
+    label: "Rich Text Editor",
+    helperText: "Use the toolbar to format your text",
   },
 };
 
 // With initial content
 export const WithContent: Story = {
   args: {
-    value: '<h2>Welcome to Rich Text Editor</h2><p>This is a <strong>bold</strong> text and this is <em>italic</em> text.</p><ul><li>First item</li><li>Second item</li></ul>',
-    placeholder: 'Start typing your content here...',
-    label: 'Rich Text Editor with Content',
+    value:
+      "<h2>Welcome to Rich Text Editor</h2><p>This is a <strong>bold</strong> text and this is <em>italic</em> text.</p><ul><li>First item</li><li>Second item</li></ul>",
+    placeholder: "Start typing your content here...",
+    label: "Rich Text Editor with Content",
   },
 };
 
 // Different sizes
 export const Sizes: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
       <div>
         <h3>Small</h3>
         <RichTextEditor
@@ -115,7 +117,7 @@ export const Sizes: Story = {
 // Different variants
 export const Variants: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
       <div>
         <h3>Default</h3>
         <RichTextEditor
@@ -147,13 +149,10 @@ export const Variants: Story = {
 // States
 export const States: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
       <div>
         <h3>Normal</h3>
-        <RichTextEditor
-          placeholder="Normal state..."
-          label="Normal State"
-        />
+        <RichTextEditor placeholder="Normal state..." label="Normal State" />
       </div>
       <div>
         <h3>Error</h3>
@@ -188,9 +187,9 @@ export const States: Story = {
 export const WithoutToolbar: Story = {
   args: {
     toolbar: false,
-    placeholder: 'Editor without toolbar...',
-    label: 'No Toolbar',
-    helperText: 'This editor has no toolbar - only basic text editing',
+    placeholder: "Editor without toolbar...",
+    label: "No Toolbar",
+    helperText: "This editor has no toolbar - only basic text editing",
   },
 };
 
@@ -198,49 +197,55 @@ export const WithoutToolbar: Story = {
 export const CustomToolbar: Story = {
   args: {
     customToolbar: (
-      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+      <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
         <button
-          onClick={() => document.execCommand('bold')}
+          onClick={() => document.execCommand("bold")}
           style={{
-            padding: '6px 12px',
-            backgroundColor: '#404040',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
+            padding: "6px 12px",
+            backgroundColor: "#404040",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
           }}
         >
           Bold
         </button>
         <button
-          onClick={() => document.execCommand('italic')}
+          onClick={() => document.execCommand("italic")}
           style={{
-            padding: '6px 12px',
-            backgroundColor: '#404040',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
+            padding: "6px 12px",
+            backgroundColor: "#404040",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
           }}
         >
           Italic
         </button>
-        <div style={{ width: '1px', height: '20px', backgroundColor: '#404040' }} />
-        <span style={{ color: '#A0A0A0', fontSize: '14px' }}>Custom Toolbar</span>
+        <div
+          style={{ width: "1px", height: "20px", backgroundColor: "#404040" }}
+        />
+        <span style={{ color: "#A0A0A0", fontSize: "14px" }}>
+          Custom Toolbar
+        </span>
       </div>
     ),
-    placeholder: 'Editor with custom toolbar...',
-    label: 'Custom Toolbar',
+    placeholder: "Editor with custom toolbar...",
+    label: "Custom Toolbar",
   },
 };
 
 // Controlled component
 export const Controlled: Story = {
   render: () => {
-    const [value, setValue] = useState('<p>This is a controlled editor. Try editing the content!</p>');
-    
+    const [value, setValue] = useState(
+      "<p>This is a controlled editor. Try editing the content!</p>",
+    );
+
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
         <RichTextEditor
           value={value}
           onChange={setValue}
@@ -252,13 +257,13 @@ export const Controlled: Story = {
           <h4>Current HTML Value:</h4>
           <pre
             style={{
-              backgroundColor: '#1A1A1A',
-              padding: '12px',
-              borderRadius: '8px',
-              color: '#FFFFFF',
-              fontSize: '12px',
-              overflow: 'auto',
-              maxHeight: '200px',
+              backgroundColor: "#1A1A1A",
+              padding: "12px",
+              borderRadius: "8px",
+              color: "#FFFFFF",
+              fontSize: "12px",
+              overflow: "auto",
+              maxHeight: "200px",
             }}
           >
             {value}
@@ -268,10 +273,10 @@ export const Controlled: Story = {
           <h4>Rendered Content:</h4>
           <div
             style={{
-              backgroundColor: '#1A1A1A',
-              padding: '12px',
-              borderRadius: '8px',
-              border: '1px solid #404040',
+              backgroundColor: "#1A1A1A",
+              padding: "12px",
+              borderRadius: "8px",
+              border: "1px solid #404040",
             }}
             dangerouslySetInnerHTML={{ __html: value }}
           />
@@ -286,9 +291,9 @@ export const WithHeightConstraints: Story = {
   args: {
     minHeight: 200,
     maxHeight: 300,
-    placeholder: 'This editor has height constraints...',
-    label: 'Height Constrained Editor',
-    helperText: 'Min height: 200px, Max height: 300px',
+    placeholder: "This editor has height constraints...",
+    label: "Height Constrained Editor",
+    helperText: "Min height: 200px, Max height: 300px",
   },
 };
 
@@ -296,38 +301,47 @@ export const WithHeightConstraints: Story = {
 export const FormIntegration: Story = {
   render: () => {
     const [formData, setFormData] = useState({
-      title: '',
-      content: '<p>Start writing your article...</p>',
+      title: "",
+      content: "<p>Start writing your article...</p>",
     });
 
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
-      alert(`Form submitted!\nTitle: ${formData.title}\nContent: ${formData.content}`);
+      alert(
+        `Form submitted!\nTitle: ${formData.title}\nContent: ${formData.content}`,
+      );
     };
 
     return (
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+      >
         <div>
-          <label style={{ display: 'block', marginBottom: '8px', color: '#FFFFFF' }}>
+          <label
+            style={{ display: "block", marginBottom: "8px", color: "#FFFFFF" }}
+          >
             Article Title
           </label>
           <input
             type="text"
             value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
             placeholder="Enter article title..."
             style={{
-              width: '100%',
-              padding: '8px 12px',
-              backgroundColor: 'transparent',
-              border: '1px solid #404040',
-              borderRadius: '12px',
-              color: '#FFFFFF',
-              fontSize: '16px',
+              width: "100%",
+              padding: "8px 12px",
+              backgroundColor: "transparent",
+              border: "1px solid #404040",
+              borderRadius: "12px",
+              color: "#FFFFFF",
+              fontSize: "16px",
             }}
           />
         </div>
-        
+
         <RichTextEditor
           value={formData.content}
           onChange={(content) => setFormData({ ...formData, content })}
@@ -335,19 +349,19 @@ export const FormIntegration: Story = {
           label="Article Content"
           helperText="Use the toolbar to format your article"
         />
-        
+
         <button
           type="submit"
           style={{
-            padding: '12px 24px',
-            backgroundColor: '#A5FF11',
-            color: '#000000',
-            border: 'none',
-            borderRadius: '12px',
-            fontSize: '16px',
-            fontWeight: '600',
-            cursor: 'pointer',
-            alignSelf: 'flex-start',
+            padding: "12px 24px",
+            backgroundColor: "#A5FF11",
+            color: "#000000",
+            border: "none",
+            borderRadius: "12px",
+            fontSize: "16px",
+            fontWeight: "600",
+            cursor: "pointer",
+            alignSelf: "flex-start",
           }}
         >
           Submit Article
@@ -360,11 +374,124 @@ export const FormIntegration: Story = {
 // Send on Enter demo
 export const SendOnEnter: Story = {
   render: () => {
-    const [value, setValue] = useState('');
-    const [sent, setSent] = useState<string[]>([]);
+    const [value, setValue] = useState("");
+    const [messages, setMessages] = useState<
+      { id: number; html: string; direction: "in" | "out"; at: string }[]
+    >([]);
+    const now = () =>
+      new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    const addIncoming = () => {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: prev.length + 1,
+          html: "<p>This is an incoming message.</p>",
+          direction: "in",
+          at: now(),
+        },
+      ]);
+    };
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: 640 }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 12,
+          width: 800,
+        }}
+      >
+        <div style={{ padding: "8px 4px", color: "#C8C8C8", fontSize: 12 }}>
+          Channel: #general
+        </div>
+        <div
+          style={{
+            height: 420,
+            overflow: "auto",
+            padding: "8px 12px",
+            border: "1px solid #2A2A2A",
+            borderRadius: 12,
+            backgroundColor: "#0E0E0E",
+            display: "flex",
+            flexDirection: "column",
+            gap: 12,
+          }}
+        >
+          {messages.length === 0 && (
+            <div
+              style={{ color: "#A0A0A0", textAlign: "center", marginTop: 24 }}
+            >
+              No messages yet
+            </div>
+          )}
+          <style>{`
+            .msg-row { display: flex; gap: 10px; align-items: flex-start; }
+            .msg-row.out { justify-content: flex-end; }
+            .msg-avatar {
+              width: 28px; height: 28px; border-radius: 6px;
+              background: #2C2C2C; color: #EEE; display: flex; align-items: center; justify-content: center;
+              font-size: 14px; font-weight: 700; flex: 0 0 auto;
+            }
+            .msg-meta { color: #B5B5B5; font-size: 12px; margin-bottom: 2px; }
+            .msg-bubble {
+              max-width: 68%; padding: 8px 10px; border-radius: 8px; border: 1px solid #2E2E2E;
+              background: #151515; color: #F2F2F2;
+            }
+            .msg-row.out .msg-bubble { background: #1F1F1F; border-color: #333; }
+            .msg-content p { margin: 0 0 6px 0; }
+            .msg-content ul, .msg-content ol { margin: 4px 0 6px 16px; }
+            .msg-content li { margin: 2px 0; }
+            .msg-content code { background: #1E1E1E; padding: 1px 4px; border-radius: 4px; }
+            .msg-content pre { background: #111; padding: 8px; border-radius: 6px; overflow: auto; }
+            .msg-content blockquote {
+              margin: 6px 0; padding: 6px 10px; border-left: 3px solid #A5FF11; background: #111;
+            }
+            .msg-time { font-size: 11px; color: #9A9A9A; margin-left: 6px; }
+          `}</style>
+          {messages.map((m) => {
+            const isOut = m.direction === "out";
+            const initials = isOut ? "ME" : "AI";
+            const name = isOut ? "You" : "Assistant";
+            return (
+              <div key={m.id} className={`msg-row ${isOut ? "out" : ""}`}>
+                {!isOut && <div className="msg-avatar">{initials}</div>}
+                <div>
+                  <div className="msg-meta">
+                    <span>{name}</span>
+                    <span className="msg-time">{m.at}</span>
+                  </div>
+                  <div className="msg-bubble">
+                    <div
+                      className="msg-content"
+                      dangerouslySetInnerHTML={{ __html: m.html }}
+                    />
+                  </div>
+                </div>
+                {isOut && <div className="msg-avatar">{initials}</div>}
+              </div>
+            );
+          })}
+        </div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <button
+            type="button"
+            onClick={addIncoming}
+            style={{
+              padding: "8px 12px",
+              backgroundColor: "#1A1A1A",
+              color: "#FFFFFF",
+              border: "1px solid #404040",
+              borderRadius: 8,
+              cursor: "pointer",
+            }}
+          >
+            Simulate incoming
+          </button>
+          <div style={{ color: "#A0A0A0", alignSelf: "center" }}>
+            Enter sends, Shift+Enter newline. Toggle list/quote to test
+            behaviors.
+          </div>
+        </div>
         <RichTextEditor
           value={value}
           onChange={setValue}
@@ -372,33 +499,18 @@ export const SendOnEnter: Story = {
           label="Chat Input"
           sendOnEnter
           clearOnSend
-          mobileSendButton
-          sendButtonLabel="Send"
           onSend={(html) => {
-            setSent((prev) => [html, ...prev]);
+            setMessages((prev) => [
+              ...prev,
+              {
+                id: prev.length + 1,
+                html,
+                direction: "out",
+                at: now(),
+              },
+            ]);
           }}
         />
-        <div>
-          <h4>Sent messages</h4>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {sent.length === 0 && (
-              <span style={{ color: '#A0A0A0' }}>No messages yet. Type and press Enter.</span>
-            )}
-            {sent.map((m, i) => (
-              <div
-                key={i}
-                style={{
-                  backgroundColor: '#1A1A1A',
-                  padding: '12px',
-                  borderRadius: 8,
-                  border: '1px solid #404040',
-                }}
-              >
-                <div dangerouslySetInnerHTML={{ __html: m }} />
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     );
   },

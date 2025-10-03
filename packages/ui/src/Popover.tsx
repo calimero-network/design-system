@@ -1,13 +1,25 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { tokens } from '@calimero-network/mero-tokens';
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { tokens } from "@calimero-network/mero-tokens";
 
 interface PopoverProps {
   children: React.ReactNode;
   content: React.ReactNode;
   isOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
-  placement?: 'top' | 'bottom' | 'left' | 'right' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end' | 'right-start' | 'right-end';
-  trigger?: 'click' | 'hover' | 'focus';
+  placement?:
+    | "top"
+    | "bottom"
+    | "left"
+    | "right"
+    | "top-start"
+    | "top-end"
+    | "bottom-start"
+    | "bottom-end"
+    | "left-start"
+    | "left-end"
+    | "right-start"
+    | "right-end";
+  trigger?: "click" | "hover" | "focus";
   disabled?: boolean;
   closeOnClickOutside?: boolean;
   closeOnEscape?: boolean;
@@ -20,12 +32,12 @@ export const Popover: React.FC<PopoverProps> = ({
   content,
   isOpen: controlledIsOpen,
   onOpenChange,
-  placement = 'bottom',
-  trigger = 'click',
+  placement = "bottom",
+  trigger = "click",
   disabled = false,
   closeOnClickOutside = true,
   closeOnEscape = true,
-  className = '',
+  className = "",
   style = {},
 }) => {
   const [internalIsOpen, setInternalIsOpen] = useState(false);
@@ -34,7 +46,8 @@ export const Popover: React.FC<PopoverProps> = ({
   const popoverRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<number | undefined>(undefined);
 
-  const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen;
+  const isOpen =
+    controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen;
 
   const updatePosition = useCallback(() => {
     if (!triggerRef.current || !popoverRef.current) return;
@@ -42,57 +55,70 @@ export const Popover: React.FC<PopoverProps> = ({
     const triggerRect = triggerRef.current.getBoundingClientRect();
     const popoverRect = popoverRef.current.getBoundingClientRect();
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    const scrollLeft =
+      window.pageXOffset || document.documentElement.scrollLeft;
 
     let top = 0;
     let left = 0;
 
     switch (placement) {
-      case 'top':
+      case "top":
         top = triggerRect.top + scrollTop - popoverRect.height - 8;
-        left = triggerRect.left + scrollLeft + (triggerRect.width - popoverRect.width) / 2;
+        left =
+          triggerRect.left +
+          scrollLeft +
+          (triggerRect.width - popoverRect.width) / 2;
         break;
-      case 'top-start':
+      case "top-start":
         top = triggerRect.top + scrollTop - popoverRect.height - 8;
         left = triggerRect.left + scrollLeft;
         break;
-      case 'top-end':
+      case "top-end":
         top = triggerRect.top + scrollTop - popoverRect.height - 8;
         left = triggerRect.right + scrollLeft - popoverRect.width;
         break;
-      case 'bottom':
+      case "bottom":
         top = triggerRect.bottom + scrollTop + 8;
-        left = triggerRect.left + scrollLeft + (triggerRect.width - popoverRect.width) / 2;
+        left =
+          triggerRect.left +
+          scrollLeft +
+          (triggerRect.width - popoverRect.width) / 2;
         break;
-      case 'bottom-start':
+      case "bottom-start":
         top = triggerRect.bottom + scrollTop + 8;
         left = triggerRect.left + scrollLeft;
         break;
-      case 'bottom-end':
+      case "bottom-end":
         top = triggerRect.bottom + scrollTop + 8;
         left = triggerRect.right + scrollLeft - popoverRect.width;
         break;
-      case 'left':
-        top = triggerRect.top + scrollTop + (triggerRect.height - popoverRect.height) / 2;
+      case "left":
+        top =
+          triggerRect.top +
+          scrollTop +
+          (triggerRect.height - popoverRect.height) / 2;
         left = triggerRect.left + scrollLeft - popoverRect.width - 8;
         break;
-      case 'left-start':
+      case "left-start":
         top = triggerRect.top + scrollTop;
         left = triggerRect.left + scrollLeft - popoverRect.width - 8;
         break;
-      case 'left-end':
+      case "left-end":
         top = triggerRect.bottom + scrollTop - popoverRect.height;
         left = triggerRect.left + scrollLeft - popoverRect.width - 8;
         break;
-      case 'right':
-        top = triggerRect.top + scrollTop + (triggerRect.height - popoverRect.height) / 2;
+      case "right":
+        top =
+          triggerRect.top +
+          scrollTop +
+          (triggerRect.height - popoverRect.height) / 2;
         left = triggerRect.right + scrollLeft + 8;
         break;
-      case 'right-start':
+      case "right-start":
         top = triggerRect.top + scrollTop;
         left = triggerRect.right + scrollLeft + 8;
         break;
-      case 'right-end':
+      case "right-end":
         top = triggerRect.bottom + scrollTop - popoverRect.height;
         left = triggerRect.right + scrollLeft + 8;
         break;
@@ -120,7 +146,7 @@ export const Popover: React.FC<PopoverProps> = ({
   }, [onOpenChange]);
 
   const handleTriggerClick = () => {
-    if (trigger === 'click') {
+    if (trigger === "click") {
       if (isOpen) {
         closePopover();
       } else {
@@ -130,7 +156,7 @@ export const Popover: React.FC<PopoverProps> = ({
   };
 
   const handleTriggerMouseEnter = () => {
-    if (trigger === 'hover') {
+    if (trigger === "hover") {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -139,7 +165,7 @@ export const Popover: React.FC<PopoverProps> = ({
   };
 
   const handleTriggerMouseLeave = () => {
-    if (trigger === 'hover') {
+    if (trigger === "hover") {
       timeoutRef.current = window.setTimeout(() => {
         closePopover();
       }, 100);
@@ -147,13 +173,13 @@ export const Popover: React.FC<PopoverProps> = ({
   };
 
   const handlePopoverMouseEnter = () => {
-    if (trigger === 'hover' && timeoutRef.current) {
+    if (trigger === "hover" && timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
   };
 
   const handlePopoverMouseLeave = () => {
-    if (trigger === 'hover') {
+    if (trigger === "hover") {
       timeoutRef.current = window.setTimeout(() => {
         closePopover();
       }, 100);
@@ -161,7 +187,7 @@ export const Popover: React.FC<PopoverProps> = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape' && closeOnEscape) {
+    if (e.key === "Escape" && closeOnEscape) {
       closePopover();
     }
   };
@@ -187,8 +213,9 @@ export const Popover: React.FC<PopoverProps> = ({
     };
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [isOpen, closeOnClickOutside, closePopover]);
 
@@ -201,24 +228,28 @@ export const Popover: React.FC<PopoverProps> = ({
   }, []);
 
   const popoverStyle: React.CSSProperties = {
-    position: 'absolute',
+    position: "absolute",
     top: position.top,
     left: position.left,
     zIndex: 1000,
     backgroundColor: tokens.color.background.primary.value,
     border: `1px solid ${tokens.color.neutral[600].value}`,
     borderRadius: tokens.radius.md.value,
-    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-    padding: tokens.space['3'].value,
-    maxWidth: '300px',
+    boxShadow:
+      "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+    padding: tokens.space["3"].value,
+    maxWidth: "300px",
     opacity: isOpen ? 1 : 0,
-    visibility: isOpen ? 'visible' : 'hidden',
-    transition: 'opacity 0.2s ease, visibility 0.2s ease',
+    visibility: isOpen ? "visible" : "hidden",
+    transition: "opacity 0.2s ease, visibility 0.2s ease",
     ...style,
   };
 
   return (
-    <div className={className} style={{ position: 'relative', display: 'inline-block' }}>
+    <div
+      className={className}
+      style={{ position: "relative", display: "inline-block" }}
+    >
       <div
         ref={triggerRef}
         onClick={handleTriggerClick}
@@ -227,7 +258,7 @@ export const Popover: React.FC<PopoverProps> = ({
         onFocus={openPopover}
         onBlur={closePopover}
         onKeyDown={handleKeyDown}
-        style={{ display: 'inline-block' }}
+        style={{ display: "inline-block" }}
       >
         {children}
       </div>

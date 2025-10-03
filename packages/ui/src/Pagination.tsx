@@ -22,7 +22,7 @@ export function Pagination({
   maxVisiblePages = 5,
   className = "",
   style,
-  disabled = false
+  disabled = false,
 }: PaginationProps) {
   const getVisiblePages = () => {
     if (totalPages <= maxVisiblePages) {
@@ -42,7 +42,8 @@ export function Pagination({
 
   const visiblePages = getVisiblePages();
   const showFirstEllipsis = visiblePages[0] > 2;
-  const showLastEllipsis = visiblePages[visiblePages.length - 1] < totalPages - 1;
+  const showLastEllipsis =
+    visiblePages[visiblePages.length - 1] < totalPages - 1;
 
   const handlePageClick = (page: number) => {
     if (disabled || page === currentPage) return;
@@ -77,12 +78,12 @@ export function Pagination({
       aria-label="Pagination"
       className={className}
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '4px',
-        fontFamily: 'var(--font-body)',
-        ...style
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "4px",
+        fontFamily: "var(--font-body)",
+        ...style,
       }}
     >
       {showFirstLast && (
@@ -90,27 +91,43 @@ export function Pagination({
           variant="secondary"
           onClick={handleFirst}
           disabled={disabled || currentPage <= 1}
-          style={{ minWidth: '40px', height: '40px', padding: '0 8px' }}
+          style={{ minWidth: "40px", height: "40px", padding: "0 8px" }}
           aria-label="Go to first page"
           title="Go to first page"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-hidden="true"
+          >
             <polyline points="11,17 6,12 11,7" />
             <polyline points="18,17 13,12 18,7" />
           </svg>
         </Button>
       )}
-      
+
       {showPrevNext && (
         <Button
           variant="secondary"
           onClick={handlePrevious}
           disabled={disabled || currentPage <= 1}
-          style={{ minWidth: '40px', height: '40px', padding: '0 8px' }}
+          style={{ minWidth: "40px", height: "40px", padding: "0 8px" }}
           aria-label="Go to previous page"
           title="Go to previous page"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-hidden="true"
+          >
             <polyline points="15,18 9,12 15,6" />
           </svg>
         </Button>
@@ -122,24 +139,30 @@ export function Pagination({
             variant="secondary"
             onClick={() => handlePageClick(1)}
             disabled={disabled}
-            style={{ minWidth: '40px', height: '40px' }}
+            style={{ minWidth: "40px", height: "40px" }}
             aria-label="Go to page 1"
           >
             1
           </Button>
-          <span style={{ color: 'var(--color-neutral-400)', padding: '0 4px' }}>...</span>
+          <span style={{ color: "var(--color-neutral-400)", padding: "0 4px" }}>
+            ...
+          </span>
         </>
       )}
 
       {visiblePages.map((page) => (
         <Button
           key={page}
-          variant={page === currentPage ? 'primary' : 'secondary'}
+          variant={page === currentPage ? "primary" : "secondary"}
           onClick={() => handlePageClick(page)}
           disabled={disabled}
-          style={{ minWidth: '40px', height: '40px' }}
-          aria-label={page === currentPage ? `Current page, page ${page}` : `Go to page ${page}`}
-          aria-current={page === currentPage ? 'page' : undefined}
+          style={{ minWidth: "40px", height: "40px" }}
+          aria-label={
+            page === currentPage
+              ? `Current page, page ${page}`
+              : `Go to page ${page}`
+          }
+          aria-current={page === currentPage ? "page" : undefined}
         >
           {page}
         </Button>
@@ -147,12 +170,14 @@ export function Pagination({
 
       {showLastEllipsis && (
         <>
-          <span style={{ color: 'var(--color-neutral-400)', padding: '0 4px' }}>...</span>
+          <span style={{ color: "var(--color-neutral-400)", padding: "0 4px" }}>
+            ...
+          </span>
           <Button
             variant="secondary"
             onClick={() => handlePageClick(totalPages)}
             disabled={disabled}
-            style={{ minWidth: '40px', height: '40px' }}
+            style={{ minWidth: "40px", height: "40px" }}
             aria-label={`Go to page ${totalPages}`}
           >
             {totalPages}
@@ -165,11 +190,19 @@ export function Pagination({
           variant="secondary"
           onClick={handleNext}
           disabled={disabled || currentPage >= totalPages}
-          style={{ minWidth: '40px', height: '40px', padding: '0 8px' }}
+          style={{ minWidth: "40px", height: "40px", padding: "0 8px" }}
           aria-label="Go to next page"
           title="Go to next page"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-hidden="true"
+          >
             <polyline points="9,18 15,12 9,6" />
           </svg>
         </Button>
@@ -180,11 +213,19 @@ export function Pagination({
           variant="secondary"
           onClick={handleLast}
           disabled={disabled || currentPage >= totalPages}
-          style={{ minWidth: '40px', height: '40px', padding: '0 8px' }}
+          style={{ minWidth: "40px", height: "40px", padding: "0 8px" }}
           aria-label="Go to last page"
           title="Go to last page"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-hidden="true"
+          >
             <polyline points="13,17 18,12 13,7" />
             <polyline points="6,17 11,12 6,7" />
           </svg>

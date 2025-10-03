@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Text, Heading, Code, Link } from '@calimero-network/mero-ui';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Text, Heading, Code, Link } from "@calimero-network/mero-ui";
 
 const meta: Meta = {
-  title: 'Foundation/Typography',
+  title: "Foundation/Typography",
   parameters: {
-    layout: 'padded',
+    layout: "padded",
   },
 };
 
@@ -12,7 +12,7 @@ export default meta;
 
 export const TextVariants: StoryObj = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       <Text size="xs">Extra small text</Text>
       <Text size="sm">Small text</Text>
       <Text size="md">Medium text</Text>
@@ -24,7 +24,7 @@ export const TextVariants: StoryObj = {
 
 export const TextWeights: StoryObj = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
       <Text weight="normal">Normal weight text</Text>
       <Text weight="medium">Medium weight text</Text>
       <Text weight="semibold">Semibold weight text</Text>
@@ -35,7 +35,7 @@ export const TextWeights: StoryObj = {
 
 export const TextColors: StoryObj = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
       <Text color="primary">Primary text</Text>
       <Text color="secondary">Secondary text</Text>
       <Text color="muted">Muted text</Text>
@@ -48,7 +48,7 @@ export const TextColors: StoryObj = {
 
 export const Headings: StoryObj = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       <Heading level={1}>Heading 1</Heading>
       <Heading level={2}>Heading 2</Heading>
       <Heading level={3}>Heading 3</Heading>
@@ -61,9 +61,11 @@ export const Headings: StoryObj = {
 
 export const CodeExamples: StoryObj = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       <div>
-        <Text>Inline code: <Code>const example = "hello world"</Code></Text>
+        <Text>
+          Inline code: <Code>const example = "hello world"</Code>
+        </Text>
       </div>
       <Code variant="block" language="javascript">
         {`function greet(name) {
@@ -78,14 +80,28 @@ console.log(greet("World"));`}
 
 export const Links: StoryObj = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <Link href="#" variant="default">Default link</Link>
-      <Link href="#" variant="subtle">Subtle link</Link>
-      <Link href="#" variant="underline">Underline link</Link>
-      <Link href="#" color="success">Success link</Link>
-      <Link href="#" color="warning">Warning link</Link>
-      <Link href="#" color="error">Error link</Link>
-      <Link href="#" disabled>Disabled link</Link>
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+      <Link href="#" variant="default">
+        Default link
+      </Link>
+      <Link href="#" variant="subtle">
+        Subtle link
+      </Link>
+      <Link href="#" variant="underline">
+        Underline link
+      </Link>
+      <Link href="#" color="success">
+        Success link
+      </Link>
+      <Link href="#" color="warning">
+        Warning link
+      </Link>
+      <Link href="#" color="error">
+        Error link
+      </Link>
+      <Link href="#" disabled>
+        Disabled link
+      </Link>
     </div>
   ),
 };

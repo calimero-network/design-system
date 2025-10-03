@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Switch } from '@calimero-network/mero-ui';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Switch } from "@calimero-network/mero-ui";
 
 const meta: Meta<typeof Switch> = {
-  title: 'Forms/Switch',
+  title: "Forms/Switch",
   component: Switch,
-  parameters: { layout: 'centered' },
+  parameters: { layout: "centered" },
 };
 
 export default meta;
@@ -12,28 +12,28 @@ export default meta;
 type Story = StoryObj<typeof Switch>;
 
 export const Default: Story = {
-  args: { label: 'Enable notifications' },
+  args: { label: "Enable notifications" },
 };
 
 export const WithDescription: Story = {
   args: {
-    label: 'Dark mode',
-    description: 'Switch between light and dark themes',
+    label: "Dark mode",
+    description: "Switch between light and dark themes",
   },
 };
 
 export const Checked: Story = {
-  args: { label: 'Auto-save', defaultChecked: true },
+  args: { label: "Auto-save", defaultChecked: true },
 };
 
 export const Disabled: Story = {
-  args: { label: 'Disabled switch', disabled: true },
+  args: { label: "Disabled switch", disabled: true },
 };
 
 export const Small: Story = {
-  args: { label: 'Small switch', size: 'small' },
+  args: { label: "Small switch", size: "small" },
 };
 
 export const Large: Story = {
-  args: { label: 'Large switch', size: 'large' },
+  args: { label: "Large switch", size: "large" },
 };

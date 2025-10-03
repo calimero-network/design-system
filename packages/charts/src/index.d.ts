@@ -1,10 +1,18 @@
-import React from 'react';
+import React from "react";
 
 // Card primitives
-export declare function Card(props: React.PropsWithChildren<{ className?: string }>): JSX.Element;
-export declare function CardHeader(props: React.PropsWithChildren<{ className?: string }>): JSX.Element;
-export declare function CardTitle(props: React.PropsWithChildren<{ className?: string }>): JSX.Element;
-export declare function CardContent(props: React.PropsWithChildren<{ className?: string }>): JSX.Element;
+export declare function Card(
+  props: React.PropsWithChildren<{ className?: string }>,
+): JSX.Element;
+export declare function CardHeader(
+  props: React.PropsWithChildren<{ className?: string }>,
+): JSX.Element;
+export declare function CardTitle(
+  props: React.PropsWithChildren<{ className?: string }>,
+): JSX.Element;
+export declare function CardContent(
+  props: React.PropsWithChildren<{ className?: string }>,
+): JSX.Element;
 
 // Gauge chart
 export declare type Thresholds = { good: number; warn: number; bad: number };
@@ -41,7 +49,7 @@ export declare type PromVectorResult = {
   data: {
     resultType: "vector";
     result: Array<{ metric: Record<string, string>; value: [number, string] }>;
-  }
+  };
 };
 export declare function VectorTable(props: {
   vector: PromVectorResult;

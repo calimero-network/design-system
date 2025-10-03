@@ -1,5 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Grid, GridItem, Card, CardContent, Button } from "@calimero-network/mero-ui";
+import {
+  Grid,
+  GridItem,
+  Card,
+  CardContent,
+  Button,
+} from "@calimero-network/mero-ui";
 import { cssVariables } from "@calimero-network/mero-tokens";
 
 const withTokens = (Story: any) => (
@@ -10,37 +16,44 @@ const withTokens = (Story: any) => (
 );
 
 const meta: Meta<typeof Grid> = {
-  title: 'Layout/Grid',
+  title: "Layout/Grid",
   component: Grid,
   decorators: [withTokens],
   parameters: {
-    layout: 'padded',
+    layout: "padded",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     columns: {
-      control: { type: 'number', min: 1, max: 24 },
-      description: 'Number of columns in the grid'
+      control: { type: "number", min: 1, max: 24 },
+      description: "Number of columns in the grid",
     },
     gap: {
-      control: { type: 'number', min: 0, max: 48, step: 4 },
-      description: 'Gap between grid items in pixels'
+      control: { type: "number", min: 0, max: 48, step: 4 },
+      description: "Gap between grid items in pixels",
     },
     maxWidth: {
-      control: { type: 'text' },
-      description: 'Maximum width of the grid container'
+      control: { type: "text" },
+      description: "Maximum width of the grid container",
     },
     justify: {
-      control: { type: 'select' },
-      options: ['start', 'center', 'end', 'space-between', 'space-around', 'space-evenly'],
-      description: 'Horizontal alignment of grid content'
+      control: { type: "select" },
+      options: [
+        "start",
+        "center",
+        "end",
+        "space-between",
+        "space-around",
+        "space-evenly",
+      ],
+      description: "Horizontal alignment of grid content",
     },
     align: {
-      control: { type: 'select' },
-      options: ['start', 'center', 'end', 'stretch'],
-      description: 'Vertical alignment of grid content'
-    }
-  }
+      control: { type: "select" },
+      options: ["start", "center", "end", "stretch"],
+      description: "Vertical alignment of grid content",
+    },
+  },
 };
 
 export default meta;
@@ -48,18 +61,26 @@ export default meta;
 type Story = StoryObj<typeof Grid>;
 
 // Helper component for demo content
-const DemoCard = ({ children, color = '#404040' }: { children: React.ReactNode; color?: string }) => (
-  <Card variant="rectangle" color={color} style={{ minHeight: '80px' }}>
+const DemoCard = ({
+  children,
+  color = "#404040",
+}: {
+  children: React.ReactNode;
+  color?: string;
+}) => (
+  <Card variant="rectangle" color={color} style={{ minHeight: "80px" }}>
     <CardContent>
-      <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        height: '100%',
-        color: 'white',
-        fontSize: '14px',
-        fontWeight: '500'
-      }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100%",
+          color: "white",
+          fontSize: "14px",
+          fontWeight: "500",
+        }}
+      >
         {children}
       </div>
     </CardContent>
@@ -70,7 +91,7 @@ export const Basic: Story = {
   args: {
     columns: 12,
     gap: 16,
-    maxWidth: '100%'
+    maxWidth: "100%",
   },
   render: (args) => (
     <Grid {...args}>
@@ -90,7 +111,7 @@ export const Basic: Story = {
         <DemoCard color="#8B5CF6">4 columns</DemoCard>
       </GridItem>
     </Grid>
-  )
+  ),
 };
 
 export const ResponsiveLayout: Story = {
@@ -109,7 +130,7 @@ export const ResponsiveLayout: Story = {
         <DemoCard color="#6B7280">Full width footer</DemoCard>
       </GridItem>
     </Grid>
-  )
+  ),
 };
 
 export const CardGrid: Story = {
@@ -118,8 +139,12 @@ export const CardGrid: Story = {
       <GridItem>
         <Card variant="rectangle">
           <CardContent>
-            <h3 style={{ color: 'white', margin: '0 0 8px 0', fontSize: '16px' }}>Feature 1</h3>
-            <p style={{ color: '#9CA3AF', margin: 0, fontSize: '14px' }}>
+            <h3
+              style={{ color: "white", margin: "0 0 8px 0", fontSize: "16px" }}
+            >
+              Feature 1
+            </h3>
+            <p style={{ color: "#9CA3AF", margin: 0, fontSize: "14px" }}>
               This is a feature card with some description text.
             </p>
           </CardContent>
@@ -128,8 +153,12 @@ export const CardGrid: Story = {
       <GridItem>
         <Card variant="rectangle">
           <CardContent>
-            <h3 style={{ color: 'white', margin: '0 0 8px 0', fontSize: '16px' }}>Feature 2</h3>
-            <p style={{ color: '#9CA3AF', margin: 0, fontSize: '14px' }}>
+            <h3
+              style={{ color: "white", margin: "0 0 8px 0", fontSize: "16px" }}
+            >
+              Feature 2
+            </h3>
+            <p style={{ color: "#9CA3AF", margin: 0, fontSize: "14px" }}>
               Another feature card with different content.
             </p>
           </CardContent>
@@ -138,15 +167,19 @@ export const CardGrid: Story = {
       <GridItem>
         <Card variant="rectangle">
           <CardContent>
-            <h3 style={{ color: 'white', margin: '0 0 8px 0', fontSize: '16px' }}>Feature 3</h3>
-            <p style={{ color: '#9CA3AF', margin: 0, fontSize: '14px' }}>
+            <h3
+              style={{ color: "white", margin: "0 0 8px 0", fontSize: "16px" }}
+            >
+              Feature 3
+            </h3>
+            <p style={{ color: "#9CA3AF", margin: 0, fontSize: "14px" }}>
               Third feature card to complete the grid.
             </p>
           </CardContent>
         </Card>
       </GridItem>
     </Grid>
-  )
+  ),
 };
 
 export const ComplexLayout: Story = {
@@ -174,15 +207,23 @@ export const ComplexLayout: Story = {
         <DemoCard color="#DC2626">Card 3 - 4 cols</DemoCard>
       </GridItem>
     </Grid>
-  )
+  ),
 };
 
 export const Alignment: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
       <div>
-        <h3 style={{ color: 'white', marginBottom: '16px' }}>Center Alignment</h3>
-        <Grid columns={6} gap={12} justify="center" align="center" style={{ height: '120px', border: '1px dashed #404040' }}>
+        <h3 style={{ color: "white", marginBottom: "16px" }}>
+          Center Alignment
+        </h3>
+        <Grid
+          columns={6}
+          gap={12}
+          justify="center"
+          align="center"
+          style={{ height: "120px", border: "1px dashed #404040" }}
+        >
           <GridItem colSpan={2}>
             <DemoCard color="#3B82F6">Centered</DemoCard>
           </GridItem>
@@ -191,10 +232,15 @@ export const Alignment: Story = {
           </GridItem>
         </Grid>
       </div>
-      
+
       <div>
-        <h3 style={{ color: 'white', marginBottom: '16px' }}>Space Between</h3>
-        <Grid columns={6} gap={12} justify="space-between" style={{ height: '120px', border: '1px dashed #404040' }}>
+        <h3 style={{ color: "white", marginBottom: "16px" }}>Space Between</h3>
+        <Grid
+          columns={6}
+          gap={12}
+          justify="space-between"
+          style={{ height: "120px", border: "1px dashed #404040" }}
+        >
           <GridItem colSpan={2}>
             <DemoCard color="#F59E0B">Left</DemoCard>
           </GridItem>
@@ -204,7 +250,7 @@ export const Alignment: Story = {
         </Grid>
       </div>
     </div>
-  )
+  ),
 };
 
 export const GridItemProps: Story = {
@@ -226,5 +272,5 @@ export const GridItemProps: Story = {
         <DemoCard color="#8B5CF6">colSpan=3</DemoCard>
       </GridItem>
     </Grid>
-  )
+  ),
 };

@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Box, Text } from '@calimero-network/mero-ui';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Box, Text } from "@calimero-network/mero-ui";
 
 const meta: Meta = {
-  title: 'Layout/Box',
+  title: "Layout/Box",
   parameters: {
-    layout: 'padded',
+    layout: "padded",
   },
 };
 
@@ -20,15 +20,19 @@ export const Basic: StoryObj = {
 
 export const Sizes: StoryObj = {
   render: () => (
-    <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
       <Box padding="sm" backgroundColor="primary" borderRadius="sm">
-        <Text color="inverse" size="sm">Small</Text>
+        <Text color="inverse" size="sm">
+          Small
+        </Text>
       </Box>
       <Box padding="md" backgroundColor="primary" borderRadius="md">
         <Text color="inverse">Medium</Text>
       </Box>
       <Box padding="lg" backgroundColor="primary" borderRadius="lg">
-        <Text color="inverse" size="lg">Large</Text>
+        <Text color="inverse" size="lg">
+          Large
+        </Text>
       </Box>
     </div>
   ),
@@ -36,21 +40,36 @@ export const Sizes: StoryObj = {
 
 export const Flexbox: StoryObj = {
   render: () => (
-    <Box 
-      display="flex" 
-      gap="md" 
-      padding="lg" 
-      backgroundColor="muted" 
+    <Box
+      display="flex"
+      gap="md"
+      padding="lg"
+      backgroundColor="muted"
       borderRadius="md"
-      style={{ height: '200px' }}
+      style={{ height: "200px" }}
     >
-      <Box padding="md" backgroundColor="primary" borderRadius="md" style={{ flex: 1 }}>
+      <Box
+        padding="md"
+        backgroundColor="primary"
+        borderRadius="md"
+        style={{ flex: 1 }}
+      >
         <Text color="inverse">Flex 1</Text>
       </Box>
-      <Box padding="md" backgroundColor="success" borderRadius="md" style={{ flex: 2 }}>
+      <Box
+        padding="md"
+        backgroundColor="success"
+        borderRadius="md"
+        style={{ flex: 2 }}
+      >
         <Text color="inverse">Flex 2</Text>
       </Box>
-      <Box padding="md" backgroundColor="warning" borderRadius="md" style={{ flex: 1 }}>
+      <Box
+        padding="md"
+        backgroundColor="warning"
+        borderRadius="md"
+        style={{ flex: 1 }}
+      >
         <Text color="inverse">Flex 1</Text>
       </Box>
     </Box>
@@ -59,7 +78,7 @@ export const Flexbox: StoryObj = {
 
 export const Shadows: StoryObj = {
   render: () => (
-    <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+    <div style={{ display: "flex", gap: "24px", alignItems: "center" }}>
       <Box padding="lg" backgroundColor="primary" borderRadius="md" shadow="sm">
         <Text color="inverse">Small shadow</Text>
       </Box>
@@ -75,14 +94,32 @@ export const Shadows: StoryObj = {
 
 export const Borders: StoryObj = {
   render: () => (
-    <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-      <Box padding="md" backgroundColor="primary" borderRadius="md" border="thin" borderColor="default">
+    <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+      <Box
+        padding="md"
+        backgroundColor="primary"
+        borderRadius="md"
+        border="thin"
+        borderColor="default"
+      >
         <Text color="inverse">Thin border</Text>
       </Box>
-      <Box padding="md" backgroundColor="primary" borderRadius="md" border="medium" borderColor="success">
+      <Box
+        padding="md"
+        backgroundColor="primary"
+        borderRadius="md"
+        border="medium"
+        borderColor="success"
+      >
         <Text color="inverse">Medium border</Text>
       </Box>
-      <Box padding="md" backgroundColor="primary" borderRadius="md" border="thick" borderColor="error">
+      <Box
+        padding="md"
+        backgroundColor="primary"
+        borderRadius="md"
+        border="thick"
+        borderColor="error"
+      >
         <Text color="inverse">Thick border</Text>
       </Box>
     </div>

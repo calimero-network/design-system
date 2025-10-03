@@ -7,11 +7,14 @@ export type IconProps = React.SVGProps<SVGSVGElement> & {
 };
 
 const Cube3DStacked = React.forwardRef<SVGSVGElement, IconProps>(
-  ({ size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props }, ref) => {
-    const actualStrokeWidth = absoluteStrokeWidth 
-      ? strokeWidth 
+  (
+    { size = 24, strokeWidth = 1.5, absoluteStrokeWidth = false, ...props },
+    ref,
+  ) => {
+    const actualStrokeWidth = absoluteStrokeWidth
+      ? strokeWidth
       : (Number(size) / 24) * Number(strokeWidth);
-    
+
     return (
       <svg
         ref={ref}
@@ -27,14 +30,14 @@ const Cube3DStacked = React.forwardRef<SVGSVGElement, IconProps>(
         strokeLinejoin="round"
         {...props}
       >
-        <path d="M12 20L8 22L24 30L40 22L36 20"/>
-        <path d="M8 30L24 38L40 30"/>
-        <path d="M24 8V22"/>
-        <path d="M30 16L24 22L18 16"/>
+        <path d="M12 20L8 22L24 30L40 22L36 20" />
+        <path d="M8 30L24 38L40 30" />
+        <path d="M24 8V22" />
+        <path d="M30 16L24 22L18 16" />
       </svg>
     );
-  }
+  },
 );
 
 Cube3DStacked.displayName = "Cube3DStacked";
-export { Cube3DStacked }; 
+export { Cube3DStacked };

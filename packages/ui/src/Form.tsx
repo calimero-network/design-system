@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useCallback } from 'react';
-import { tokens } from '@calimero-network/mero-tokens';
+import React, { createContext, useContext, useCallback } from "react";
+import { tokens } from "@calimero-network/mero-tokens";
 
 interface FormContextValue {
   errors: Record<string, string>;
@@ -16,7 +16,7 @@ const FormContext = createContext<FormContextValue | null>(null);
 export const useFormContext = () => {
   const context = useContext(FormContext);
   if (!context) {
-    throw new Error('useFormContext must be used within a Form component');
+    throw new Error("useFormContext must be used within a Form component");
   }
   return context;
 };
@@ -35,7 +35,7 @@ export const Form: React.FC<FormProps> = ({
   onSubmit,
   validationSchema = {},
   children,
-  className = '',
+  className = "",
   style = {},
   ...props
 }) => {
@@ -43,37 +43,43 @@ export const Form: React.FC<FormProps> = ({
   const [errors, setErrors] = React.useState<Record<string, string>>({});
   const [touched, setTouched] = React.useState<Record<string, boolean>>({});
 
-  const setFieldValue = useCallback((name: string, value: any) => {
-    setValues(prev => ({ ...prev, [name]: value }));
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
-    }
-  }, [errors]);
+  const setFieldValue = useCallback(
+    (name: string, value: any) => {
+      setValues((prev) => ({ ...prev, [name]: value }));
+      // Clear error when user starts typing
+      if (errors[name]) {
+        setErrors((prev) => ({ ...prev, [name]: "" }));
+      }
+    },
+    [errors],
+  );
 
   const setFieldTouched = useCallback((name: string, isTouched: boolean) => {
-    setTouched(prev => ({ ...prev, [name]: isTouched }));
+    setTouched((prev) => ({ ...prev, [name]: isTouched }));
   }, []);
 
   const setFieldError = useCallback((name: string, error: string) => {
-    setErrors(prev => ({ ...prev, [name]: error }));
+    setErrors((prev) => ({ ...prev, [name]: error }));
   }, []);
 
-  const validateField = useCallback(async (name: string): Promise<string | undefined> => {
-    const validator = validationSchema[name];
-    if (!validator) return undefined;
-    
-    const error = validator(values[name]);
-    if (error) {
-      setFieldError(name, error);
-      return error;
-    }
-    return undefined;
-  }, [validationSchema, values, setFieldError]);
+  const validateField = useCallback(
+    async (name: string): Promise<string | undefined> => {
+      const validator = validationSchema[name];
+      if (!validator) return undefined;
+
+      const error = validator(values[name]);
+      if (error) {
+        setFieldError(name, error);
+        return error;
+      }
+      return undefined;
+    },
+    [validationSchema, values, setFieldError],
+  );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     // Validate all fields
     const validationErrors: Record<string, string> = {};
     for (const [fieldName, validator] of Object.entries(validationSchema)) {
@@ -82,12 +88,12 @@ export const Form: React.FC<FormProps> = ({
         validationErrors[fieldName] = error;
       }
     }
-    
+
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-    
+
     if (onSubmit) {
       await onSubmit(values);
     }
@@ -104,9 +110,9 @@ export const Form: React.FC<FormProps> = ({
   };
 
   const formStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: tokens.space['4'].value,
+    display: "flex",
+    flexDirection: "column",
+    gap: tokens.space["4"].value,
     ...style,
   };
 
@@ -124,7 +130,8 @@ export const Form: React.FC<FormProps> = ({
   );
 };
 
-interface FieldsetProps extends React.FieldsetHTMLAttributes<HTMLFieldSetElement> {
+interface FieldsetProps
+  extends React.FieldsetHTMLAttributes<HTMLFieldSetElement> {
   legend?: string;
   children: React.ReactNode;
   className?: string;
@@ -134,24 +141,24 @@ interface FieldsetProps extends React.FieldsetHTMLAttributes<HTMLFieldSetElement
 export const Fieldset: React.FC<FieldsetProps> = ({
   legend,
   children,
-  className = '',
+  className = "",
   style = {},
   ...props
 }) => {
   const fieldsetStyle: React.CSSProperties = {
     border: `1px solid ${tokens.color.neutral[600].value}`,
     borderRadius: tokens.radius.md.value,
-    padding: tokens.space['4'].value,
+    padding: tokens.space["4"].value,
     margin: 0,
     ...style,
   };
 
   const legendStyle: React.CSSProperties = {
-    padding: `0 ${tokens.space['2'].value}`,
-    fontSize: '14px',
+    padding: `0 ${tokens.space["2"].value}`,
+    fontSize: "14px",
     fontWeight: 500,
-    color: '#FFFFFF', // White text for better contrast
-    fontFamily: 'var(--font-body)',
+    color: "#FFFFFF", // White text for better contrast
+    fontFamily: "var(--font-body)",
   };
 
   return (
@@ -176,31 +183,31 @@ export const FormField: React.FC<FormFieldProps> = ({
   label,
   required = false,
   children,
-  className = '',
+  className = "",
   style = {},
 }) => {
   const { errors, touched } = useFormContext();
   const hasError = touched[name] && errors[name];
 
   const fieldStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: tokens.space['2'].value,
+    display: "flex",
+    flexDirection: "column",
+    gap: tokens.space["2"].value,
     ...style,
   };
 
   const labelStyle: React.CSSProperties = {
-    fontSize: '14px',
+    fontSize: "14px",
     fontWeight: 500,
-    color: hasError ? tokens.color.semantic.error.value : '#FFFFFF', // White text for better contrast
-    fontFamily: 'var(--font-body)',
+    color: hasError ? tokens.color.semantic.error.value : "#FFFFFF", // White text for better contrast
+    fontFamily: "var(--font-body)",
   };
 
   const errorStyle: React.CSSProperties = {
-    fontSize: '12px',
+    fontSize: "12px",
     color: tokens.color.semantic.error.value,
-    marginTop: '4px', // Better spacing
-    fontFamily: 'var(--font-body)',
+    marginTop: "4px", // Better spacing
+    fontFamily: "var(--font-body)",
   };
 
   return (
@@ -208,41 +215,48 @@ export const FormField: React.FC<FormFieldProps> = ({
       {label && (
         <label style={labelStyle}>
           {label}
-          {required && <span style={{ color: tokens.color.semantic.error.value, marginLeft: '4px' }}>*</span>}
+          {required && (
+            <span
+              style={{
+                color: tokens.color.semantic.error.value,
+                marginLeft: "4px",
+              }}
+            >
+              *
+            </span>
+          )}
         </label>
       )}
       {children}
-      {hasError && (
-        <span style={errorStyle}>{errors[name]}</span>
-      )}
+      {hasError && <span style={errorStyle}>{errors[name]}</span>}
     </div>
   );
 };
 
 interface FormGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  direction?: 'row' | 'column';
-  gap?: 'sm' | 'md' | 'lg';
+  direction?: "row" | "column";
+  gap?: "sm" | "md" | "lg";
   className?: string;
   style?: React.CSSProperties;
 }
 
 export const FormGroup: React.FC<FormGroupProps> = ({
   children,
-  direction = 'column',
-  gap = 'md',
-  className = '',
+  direction = "column",
+  gap = "md",
+  className = "",
   style = {},
   ...props
 }) => {
   const gapMap = {
-    sm: tokens.space['2'].value,
-    md: tokens.space['4'].value,
-    lg: tokens.space['6'].value,
+    sm: tokens.space["2"].value,
+    md: tokens.space["4"].value,
+    lg: tokens.space["6"].value,
   };
 
   const groupStyle: React.CSSProperties = {
-    display: 'flex',
+    display: "flex",
     flexDirection: direction,
     gap: gapMap[gap],
     ...style,

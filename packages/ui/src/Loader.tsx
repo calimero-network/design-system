@@ -1,8 +1,8 @@
 import React from "react";
 
 type LoaderProps = {
-  size?: 'small' | 'medium' | 'large';
-  variant?: 'spinner' | 'dots' | 'pulse';
+  size?: "small" | "medium" | "large";
+  variant?: "spinner" | "dots" | "pulse";
   color?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -12,23 +12,23 @@ type LoaderProps = {
 };
 
 export function Loader({
-  size = 'medium',
-  variant = 'spinner',
-  color = 'var(--color-brand-600)',
+  size = "medium",
+  variant = "spinner",
+  color = "var(--color-brand-600)",
   className = "",
   style,
   fullScreen = false,
   overlay = false,
-  message
+  message,
 }: LoaderProps) {
   const getSizeStyles = () => {
     switch (size) {
-      case 'small':
-        return { width: '16px', height: '16px' };
-      case 'large':
-        return { width: '48px', height: '48px' };
+      case "small":
+        return { width: "16px", height: "16px" };
+      case "large":
+        return { width: "48px", height: "48px" };
       default: // medium
-        return { width: '24px', height: '24px' };
+        return { width: "24px", height: "24px" };
     }
   };
 
@@ -40,9 +40,9 @@ export function Loader({
         ...sizeStyles,
         border: `2px solid transparent`,
         borderTop: `2px solid ${color}`,
-        borderRadius: '50%',
-        animation: 'spin 1s linear infinite',
-        ...style
+        borderRadius: "50%",
+        animation: "spin 1s linear infinite",
+        ...style,
       }}
       className={className}
     />
@@ -51,10 +51,10 @@ export function Loader({
   const renderDots = () => (
     <div
       style={{
-        display: 'flex',
-        gap: '4px',
-        alignItems: 'center',
-        ...style
+        display: "flex",
+        gap: "4px",
+        alignItems: "center",
+        ...style,
       }}
       className={className}
     >
@@ -62,11 +62,11 @@ export function Loader({
         <div
           key={i}
           style={{
-            width: '8px',
-            height: '8px',
+            width: "8px",
+            height: "8px",
             backgroundColor: color,
-            borderRadius: '50%',
-            animation: `bounce 1.4s ease-in-out ${i * 0.16}s infinite both`
+            borderRadius: "50%",
+            animation: `bounce 1.4s ease-in-out ${i * 0.16}s infinite both`,
           }}
         />
       ))}
@@ -78,9 +78,9 @@ export function Loader({
       style={{
         ...sizeStyles,
         backgroundColor: color,
-        borderRadius: '50%',
-        animation: 'pulse 1.5s ease-in-out infinite',
-        ...style
+        borderRadius: "50%",
+        animation: "pulse 1.5s ease-in-out infinite",
+        ...style,
       }}
       className={className}
     />
@@ -88,9 +88,9 @@ export function Loader({
 
   const renderLoader = () => {
     switch (variant) {
-      case 'dots':
+      case "dots":
         return renderDots();
-      case 'pulse':
+      case "pulse":
         return renderPulse();
       default: // spinner
         return renderSpinner();
@@ -98,37 +98,33 @@ export function Loader({
   };
 
   const containerStyles: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '16px',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "16px",
     ...(fullScreen && {
-      position: 'fixed',
+      position: "fixed",
       top: 0,
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundColor: overlay ? 'rgba(0, 0, 0, 0.5)' : 'transparent',
-      zIndex: 9999
-    })
+      backgroundColor: overlay ? "rgba(0, 0, 0, 0.5)" : "transparent",
+      zIndex: 9999,
+    }),
   };
 
   const messageStyles: React.CSSProperties = {
-    fontSize: '14px',
-    color: 'var(--color-neutral-300)',
-    fontFamily: 'var(--font-body)',
-    textAlign: 'center'
+    fontSize: "14px",
+    color: "var(--color-neutral-300)",
+    fontFamily: "var(--font-body)",
+    textAlign: "center",
   };
 
   return (
     <div style={containerStyles}>
       {renderLoader()}
-      {message && (
-        <div style={messageStyles}>
-          {message}
-        </div>
-      )}
+      {message && <div style={messageStyles}>{message}</div>}
       <style>{`
         @keyframes spin {
           0% { transform: rotate(0deg); }
@@ -165,12 +161,12 @@ export function Loader({
 
 // Inline loader for smaller spaces
 export function InlineLoader({
-  size = 'small',
-  variant = 'spinner',
-  color = 'var(--color-brand-600)',
+  size = "small",
+  variant = "spinner",
+  color = "var(--color-brand-600)",
   className = "",
-  style
-}: Omit<LoaderProps, 'fullScreen' | 'overlay' | 'message'>) {
+  style,
+}: Omit<LoaderProps, "fullScreen" | "overlay" | "message">) {
   return (
     <Loader
       size={size}
@@ -186,11 +182,11 @@ export function InlineLoader({
 // Full screen loader with overlay
 export function FullScreenLoader({
   message = "Loading...",
-  variant = 'spinner',
-  color = 'var(--color-brand-600)',
+  variant = "spinner",
+  color = "var(--color-brand-600)",
   className = "",
-  style
-}: Omit<LoaderProps, 'fullScreen' | 'overlay' | 'size'>) {
+  style,
+}: Omit<LoaderProps, "fullScreen" | "overlay" | "size">) {
   return (
     <Loader
       message={message}
@@ -208,11 +204,11 @@ export function FullScreenLoader({
 // Page loader for route transitions
 export function PageLoader({
   message = "Loading page...",
-  variant = 'spinner',
-  color = 'var(--color-brand-600)',
+  variant = "spinner",
+  color = "var(--color-brand-600)",
   className = "",
-  style
-}: Omit<LoaderProps, 'fullScreen' | 'overlay' | 'size'>) {
+  style,
+}: Omit<LoaderProps, "fullScreen" | "overlay" | "size">) {
   return (
     <Loader
       message={message}
