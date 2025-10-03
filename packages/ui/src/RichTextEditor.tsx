@@ -65,6 +65,7 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(({
   const editorRef = useRef<HTMLDivElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [currentValue, setCurrentValue] = useState(value || defaultValue || '');
+  const lastSelectionRef = useRef<{ from: number; to: number } | null>(null);
 
   const editor = useEditor({
     extensions: [
@@ -91,6 +92,11 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(({
     },
     onSelectionUpdate: ({ editor }) => {
       const selection = window.getSelection();
+      // Track last selection positions to restore before toolbar actions
+      const state: any = editor.state;
+      if (state?.selection) {
+        lastSelectionRef.current = { from: state.selection.from, to: state.selection.to };
+      }
       onSelectionChange?.(selection);
     },
     editorProps: {
@@ -102,29 +108,39 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(({
         if (!sendOnEnter || disabled || readOnly) {
           return false;
         }
-        // If Shift+Enter, and we're inside a list, create a new list item
+        // Shift+Enter: when inside a list, create a new list item
         if (event.key === 'Enter' && event.shiftKey) {
           if (editor?.isActive('listItem')) {
             event.preventDefault();
-            const handled = editor
-              .chain()
-              .focus()
-              .splitListItem('listItem')
-              .run();
+            const state: any = editor.state;
+            const $from = state.selection.$from;
+            const isEmptyItem = $from.parent && $from.parent.textContent.length === 0;
+            if (isEmptyItem) {
+              // Exit list on empty item (like double Enter in lists)
+              const lifted = editor.chain().liftListItem('listItem').run();
+              if (!lifted) {
+                editor.chain().toggleBulletList().run();
+              }
+              return true;
+            }
+            const handled = editor.chain().splitListItem('listItem').run();
             if (handled) return true;
           }
-          // allow default behavior (hard break) otherwise
           return false;
         }
-        if (event.key === 'Enter' && !event.shiftKey) {
+        if (event.key === 'Enter') {
+          // Only send when cursor is in a TOP-LEVEL paragraph (depth === 1)
+          const state: any = editor?.state;
+          if (!state) return false;
+          const $from = state.selection.$from;
+          const inTopLevelParagraph = $from.depth === 1 && $from.parent && $from.parent.type && $from.parent.type.name === 'paragraph';
+          if (!inTopLevelParagraph) return false;
           event.preventDefault();
           const html = editor?.getHTML() ?? '';
           onSend?.(html);
           if (clearOnSend) {
             editor?.commands.clearContent();
           }
-          // keep focus in the editor
-          editor?.commands.focus();
           return true;
         }
         return false;
@@ -285,8 +301,17 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(({
 
   const executeCommand = useCallback((command: () => void) => {
     if (editor && !disabled && !readOnly) {
-      command();
+      // Use ProseMirror selection directly; it persists across blur
+      const sel: any = editor.state?.selection;
+      const from = sel?.from;
+      const to = sel?.to;
       editor.commands.focus();
+      if (typeof from === 'number' && typeof to === 'number') {
+        editor.commands.setTextSelection({ from, to });
+      } else if (lastSelectionRef.current) {
+        editor.commands.setTextSelection(lastSelectionRef.current);
+      }
+      command();
     }
   }, [editor, disabled, readOnly]);
 
@@ -321,9 +346,19 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(({
 
   const insertList = useCallback(() => {
     if (editor) {
-      editor.chain().focus().toggleBulletList().run();
+      executeCommand(() => {
+        const state: any = editor.state;
+        const $from = state?.selection?.$from;
+        const inParagraph = $from?.parent?.type?.name === 'paragraph';
+        const hasContentBeforeCursor = typeof $from?.parentOffset === 'number' && $from.parentOffset > 0;
+        const chain = editor.chain();
+        if (inParagraph && hasContentBeforeCursor) {
+          chain.splitBlock();
+        }
+        chain.toggleBulletList().run();
+      });
     }
-  }, [editor]);
+  }, [editor, executeCommand]);
 
   const insertQuote = useCallback(() => {
     if (editor) {
@@ -415,6 +450,13 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(({
           ...toolbarButtonStyle,
           backgroundColor: isActive ? tokens.color.brand[600].value : 'transparent',
         }}
+        onMouseDown={(e) => {
+          // Keep editor selection intact so actions apply at the cursor
+          e.preventDefault();
+          if (!(disabled || readOnly)) {
+            item.action?.();
+          }
+        }}
         onMouseEnter={(e) => {
           if (!isActive) {
             e.currentTarget.style.backgroundColor = tokens.color.neutral[700].value;
@@ -425,7 +467,6 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(({
             e.currentTarget.style.backgroundColor = 'transparent';
           }
         }}
-        onClick={item.action}
         disabled={disabled || readOnly}
         title={item.label}
       >
