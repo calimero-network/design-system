@@ -102,6 +102,20 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(({
         if (!sendOnEnter || disabled || readOnly) {
           return false;
         }
+        // If Shift+Enter, and we're inside a list, create a new list item
+        if (event.key === 'Enter' && event.shiftKey) {
+          if (editor?.isActive('listItem')) {
+            event.preventDefault();
+            const handled = editor
+              .chain()
+              .focus()
+              .splitListItem('listItem')
+              .run();
+            if (handled) return true;
+          }
+          // allow default behavior (hard break) otherwise
+          return false;
+        }
         if (event.key === 'Enter' && !event.shiftKey) {
           event.preventDefault();
           const html = editor?.getHTML() ?? '';
@@ -113,7 +127,6 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(({
           editor?.commands.focus();
           return true;
         }
-        // allow Shift+Enter to insert a newline via HardBreak
         return false;
       },
     },

@@ -372,6 +372,8 @@ export const SendOnEnter: Story = {
           label="Chat Input"
           sendOnEnter
           clearOnSend
+          mobileSendButton
+          sendButtonLabel="Send"
           onSend={(html) => {
             setSent((prev) => [html, ...prev]);
           }}
