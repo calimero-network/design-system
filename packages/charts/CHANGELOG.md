@@ -1,5 +1,19 @@
 # @calimero-network/mero-charts
 
+## 0.0.11
+
+### Patch Changes
+
+- Publish latest changes.
+- bf330c8: Fix workspace dependency references for proper external consumption
+  - Resolve workspace:\* references to actual version numbers during publishing
+  - Ensure external consumers can install packages without workspace reference errors
+  - Maintain local development workflow with workspace references
+
+- Updated dependencies
+- Updated dependencies [bf330c8]
+  - @calimero-network/mero-ui@0.3.7
+
 ## 0.0.10
 
 ### Patch Changes

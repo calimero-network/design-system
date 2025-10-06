@@ -1,5 +1,11 @@
 # @calimero-network/mero-icons
 
+## 0.0.5
+
+### Patch Changes
+
+- Publish latest changes.
+
 ## 0.0.4
 
 ### Patch Changes
