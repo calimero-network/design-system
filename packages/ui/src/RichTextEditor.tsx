@@ -497,6 +497,23 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
       }
     }, [editor, executeCommand]);
 
+    const insertOrderedList = useCallback(() => {
+      if (editor) {
+        executeCommand(() => {
+          const state: any = editor.state;
+          const $from = state?.selection?.$from;
+          const inParagraph = $from?.parent?.type?.name === "paragraph";
+          const hasContentBeforeCursor =
+            typeof $from?.parentOffset === "number" && $from.parentOffset > 0;
+          const chain = editor.chain();
+          if (inParagraph && hasContentBeforeCursor) {
+            chain.splitBlock();
+          }
+          chain.toggleOrderedList().run();
+        });
+      }
+    }, [editor, executeCommand]);
+
     const insertQuote = useCallback(() => {
       if (editor) {
         executeCommand(() => {
@@ -562,12 +579,12 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
         isActive: editor?.isActive("underline"),
       },
       { type: "separator" },
-      {
-        label: "Heading",
-        icon: "H",
-        action: insertHeading,
-        isActive: editor?.isActive("heading"),
-      },
+      // {
+      //   label: "Heading",
+      //   icon: "H",
+      //   action: insertHeading,
+      //   isActive: editor?.isActive("heading"),
+      // },
       {
         label: "List",
         icon: "•",
@@ -575,11 +592,17 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
         isActive: editor?.isActive("bulletList"),
       },
       {
-        label: "Quote",
-        icon: '"',
-        action: insertQuote,
-        isActive: editor?.isActive("blockquote"),
+        label: "Ordered List",
+        icon: "1.",
+        action: insertOrderedList,
+        isActive: editor?.isActive("orderedList"),
       },
+      // {
+      //   label: "Quote",
+      //   icon: '"',
+      //   action: insertQuote,
+      //   isActive: editor?.isActive("blockquote"),
+      // },
       {
         label: "Code",
         icon: "</>",
@@ -593,16 +616,16 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
         action: insertLink,
         isActive: editor?.isActive("link"),
       },
-      {
-        label: "Color",
-        icon: "A",
-        action: changeTextColor,
-      },
-      {
-        label: "Highlight",
-        icon: "H",
-        action: changeHighlightColor,
-      },
+      // {
+      //   label: "Color",
+      //   icon: "A",
+      //   action: changeTextColor,
+      // },
+      // {
+      //   label: "Highlight",
+      //   icon: "H",
+      //   action: changeHighlightColor,
+      // },
     ];
 
     const renderToolbarItem = useCallback(
