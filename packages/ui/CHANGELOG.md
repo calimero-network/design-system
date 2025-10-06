@@ -1,5 +1,11 @@
 # @calimero-network/mero-ui
 
+## 1.2.0
+
+### Minor Changes
+
+- 7c9371b: Reduce default rich text editor toolbar
+
 ## 1.1.0
 
 ### Minor Changes
