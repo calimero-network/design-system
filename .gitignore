@@ -3,7 +3,8 @@ dist
 .next
 .storybook-out
 .storybook-cache
-pnpm-lock.yaml 
+# keep lockfile in VCS for CI reproducibility
+#!pnpm-lock.yaml
 *storybook.log
 storybook-static
 
