@@ -85,6 +85,39 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
     );
     const lastSelectionRef = useRef<{ from: number; to: number } | null>(null);
 
+    // Function to clean up empty content
+    const cleanEmptyContent = (html: string): string => {
+      if (!html) return '';
+      
+      // Remove all empty paragraphs and normalize whitespace
+      let cleaned = html
+        .replace(/<p><\/p>/g, '')
+        .replace(/<p><br><\/p>/g, '')
+        .replace(/<p><br\/><\/p>/g, '')
+        .replace(/<p>\s*<\/p>/g, '')
+        .replace(/<p>\s*<br\s*\/?>\s*<\/p>/g, '')
+        .trim();
+      
+      // If only whitespace or empty tags remain, return empty string
+      if (!cleaned || cleaned === '<p></p>' || cleaned === '<p><br></p>' || cleaned === '<p><br/></p>') {
+        return '';
+      }
+      
+      return cleaned;
+    };
+
+    // Function to clean editor content directly
+    const cleanEditorContent = () => {
+      if (!editor) return;
+      
+      const html = editor.getHTML();
+      const cleaned = cleanEmptyContent(html);
+      
+      if (cleaned !== html) {
+        editor.commands.setContent(cleaned);
+      }
+    };
+
     const editor = useEditor({
       extensions: [
         StarterKit,
@@ -105,8 +138,23 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
       editable: !disabled && !readOnly,
       onUpdate: ({ editor }) => {
         const html = editor.getHTML();
-        setCurrentValue(html);
-        onChange?.(html);
+        const cleanedHtml = cleanEmptyContent(html);
+        
+        // Only update state if content actually changed
+        if (cleanedHtml !== currentValue) {
+          setCurrentValue(cleanedHtml);
+          onChange?.(cleanedHtml);
+        }
+        
+        // Only clean editor if it's truly empty (no content at all)
+        if (cleanedHtml === '' && html !== '') {
+          // Use setTimeout to avoid interfering with current operation
+          setTimeout(() => {
+            if (editor && editor.getHTML() !== '') {
+              editor.commands.setContent('');
+            }
+          }, 0);
+        }
       },
       onSelectionUpdate: ({ editor }) => {
         const selection = window.getSelection();
@@ -126,6 +174,7 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
           style: "outline: none; min-height: inherit;",
         },
         handleKeyDown: (_view, event) => {
+
           if (!sendOnEnter || disabled || readOnly) {
             return false;
           }
@@ -196,15 +245,19 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
 
     // Update editor content when external value changes
     useEffect(() => {
-      if (value !== undefined && editor && editor.getHTML() !== value) {
-        editor.commands.setContent(value);
+      if (value !== undefined && editor) {
+        const currentHtml = cleanEmptyContent(editor.getHTML());
+        const cleanedValue = cleanEmptyContent(value);
+        if (currentHtml !== cleanedValue) {
+          editor.commands.setContent(cleanedValue);
+        }
       }
     }, [value, editor]);
 
     // Update internal value when external value changes
     useEffect(() => {
       if (value !== undefined) {
-        setCurrentValue(value);
+        setCurrentValue(cleanEmptyContent(value));
       }
     }, [value]);
 
@@ -230,15 +283,21 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
     const variantStyles = {
       default: {
         backgroundColor: "#111111",
-        border: `1px solid ${error ? tokens.color.semantic.error.value : "#2A2A2A"}`,
+        borderWidth: "1px",
+        borderStyle: "solid",
+        borderColor: error ? tokens.color.semantic.error.value : "#2A2A2A",
       },
       filled: {
         backgroundColor: "#121212",
-        border: `1px solid ${error ? tokens.color.semantic.error.value : "#1F1F1F"}`,
+        borderWidth: "1px",
+        borderStyle: "solid",
+        borderColor: error ? tokens.color.semantic.error.value : "#1F1F1F",
       },
       outlined: {
         backgroundColor: "#0F0F0F",
-        border: `1px solid ${error ? tokens.color.semantic.error.value : "#303033"}`,
+        borderWidth: "1px",
+        borderStyle: "solid",
+        borderColor: error ? tokens.color.semantic.error.value : "#303033",
       },
     };
 
@@ -305,8 +364,9 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
       gap: "6px",
       padding: "6px 8px",
       backgroundColor: "transparent",
-      border: "none",
-      borderBottom: "1px solid #222",
+      borderWidth: "0 0 1px 0",
+      borderStyle: "none none solid none",
+      borderColor: "transparent transparent #222 transparent",
       borderRadius: `${tokens.radius.md.value} ${tokens.radius.md.value} 0 0`,
       flexWrap: "wrap",
     };
@@ -317,7 +377,9 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
       justifyContent: "center",
       padding: "6px 8px",
       backgroundColor: "transparent",
-      border: "1px solid transparent",
+      borderWidth: "1px",
+      borderStyle: "solid",
+      borderColor: "transparent",
       borderRadius: "6px",
       color: "#EDEDED",
       cursor: "pointer",
@@ -353,9 +415,17 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
     const handleBlur = useCallback(
       (e: React.FocusEvent<HTMLDivElement>) => {
         setIsFocused(false);
+        // Only clean up if editor is truly empty
+        if (editor) {
+          const html = editor.getHTML();
+          const cleaned = cleanEmptyContent(html);
+          if (cleaned === '' && html !== '') {
+            editor.commands.setContent('');
+          }
+        }
         onBlur?.(e);
       },
-      [onBlur],
+      [onBlur, editor],
     );
 
     const executeCommand = useCallback(
@@ -464,7 +534,8 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
         }
       },
       getHTML: () => {
-        return editor?.getHTML() || "";
+        const html = editor?.getHTML() || "";
+        return cleanEmptyContent(html);
       },
     }), [editor, disabled, readOnly]);
 

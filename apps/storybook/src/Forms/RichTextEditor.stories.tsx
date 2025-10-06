@@ -518,6 +518,74 @@ export const WithEmojiInsertion: Story = {
   },
 };
 
+// Test empty content cleanup
+export const EmptyContentCleanup: Story = {
+  render: () => {
+    const [value, setValue] = useState("<p>Type some text and then delete it all!</p>");
+    const editorRef = useRef<any>(null);
+
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <div>
+          <h3>Empty Content Cleanup Test</h3>
+          <p style={{ color: "#A0A0A0", marginBottom: "16px" }}>
+            Type some text, then delete it all. The editor should be truly empty (no &lt;p&gt;&lt;/p&gt; tags).
+          </p>
+        </div>
+        
+        <RichTextEditor
+          ref={editorRef}
+          value={value}
+          onChange={setValue}
+          placeholder="Type and delete to test cleanup..."
+          label="Empty Content Test"
+          helperText="Delete all text to see the cleanup in action"
+        />
+
+        <div>
+          <h4>Current HTML Value:</h4>
+          <pre
+            style={{
+              backgroundColor: "#1A1A1A",
+              padding: "12px",
+              borderRadius: "8px",
+              color: "#FFFFFF",
+              fontSize: "12px",
+              overflow: "auto",
+              maxHeight: "200px",
+              border: "1px solid #404040",
+            }}
+          >
+            {value || "(empty)"}
+          </pre>
+          <p style={{ color: "#A0A0A0", fontSize: "12px", marginTop: "8px" }}>
+            When empty, this should show "(empty)" instead of &lt;p&gt;&lt;/p&gt;
+          </p>
+        </div>
+
+        <button
+          onClick={() => {
+            const html = editorRef.current?.getHTML();
+            console.log("Current HTML:", html);
+            console.log("Is empty:", html === "" || html === "<p></p>");
+          }}
+          style={{
+            padding: "8px 16px",
+            backgroundColor: "#404040",
+            color: "#FFFFFF",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+            alignSelf: "flex-start",
+          }}
+        >
+          Log Current HTML to Console
+        </button>
+      </div>
+    );
+  },
+};
+
 // Send on Enter demo
 export const SendOnEnter: Story = {
   render: () => {
@@ -648,6 +716,7 @@ export const SendOnEnter: Story = {
           sendOnEnter
           clearOnSend
           onSend={(html) => {
+            console.log("html", html);
             setMessages((prev) => [
               ...prev,
               {
