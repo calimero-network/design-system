@@ -609,13 +609,13 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
         action: insertCode,
         isActive: editor?.isActive("codeBlock"),
       },
-      { type: "separator" },
-      {
-        label: "Link",
-        icon: "🔗",
-        action: insertLink,
-        isActive: editor?.isActive("link"),
-      },
+      // { type: "separator" },
+      // {
+      //   label: "Link",
+      //   icon: "🔗",
+      //   action: insertLink,
+      //   isActive: editor?.isActive("link"),
+      // },
       // {
       //   label: "Color",
       //   icon: "A",
