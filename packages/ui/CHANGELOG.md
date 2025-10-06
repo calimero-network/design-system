@@ -1,5 +1,11 @@
 # @calimero-network/mero-ui
 
+## 1.3.0
+
+### Minor Changes
+
+- 5d8b26d: Remove link from rich text editor toolbar
+
 ## 1.2.0
 
 ### Minor Changes
