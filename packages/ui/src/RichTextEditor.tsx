@@ -42,7 +42,13 @@ export interface RichTextEditorProps {
   customToolbar?: React.ReactNode;
 }
 
-export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
+export interface RichTextEditorRef {
+  insertContent: (content: string) => void;
+  focus: () => void;
+  getHTML: () => string;
+}
+
+export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(
   (
     {
       value,
@@ -201,6 +207,7 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
         setCurrentValue(value);
       }
     }, [value]);
+
 
     const sizeStyles = {
       sm: {
@@ -443,6 +450,24 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
       }
     }, [editor]);
 
+    // Expose methods via ref
+    React.useImperativeHandle(ref, () => ({
+      insertContent: (content: string) => {
+        if (editor && !disabled && !readOnly) {
+          editor.commands.focus();
+          editor.commands.insertContent(content);
+        }
+      },
+      focus: () => {
+        if (editor) {
+          editor.commands.focus();
+        }
+      },
+      getHTML: () => {
+        return editor?.getHTML() || "";
+      },
+    }), [editor, disabled, readOnly]);
+
     const toolbarItems = [
       {
         label: "Bold",
@@ -584,7 +609,7 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
         {customToolbar && <div style={toolbarStyle}>{customToolbar}</div>}
 
         <div
-          ref={ref || editorRef}
+          ref={editorRef}
           style={editorStyle}
           onFocus={handleFocus}
           onBlur={handleBlur}

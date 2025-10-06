@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { RichTextEditor } from "@calimero-network/mero-ui";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const meta: Meta<typeof RichTextEditor> = {
   title: "Forms/RichTextEditor",
@@ -241,7 +241,7 @@ export const CustomToolbar: Story = {
 export const Controlled: Story = {
   render: () => {
     const [value, setValue] = useState(
-      "<p>This is a controlled editor. Try editing the content!</p>",
+      "<p>This is a controlled editor. Try editing the content!</p>"
     );
 
     return (
@@ -308,7 +308,7 @@ export const FormIntegration: Story = {
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
       alert(
-        `Form submitted!\nTitle: ${formData.title}\nContent: ${formData.content}`,
+        `Form submitted!\nTitle: ${formData.title}\nContent: ${formData.content}`
       );
     };
 
@@ -367,6 +367,153 @@ export const FormIntegration: Story = {
           Submit Article
         </button>
       </form>
+    );
+  },
+};
+
+// Emoji insertion demo
+export const WithEmojiInsertion: Story = {
+  render: () => {
+    const [value, setValue] = useState(
+      "<p>Click the emoji buttons below to add emojis! 😊</p>"
+    );
+    const editorRef = useRef<any>(null);
+    const [currentEmojiIndex, setCurrentEmojiIndex] = useState(0);
+
+    const emojiElements = ["😀", "😃", "😄"];
+
+    const insertNextEmoji = () => {
+      if (editorRef.current) {
+        const emoji = emojiElements[currentEmojiIndex];
+        editorRef.current.insertContent(emoji);
+        setCurrentEmojiIndex((prev) => (prev + 1) % emojiElements.length);
+      }
+    };
+
+    const insertSpecificEmoji = (emoji: string) => {
+      if (editorRef.current) {
+        editorRef.current.insertContent(emoji);
+      }
+    };
+
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <div>
+          <h3>Rich Text Editor with External Emoji Buttons</h3>
+          <p style={{ color: "#A0A0A0", marginBottom: "16px" }}>
+            Click the emoji buttons below to insert emojis at the current cursor
+            position.
+          </p>
+        </div>
+
+        <RichTextEditor
+          ref={editorRef}
+          value={value}
+          onChange={setValue}
+          placeholder="Start typing and add some emojis! 😊"
+          label="Editor with External Emoji Support"
+          helperText="Use the emoji buttons below to add emojis to your text"
+        />
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <div>
+            <h4 style={{ color: "#FFFFFF", marginBottom: "8px" }}>
+              Quick Emoji Insert
+            </h4>
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+              <button
+                onClick={insertNextEmoji}
+                style={{
+                  padding: "8px 16px",
+                  backgroundColor: "#A5FF11",
+                  color: "#000000",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontWeight: "600",
+                }}
+              >
+                Next Emoji: {emojiElements[currentEmojiIndex]}
+              </button>
+              <button
+                onClick={() => editorRef.current?.focus()}
+                style={{
+                  padding: "8px 16px",
+                  backgroundColor: "#404040",
+                  color: "#FFFFFF",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                }}
+              >
+                Focus Editor
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <h4 style={{ color: "#FFFFFF", marginBottom: "8px" }}>
+              Popular Emojis
+            </h4>
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+              {["😀", "😃", "😄"].map((emoji, index) => (
+                <button
+                  key={index}
+                  onClick={() => insertSpecificEmoji(emoji)}
+                  style={{
+                    padding: "8px 12px",
+                    backgroundColor: "transparent",
+                    color: "#FFFFFF",
+                    border: "1px solid #404040",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    fontSize: "16px",
+                    transition: "background-color 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "#2A2A2A";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "transparent";
+                  }}
+                >
+                  {emoji}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4>Current HTML Value:</h4>
+          <pre
+            style={{
+              backgroundColor: "#1A1A1A",
+              padding: "12px",
+              borderRadius: "8px",
+              color: "#FFFFFF",
+              fontSize: "12px",
+              overflow: "auto",
+              maxHeight: "200px",
+            }}
+          >
+            {value}
+          </pre>
+        </div>
+
+        <div>
+          <h4>Rendered Content:</h4>
+          <div
+            style={{
+              backgroundColor: "#1A1A1A",
+              padding: "12px",
+              borderRadius: "8px",
+              border: "1px solid #404040",
+            }}
+            dangerouslySetInnerHTML={{ __html: value }}
+          />
+        </div>
+      </div>
     );
   },
 };
@@ -451,7 +598,12 @@ export const SendOnEnter: Story = {
             const showHeader = !sameAuthorAsPrev;
             return (
               <div key={m.id} className="msg-group">
-                <div className="msg-avatar" style={{ visibility: showHeader ? "visible" : "hidden" }}>{initials.slice(0,2)}</div>
+                <div
+                  className="msg-avatar"
+                  style={{ visibility: showHeader ? "visible" : "hidden" }}
+                >
+                  {initials.slice(0, 2)}
+                </div>
                 <div className="msg-line">
                   {showHeader && (
                     <div className="msg-header">
@@ -459,7 +611,10 @@ export const SendOnEnter: Story = {
                       <span className="msg-time">{m.at}</span>
                     </div>
                   )}
-                  <div className="msg-content" dangerouslySetInnerHTML={{ __html: m.html }} />
+                  <div
+                    className="msg-content"
+                    dangerouslySetInnerHTML={{ __html: m.html }}
+                  />
                 </div>
               </div>
             );
