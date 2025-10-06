@@ -1,5 +1,11 @@
 # @calimero-network/mero-ui
 
+## 1.1.0
+
+### Minor Changes
+
+- 57b9bee: CSS fix for rich text editor
+
 ## 1.0.0
 
 ### Major Changes
