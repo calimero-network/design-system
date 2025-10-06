@@ -40,13 +40,15 @@ export interface RichTextEditorProps {
   onSelectionChange?: (selection: Selection | null) => void;
   toolbar?: boolean;
   customToolbar?: React.ReactNode;
-  insertElement?: {
-    label: string;
-    icon: string;
-  };
 }
 
-export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
+export interface RichTextEditorRef {
+  insertContent: (content: string) => void;
+  focus: () => void;
+  getHTML: () => string;
+}
+
+export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(
   (
     {
       value,
@@ -73,7 +75,6 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
       onSelectionChange,
       toolbar = true,
       customToolbar,
-      insertElement,
     },
     ref,
   ) => {
@@ -82,7 +83,6 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
     const [currentValue, setCurrentValue] = useState(
       value || defaultValue || "",
     );
-    const [currentElementIndex, setCurrentElementIndex] = useState(0);
     const lastSelectionRef = useRef<{ from: number; to: number } | null>(null);
 
     const editor = useEditor({
@@ -450,24 +450,23 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
       }
     }, [editor]);
 
-    const insertNextElement = useCallback(() => {
-      if (editor && !disabled && !readOnly && insertElement) {
-        // Predefined emoji set
-        const emojis = ["😀", "😃", "😄", "😁", "😆", "😅", "🤣", "😂", "🙂", "🙃", "😉", "😊", "😇", "🥰", "😍", "🤩", "😘", "😗", "😚", "😙", "😋", "😛", "😜", "🤪", "😝", "🤑", "🤗", "🤭", "🤫", "🤔", "🤐", "🤨", "😐", "😑", "😶", "😏", "😒", "🙄", "😬", "🤥", "😌", "😔", "😪", "🤤", "😴", "😷", "🤒", "🤕", "🤢", "🤮", "🤧", "🥵", "🥶", "🥴", "😵", "🤯", "🤠", "🥳", "😎", "🤓", "🧐", "😕", "😟", "🙁", "☹️", "😮", "😯", "😲", "😳", "🥺", "😦", "😧", "😨", "😰", "😥", "😢", "😭", "😱", "😖", "😣", "😞", "😓", "😩", "😫", "🥱", "😤", "😡", "😠", "🤬", "😈", "👿", "💀", "☠️", "💩", "🤡", "👹", "👺", "👻", "👽", "👾", "🤖", "😺", "😸", "😹", "😻", "😼", "😽", "🙀", "😿", "😾"];
-        
-        // Focus the editor first
-        editor.commands.focus();
-        
-        // Get the current emoji and insert it
-        const emoji = emojis[currentElementIndex];
-        editor.commands.insertContent(emoji);
-        
-        // Move to next emoji (cycle back to 0 when reaching the end)
-        setCurrentElementIndex((prev) => 
-          (prev + 1) % emojis.length
-        );
-      }
-    }, [editor, disabled, readOnly, insertElement, currentElementIndex]);
+    // Expose methods via ref
+    React.useImperativeHandle(ref, () => ({
+      insertContent: (content: string) => {
+        if (editor && !disabled && !readOnly) {
+          editor.commands.focus();
+          editor.commands.insertContent(content);
+        }
+      },
+      focus: () => {
+        if (editor) {
+          editor.commands.focus();
+        }
+      },
+      getHTML: () => {
+        return editor?.getHTML() || "";
+      },
+    }), [editor, disabled, readOnly]);
 
     const toolbarItems = [
       {
@@ -533,15 +532,6 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
         icon: "H",
         action: changeHighlightColor,
       },
-      ...(insertElement ? [
-        { type: "separator" },
-        {
-          label: insertElement.label,
-          icon: insertElement.icon,
-          action: insertNextElement,
-          isActive: false,
-        },
-      ] : []),
     ];
 
     const renderToolbarItem = useCallback(
@@ -619,7 +609,7 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
         {customToolbar && <div style={toolbarStyle}>{customToolbar}</div>}
 
         <div
-          ref={ref || editorRef}
+          ref={editorRef}
           style={editorStyle}
           onFocus={handleFocus}
           onBlur={handleBlur}
