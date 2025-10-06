@@ -230,15 +230,21 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
     const variantStyles = {
       default: {
         backgroundColor: "#111111",
-        border: `1px solid ${error ? tokens.color.semantic.error.value : "#2A2A2A"}`,
+        borderWidth: "1px",
+        borderStyle: "solid",
+        borderColor: error ? tokens.color.semantic.error.value : "#2A2A2A",
       },
       filled: {
         backgroundColor: "#121212",
-        border: `1px solid ${error ? tokens.color.semantic.error.value : "#1F1F1F"}`,
+        borderWidth: "1px",
+        borderStyle: "solid",
+        borderColor: error ? tokens.color.semantic.error.value : "#1F1F1F",
       },
       outlined: {
         backgroundColor: "#0F0F0F",
-        border: `1px solid ${error ? tokens.color.semantic.error.value : "#303033"}`,
+        borderWidth: "1px",
+        borderStyle: "solid",
+        borderColor: error ? tokens.color.semantic.error.value : "#303033",
       },
     };
 
@@ -305,8 +311,9 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
       gap: "6px",
       padding: "6px 8px",
       backgroundColor: "transparent",
-      border: "none",
-      borderBottom: "1px solid #222",
+      borderWidth: "0 0 1px 0",
+      borderStyle: "none none solid none",
+      borderColor: "transparent transparent #222 transparent",
       borderRadius: `${tokens.radius.md.value} ${tokens.radius.md.value} 0 0`,
       flexWrap: "wrap",
     };
@@ -317,7 +324,9 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
       justifyContent: "center",
       padding: "6px 8px",
       backgroundColor: "transparent",
-      border: "1px solid transparent",
+      borderWidth: "1px",
+      borderStyle: "solid",
+      borderColor: "transparent",
       borderRadius: "6px",
       color: "#EDEDED",
       cursor: "pointer",
