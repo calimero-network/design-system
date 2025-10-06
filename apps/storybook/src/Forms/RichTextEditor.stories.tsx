@@ -371,6 +371,67 @@ export const FormIntegration: Story = {
   },
 };
 
+// Emoji insertion demo
+export const WithEmojiInsertion: Story = {
+  render: () => {
+    const [value, setValue] = useState("<p>Click the emoji button to add emojis! 😊</p>");
+
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <div>
+          <h3>Rich Text Editor with Emoji Insertion</h3>
+          <p style={{ color: "#A0A0A0", marginBottom: "16px" }}>
+            Click the emoji button (😀) in the toolbar to insert emojis one by one. 
+            Each click will insert the next emoji in a predefined sequence at the current cursor position.
+          </p>
+        </div>
+        
+        <RichTextEditor
+          value={value}
+          onChange={setValue}
+          placeholder="Start typing and add some emojis! 😊"
+          label="Editor with Emoji Support"
+          helperText="Use the emoji button in the toolbar to add emojis to your text"
+          insertElement={{
+            label: "Emoji",
+            icon: "😀",
+          }}
+        />
+
+        <div>
+          <h4>Current HTML Value:</h4>
+          <pre
+            style={{
+              backgroundColor: "#1A1A1A",
+              padding: "12px",
+              borderRadius: "8px",
+              color: "#FFFFFF",
+              fontSize: "12px",
+              overflow: "auto",
+              maxHeight: "200px",
+            }}
+          >
+            {value}
+          </pre>
+        </div>
+
+        <div>
+          <h4>Rendered Content:</h4>
+          <div
+            style={{
+              backgroundColor: "#1A1A1A",
+              padding: "12px",
+              borderRadius: "8px",
+              border: "1px solid #404040",
+            }}
+            dangerouslySetInnerHTML={{ __html: value }}
+          />
+        </div>
+      </div>
+    );
+  },
+};
+
 // Send on Enter demo
 export const SendOnEnter: Story = {
   render: () => {
