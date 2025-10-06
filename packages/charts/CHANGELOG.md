@@ -1,5 +1,14 @@
 # @calimero-network/mero-charts
 
+## 0.0.12
+
+### Patch Changes
+
+- f24c0f4: Dynamic input to rich text editor
+- Updated dependencies [f24c0f4]
+- Updated dependencies [a2b21d9]
+  - @calimero-network/mero-ui@1.0.0
+
 ## 0.0.11
 
 ### Patch Changes

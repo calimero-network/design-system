@@ -1,5 +1,20 @@
 # @calimero-network/mero-ui
 
+## 1.0.0
+
+### Major Changes
+
+- a2b21d9: patch: add dynamic input for rich text editor
+
+### Minor Changes
+
+- f24c0f4: Dynamic input to rich text editor
+
+### Patch Changes
+
+- Updated dependencies [f24c0f4]
+  - @calimero-network/mero-icons@0.0.6
+
 ## 0.3.7
 
 ### Patch Changes

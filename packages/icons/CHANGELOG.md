@@ -1,5 +1,11 @@
 # @calimero-network/mero-icons
 
+## 0.0.6
+
+### Patch Changes
+
+- f24c0f4: Dynamic input to rich text editor
+
 ## 0.0.5
 
 ### Patch Changes
