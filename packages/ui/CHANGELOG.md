@@ -1,5 +1,12 @@
 # @calimero-network/mero-ui
 
+## 1.4.0
+
+### Minor Changes
+
+- a15245b: Replace text color on paste
+- b43d043: Replace paste text color
+
 ## 1.3.0
 
 ### Minor Changes
