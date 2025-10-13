@@ -727,6 +727,21 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
           outline: none !important;
         }
         
+        /* Ensure ALL text elements are white by default */
+        .rich-text-editor-content * {
+          color: #FFFFFF !important;
+        }
+        
+        /* Override for links only */
+        .rich-text-editor-content a.rich-text-link {
+          color: ${tokens.color.brand[600].value} !important;
+          text-decoration: underline !important;
+        }
+        
+        .rich-text-editor-content a.rich-text-link:hover {
+          color: ${tokens.color.brand[100].value} !important;
+        }
+        
         .rich-text-editor-content h1, 
         .rich-text-editor-content h2, 
         .rich-text-editor-content h3, 
@@ -786,15 +801,6 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
           border-radius: 3px !important;
           font-family: 'Courier New', monospace !important;
           color: #FFFFFF !important;
-        }
-        
-        .rich-text-link {
-          color: ${tokens.color.brand[600].value} !important;
-          text-decoration: underline !important;
-        }
-        
-        .rich-text-link:hover {
-          color: ${tokens.color.brand[100].value} !important;
         }
         
         .rich-text-editor-content strong, 
