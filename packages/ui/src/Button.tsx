@@ -24,6 +24,7 @@ type ButtonProps = React.PropsWithChildren<{
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   fullWidth?: boolean;
+  rounded?: boolean;
   "aria-label"?: string;
   "aria-current"?:
     | "page"
@@ -51,6 +52,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       leftIcon,
       rightIcon,
       fullWidth = false,
+      rounded = true,
       "aria-label": ariaLabel,
       "aria-current": ariaCurrent,
       title,
@@ -68,7 +70,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       gap: "8px",
       height: `${baseHeight[size]}px`,
       padding: `0 ${basePaddingX[size]}px`,
-      borderRadius: "12px",
+      borderRadius: rounded ? "12px" : "0px",
       border: "1px solid transparent",
       fontFamily: "var(--font-body)",
       fontSize: `${baseFontSize[size]}px`,

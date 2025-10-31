@@ -98,3 +98,18 @@ export const FullWidth: Story = {
     </div>
   ),
 };
+
+export const BorderRadius: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+        <Button rounded={true}>Rounded (default)</Button>
+        <Button rounded={false}>Not Rounded</Button>
+      </div>
+      <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+        <Button variant="secondary" rounded={true}>Rounded Secondary</Button>
+        <Button variant="secondary" rounded={false}>Not Rounded Secondary</Button>
+      </div>
+    </div>
+  ),
+};
