@@ -161,17 +161,18 @@ export const FullWidth: Story = {
 /**
  * Composed loading pattern using Spinner and disabled state.
  * Prefer this approach over the deprecated `loading` prop.
+ * Use small, thin spinners that match the button's text color.
  */
 export const ComposedLoading: Story = {
   render: () => (
     <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
       <Button disabled aria-busy>
-        <Spinner />
+        <Spinner size="xs" color="current" thickness="thin" style={{ marginRight: 8 }} />
         Saving...
       </Button>
       <Button variant="secondary" disabled aria-busy>
-        <Spinner />
-        Loading data
+        <Spinner size="xs" color="current" thickness="thin" style={{ marginRight: 8 }} />
+        Loading
       </Button>
     </div>
   ),
