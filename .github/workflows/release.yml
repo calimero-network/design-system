@@ -70,14 +70,26 @@ jobs:
           echo "This was a dry run - no packages were published"
           echo "To publish for real, run without dry_run=true"
 
+      - name: Get tag name
+        id: tag
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            TAG_NAME=${GITHUB_REF#refs/tags/}
+          else
+            # For workflow_dispatch, find the latest tag
+            TAG_NAME=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          fi
+          echo "tag=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "Tag name: $TAG_NAME"
+
       - name: Create GitHub Release
-        if: github.event.inputs.dry_run != 'true'
+        if: github.event.inputs.dry_run != 'true' && steps.tag.outputs.tag != ''
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ steps.tag.outputs.tag }}
+          release_name: Release ${{ steps.tag.outputs.tag }}
           body: |
             ## Calimero Design System Release
 
