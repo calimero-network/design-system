@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CommandPalette } from "@calimero-network/mero-ui";
 import { Icon } from "@calimero-network/mero-ui";
 

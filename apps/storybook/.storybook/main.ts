@@ -1,49 +1,30 @@
-import type { StorybookConfig } from "@storybook/react-vite";
-import { mergeConfig } from "vite";
+import type { StorybookConfig } from '@storybook/react-vite';
+import { mergeConfig } from 'vite';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const config: StorybookConfig = {
-  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
-  addons: ["@storybook/addon-a11y"],
+  stories: ['../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  addons: [
+    '@storybook/addon-onboarding',
+    '@storybook/addon-docs',
+    '@storybook/addon-a11y',
+  ],
   framework: {
-    name: "@storybook/react-vite",
+    name: '@storybook/react-vite',
     options: {},
   },
-  viteFinal: async (config) => {
+  async viteFinal(config) {
     return mergeConfig(config, {
-      optimizeDeps: {
-        include: [
-          "@tiptap/react",
-          "@tiptap/starter-kit",
-          "@tiptap/extension-text-style",
-          "@tiptap/extension-color",
-          "@tiptap/extension-text-align",
-          "@tiptap/extension-underline",
-          "@tiptap/extension-link",
-          "react",
-          "react-dom",
-        ],
-      },
-      build: {
-        commonjsOptions: {
-          include: [/node_modules/],
-        },
-        rollupOptions: {
-          external: [],
-        },
-      },
       resolve: {
-        dedupe: ["@tiptap/react", "@tiptap/core", "react", "react-dom"],
         alias: {
-          react: "react",
-          "react-dom": "react-dom",
-          "use-sync-external-store/shim":
-            "use-sync-external-store/shim/index.js",
+          '@calimero-network/mero-ui': path.resolve(__dirname, '../../../packages/ui/src'),
+          '@calimero-network/mero-tokens': path.resolve(__dirname, '../../../packages/tokens/src'),
+          '@calimero-network/mero-charts': path.resolve(__dirname, '../../../packages/charts/src'),
+          '@calimero-network/mero-icons': path.resolve(__dirname, '../../../packages/icons/src'),
         },
-      },
-      define: {
-        "process.env.NODE_ENV": JSON.stringify(
-          process.env.NODE_ENV || "production",
-        ),
       },
     });
   },

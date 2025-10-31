@@ -98,7 +98,6 @@ export { Tree } from "./Tree";
 export { StatCard } from "./StatCard";
 export { TreeTable } from "./TreeTable";
 export { MetricCard } from "./MetricCard";
-export { DataList } from "./DataList";
 
 // Advanced Form Components
 export { DatePicker } from "./DatePicker";

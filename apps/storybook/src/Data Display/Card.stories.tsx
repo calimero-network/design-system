@@ -1,11 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import React from "react";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardContent,
 } from "@calimero-network/mero-ui";
-import { Settings, Clock } from "@calimero-network/mero-icons";
+import { Settings } from "@calimero-network/mero-icons";
+
+type CardProps = React.ComponentProps<typeof Card>;
 
 const meta: Meta<typeof Card> = {
   title: "Data Display/Card",
@@ -14,11 +17,88 @@ const meta: Meta<typeof Card> = {
     layout: "centered",
   },
   tags: ["autodocs"],
+  argTypes: {
+    className: {
+      control: "text",
+      description: "Optional CSS class name",
+    },
+    tooltip: {
+      control: "text",
+      description: "Tooltip text to show on the info icon",
+    },
+    color: {
+      control: "color",
+      description: "Border color - defaults to neutral-600",
+    },
+    noBorder: {
+      control: "boolean",
+      description: "Remove border entirely",
+    },
+    variant: {
+      control: "select",
+      options: ["rounded", "rectangle"],
+      description: "Border radius variant",
+    },
+    title: {
+      control: "text",
+      description: "Card title",
+    },
+    description: {
+      control: "text",
+      description: "Description text below title",
+    },
+    onClick: {
+      action: "clicked",
+      description: "Click handler for clickable cards",
+    },
+    // Hide props that don't make sense as controls
+    children: {
+      table: {
+        disable: true,
+      },
+    },
+    tooltipIcon: {
+      table: {
+        disable: true,
+      },
+    },
+    icon: {
+      table: {
+        disable: true,
+      },
+    },
+    actions: {
+      table: {
+        disable: true,
+      },
+    },
+    style: {
+      table: {
+        disable: true,
+      },
+    },
+  },
 };
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    title: "Card Title",
+    description: "This is a card description that can be customized via controls.",
+    tooltip: "This is a helpful tooltip",
+    color: "#404040",
+    noBorder: false,
+    variant: "rounded",
+  },
+  render: (args: CardProps) => (
+    <div style={{ maxWidth: "400px" }}>
+      <Card {...args} icon={<Settings size={20} />} />
+    </div>
+  ),
+};
 
 export const Basic: Story = {
   render: () => (
@@ -37,55 +117,20 @@ export const Basic: Story = {
   ),
 };
 
-export const WithControls: Story = {
-  argTypes: {
-    showTooltip: { control: "boolean" },
-    customIcon: { control: "boolean" },
-    color: { control: "text" },
-    noBorder: { control: "boolean" },
-    variant: { control: "select", options: ["rounded", "rectangle"] },
-    title: { control: "text" },
-    content: { control: "text" },
-    longTitle: { control: "boolean" },
-  },
+export const WithTitleIconDescription: Story = {
   args: {
-    showTooltip: true,
-    customIcon: false,
-    color: "#A5FF11",
+    title: "Security",
+    description: "Enterprise-grade security features and hardening.",
+    color: "#404040",
     noBorder: false,
     variant: "rounded",
-    title: "Configurable Card",
-    content: "Use controls to toggle tooltip, icon, border, variant and color.",
-    longTitle: false,
   },
-  render: (args: any) => {
-    const tooltip = args.showTooltip
-      ? "This card shows important information"
-      : undefined;
-    const icon = args.customIcon ? Settings : undefined;
-    const titleText = args.longTitle
-      ? "This is a very long title that should be truncated with ellipsis when it exceeds the available space"
-      : args.title;
-    return (
-      <div style={{ maxWidth: "420px" }}>
-        <Card
-          tooltip={tooltip}
-          tooltipIcon={icon as any}
-          color={args.color}
-          noBorder={args.noBorder}
-          variant={args.variant}
-        >
-          <CardHeader>
-            <CardTitle>{titleText}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p style={{ color: "white", margin: 0 }}>{args.content}</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  },
-} as any;
+  render: (args: CardProps) => (
+    <div style={{ maxWidth: "420px" }}>
+      <Card {...args} icon={<Settings size={20} />} />
+    </div>
+  ),
+};
 
 export const Variants: Story = {
   render: () => (
@@ -120,6 +165,57 @@ export const Variants: Story = {
           </CardContent>
         </Card>
       </div>
+    </div>
+  ),
+};
+
+export const WithActions: Story = {
+  args: {
+    title: "Deploy",
+    description: "Prepare and deploy your application.",
+    color: "#404040",
+    noBorder: false,
+    variant: "rounded",
+  },
+  render: (args: CardProps) => (
+    <div style={{ maxWidth: "420px" }}>
+      <Card
+        {...args}
+        icon={<Settings size={20} />}
+        actions={
+          <button
+            style={{
+              background: "#A5FF11",
+              color: "#000",
+              border: 0,
+              borderRadius: 8,
+              padding: "6px 10px",
+              fontWeight: 600,
+            }}
+          >
+            Action
+          </button>
+        }
+      />
+    </div>
+  ),
+};
+
+export const Clickable: Story = {
+  args: {
+    title: "Explore Apps",
+    description: "Browse featured applications in the registry.",
+    color: "#404040",
+    noBorder: false,
+    variant: "rounded",
+  },
+  render: (args: CardProps) => (
+    <div style={{ maxWidth: "420px" }}>
+      <Card
+        {...args}
+        icon={<Settings size={20} />}
+        onClick={() => console.log("card clicked")}
+      />
     </div>
   ),
 };
