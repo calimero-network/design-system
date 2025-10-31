@@ -1,79 +1,59 @@
-import React, { useState } from "react";
-import { ClockAlert } from "../../icons/src";
+import React from "react";
+import { Tooltip } from "./Tooltip";
+import { tokens } from "@calimero-network/mero-tokens";
+import { ClockAlert } from "@calimero-network/mero-icons";
 
-// Custom Tooltip Component
-function Tooltip({
-  children,
-  content,
-  color,
-}: {
-  children: React.ReactNode;
-  content: string;
+export interface CardProps {
+  /** Optional CSS class name */
+  className?: string;
+  
+  /** Card content - can be any React node */
+  children?: React.ReactNode;
+  
+  /** Tooltip text to show on the info icon */
+  tooltip?: string;
+  
+  /** Custom icon component for the tooltip trigger */
+  tooltipIcon?: React.ComponentType<{
+    size?: number | string;
+    color?: string;
+    strokeWidth?: number | string;
+  }>;
+  
+  /** Border color - defaults to neutral-600 */
   color?: string;
-}) {
-  const [isVisible, setIsVisible] = useState(false);
-
-  return (
-    <div
-      style={{ position: "relative", display: "inline-block" }}
-      onMouseEnter={() => setIsVisible(true)}
-      onMouseLeave={() => setIsVisible(false)}
-    >
-      {children}
-      {isVisible && (
-        <div
-          style={{
-            position: "absolute",
-            top: "-8px",
-            right: "100%",
-            marginRight: "8px",
-            background: "#2A2A2A",
-            color: "white",
-            padding: "8px 12px",
-            borderRadius: "8px",
-            fontSize: "12px",
-            fontWeight: "400",
-            whiteSpace: "nowrap",
-            zIndex: 1000,
-            border: `1px solid ${color || "#404040"}`,
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
-            pointerEvents: "none",
-          }}
-        >
-          {content}
-          {/* Arrow pointing to the icon */}
-          <div
-            style={{
-              position: "absolute",
-              top: "12px",
-              right: "-6px",
-              width: "0",
-              height: "0",
-              borderLeft: `6px solid ${color || "#404040"}`,
-              borderTop: "6px solid transparent",
-              borderBottom: "6px solid transparent",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              top: "12px",
-              right: "-5px",
-              width: "0",
-              height: "0",
-              borderLeft: "5px solid #2A2A2A",
-              borderTop: "5px solid transparent",
-              borderBottom: "5px solid transparent",
-            }}
-          />
-        </div>
-      )}
-    </div>
-  );
+  
+  /** Remove border entirely */
+  noBorder?: boolean;
+  
+  /** Border radius variant */
+  variant?: "rounded" | "rectangle";
+  
+  /** Inline styles */
+  style?: React.CSSProperties;
+  
+  /** Convenience prop: card title */
+  title?: React.ReactNode;
+  
+  /** Convenience prop: icon to display with title */
+  icon?: React.ReactNode;
+  
+  /** Convenience prop: description text below title */
+  description?: React.ReactNode;
+  
+  /** Convenience prop: action buttons or elements in header */
+  actions?: React.ReactNode;
+  
+  /** Make card clickable - adds pointer cursor and click handler */
+  onClick?: () => void;
 }
 
-// ---------------------- Minimal Card primitives (fallback) ----------------------
-
+/**
+ * Card component - a flexible container with optional header, content, and actions.
+ * 
+ * Supports both composition pattern (using CardHeader, CardTitle, CardContent) 
+ * and convenience props (title, icon, description, actions).
+ */
 export function Card({
   className = "",
   children,
@@ -83,103 +63,122 @@ export function Card({
   noBorder = false,
   variant = "rounded",
   style,
-}: React.PropsWithChildren<{
-  className?: string;
-  tooltip?: string;
-  tooltipIcon?: React.ComponentType<{
-    size?: number | string;
-    color?: string;
-    strokeWidth?: number | string;
-  }>;
-  color?: string;
-  noBorder?: boolean;
-  variant?: "rounded" | "rectangle";
-  style?: React.CSSProperties;
-}>) {
+  title,
+  icon,
+  description,
+  actions,
+  onClick,
+}: CardProps) {
+  const borderColor = color || tokens.color.neutral[600].value;
+  const borderRadius = variant === "rectangle" 
+    ? tokens.radius.sm.value 
+    : tokens.radius.lg.value;
+
   return (
     <div
+      className={className}
       style={{
         background: "transparent",
-        border: noBorder ? "none" : `1px solid ${color || "#404040"}`,
-        borderRadius: variant === "rectangle" ? "4px" : "16px",
-        padding: "12px",
+        border: noBorder ? "none" : `1px solid ${borderColor}`,
+        borderRadius,
+        padding: tokens.space[3].value,
         width: "100%",
         position: "relative",
+        cursor: onClick ? "pointer" : undefined,
+        userSelect: onClick ? "none" : undefined,
+        transition: onClick ? "opacity 0.15s ease" : undefined,
         ...style,
       }}
+      onClick={onClick}
+      onMouseEnter={onClick ? (e) => {
+        e.currentTarget.style.opacity = "0.9";
+      } : undefined}
+      onMouseLeave={onClick ? (e) => {
+        e.currentTarget.style.opacity = "1";
+      } : undefined}
     >
+      {/* Tooltip */}
       {tooltip && (
         <div
           style={{
             position: "absolute",
-            top: "8px",
-            right: "8px",
+            top: tokens.space[2].value,
+            right: tokens.space[2].value,
             cursor: "help",
+            zIndex: 1,
           }}
         >
-          <Tooltip content={tooltip} color={color}>
-            <TooltipIcon size={20} strokeWidth={3} color={color || "#6B7280"} />
+          <Tooltip 
+            content={tooltip} 
+            placement="left"
+          >
+            <TooltipIcon 
+              size={20} 
+              strokeWidth={3} 
+              color={borderColor} 
+            />
           </Tooltip>
         </div>
       )}
-      {React.Children.map(children, (child) => {
-        if (React.isValidElement(child) && child.type === CardHeader) {
-          return React.cloneElement(child as React.ReactElement<any>, {
-            color,
-          });
-        }
-        return child;
-      })}
+
+      {/* Convenience header - auto-rendered when title provided */}
+      {title !== undefined && (
+        <CardHeader>
+          <div style={{ 
+            display: "flex", 
+            alignItems: "center", 
+            gap: tokens.space[3].value,
+            flex: 1,
+            minWidth: 0, // Allows truncation
+          }}>
+            {icon && <span style={{ flexShrink: 0 }}>{icon}</span>}
+            <CardTitle>{title}</CardTitle>
+          </div>
+          {actions && (
+            <div style={{ flexShrink: 0, marginLeft: tokens.space[3].value }}>
+              {actions}
+            </div>
+          )}
+        </CardHeader>
+      )}
+
+      {/* Convenience description */}
+      {description !== undefined && (
+        <CardContent style={{ marginTop: title !== undefined ? tokens.space[2].value : 0 }}>
+          {description}
+        </CardContent>
+      )}
+
+      {/* Children - allows composition pattern */}
+      {children}
     </div>
   );
 }
 
-export function CardHeader({
-  className = "",
-  children,
-  color,
-}: React.PropsWithChildren<{
+/**
+ * CardHeader - horizontal container for title and actions
+ */
+export interface CardHeaderProps {
+  children: React.ReactNode;
   className?: string;
-  color?: string;
-}>) {
+  style?: React.CSSProperties;
+}
+
+export function CardHeader({ 
+  children, 
+  className = "",
+  style,
+}: CardHeaderProps) {
   return (
     <div
+      className={className}
       style={{
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        paddingBottom: "8px",
-      }}
-    >
-      {React.Children.map(children, (child) => {
-        if (React.isValidElement(child) && child.type === CardTitle) {
-          return React.cloneElement(child as React.ReactElement<any>, {
-            color,
-          });
-        }
-        return child;
-      })}
-    </div>
-  );
-}
-
-export function CardTitle({
-  className = "",
-  children,
-  color,
-}: React.PropsWithChildren<{
-  className?: string;
-  color?: string;
-}>) {
-  return (
-    <div
-      style={{
-        color: color || "white",
-        fontWeight: "500",
-        fontSize: "14px",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-        whiteSpace: "nowrap",
+        gap: tokens.space[3].value,
+        marginBottom: tokens.space[2].value,
+        ...style,
       }}
     >
       {children}
@@ -187,9 +186,70 @@ export function CardTitle({
   );
 }
 
-export function CardContent({
+/**
+ * CardTitle - styled title text with truncation
+ */
+export interface CardTitleProps {
+  children: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+  color?: string;
+}
+
+export function CardTitle({ 
+  children, 
   className = "",
-  children,
-}: React.PropsWithChildren<{ className?: string }>) {
-  return <div>{children}</div>;
+  style,
+  color,
+}: CardTitleProps) {
+  return (
+    <div
+      className={className}
+      style={{
+        color: color || tokens.color.neutral[200].value,
+        fontWeight: 500,
+        fontSize: "14px",
+        lineHeight: "20px",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        flex: 1,
+        minWidth: 0,
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/**
+ * CardContent - content area with proper spacing
+ */
+export interface CardContentProps {
+  children: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+  color?: string;
+}
+
+export function CardContent({ 
+  children, 
+  className = "",
+  style,
+  color,
+}: CardContentProps) {
+  return (
+    <div
+      className={className}
+      style={{
+        color: color || tokens.color.neutral[300].value,
+        fontSize: "14px",
+        lineHeight: "20px",
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
 }
