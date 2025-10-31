@@ -26,6 +26,8 @@ export type ButtonVariant =
  * @public
  */
 export interface ButtonProps extends React.PropsWithChildren {
+  /** Render as a different element or component (polymorphic) */
+  as?: React.ElementType;
   /** Click handler function */
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   /** Whether the button is disabled */
@@ -34,7 +36,7 @@ export interface ButtonProps extends React.PropsWithChildren {
   className?: string;
   /** Inline styles */
   style?: React.CSSProperties;
-  /** HTML button type */
+  /** HTML button type (only applies when as="button") */
   type?: "button" | "submit" | "reset";
   /** Visual variant/style of the button */
   variant?: ButtonVariant;
@@ -105,9 +107,13 @@ export interface ButtonProps extends React.PropsWithChildren {
  * @public
  */
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = React.forwardRef<
+  HTMLButtonElement,
+  ButtonProps
+>(
   (
     {
+      as,
       children,
       onClick,
       disabled = false,
@@ -123,6 +129,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       "aria-label": ariaLabel,
       "aria-current": ariaCurrent,
       title,
+      ...restProps
     },
     ref
   ) => {
@@ -264,39 +271,63 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       dynamicBackground = palette.disabled as string;
     }
 
+    const Component = as || "button";
+    const isButton = Component === "button";
+    
+    const componentProps: any = {
+      ref: isButton ? ref : undefined,
+      style: {
+        ...baseStyles,
+        backgroundColor: dynamicBackground,
+        borderColor: isSecondary || variant === "outline" ? dynamicBorder : "transparent",
+        color: isPrimary ? "#000000" : dynamicTextColor,
+        boxShadow:
+          variant === "primary" && isHover && !disabled
+            ? "0 0 20px rgba(165, 255, 17, 0.25)"
+            : undefined,
+        ...style,
+      },
+      className,
+      "aria-label": ariaLabel,
+      "aria-current": ariaCurrent,
+      title,
+      ...restProps,
+    };
+
+    if (isButton) {
+      componentProps.type = type;
+      componentProps.disabled = disabled;
+      componentProps.onClick = onClick;
+    } else {
+      // For non-button elements, handle disabled state via aria and styling
+      componentProps.onClick = disabled ? undefined : onClick;
+      if (disabled) {
+        componentProps["aria-disabled"] = true;
+        componentProps.style = {
+          ...componentProps.style,
+          pointerEvents: "none",
+          opacity: 0.5,
+        };
+      }
+    }
+
+    // Only add mouse event handlers for button elements
+    if (isButton) {
+      componentProps.onMouseDown = () => setIsActive(true);
+      componentProps.onMouseUp = () => setIsActive(false);
+      componentProps.onMouseLeave = () => {
+        setIsActive(false);
+        setIsHover(false);
+      };
+      componentProps.onMouseEnter = () => setIsHover(true);
+    }
+
     return (
-      <button
-        ref={ref}
-        type={type}
-        disabled={disabled}
-        onClick={onClick}
-        onMouseDown={() => setIsActive(true)}
-        onMouseUp={() => setIsActive(false)}
-        onMouseLeave={() => {
-          setIsActive(false);
-          setIsHover(false);
-        }}
-        onMouseEnter={() => setIsHover(true)}
-        style={{
-          ...baseStyles,
-          backgroundColor: dynamicBackground,
-          borderColor: isSecondary || variant === "outline" ? dynamicBorder : "transparent",
-          color: isPrimary ? "#000000" : dynamicTextColor,
-          boxShadow:
-            variant === "primary" && isHover && !disabled
-              ? "0 0 20px rgba(165, 255, 17, 0.25)"
-              : undefined,
-          ...style,
-        }}
-        className={className}
-        aria-label={ariaLabel}
-        aria-current={ariaCurrent}
-        title={title}
-      >
+      <Component {...componentProps}>
         {leftIcon && <span style={{ marginRight: 8 }}>{leftIcon}</span>}
         {children}
         {rightIcon && <span style={{ marginLeft: 8 }}>{rightIcon}</span>}
-      </button>
+      </Component>
     );
   }
 );
