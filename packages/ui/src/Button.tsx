@@ -40,7 +40,10 @@ export interface ButtonProps extends React.PropsWithChildren {
   variant?: ButtonVariant;
   /** Size of the button */
   size?: ButtonSize;
-  /** Show loading spinner and disable interactions */
+  /**
+   * Show loading spinner and disable interactions
+   * @deprecated Prefer composing with <Spinner /> in children and using disabled + aria-busy
+   */
   loading?: boolean;
   /** Icon to display on the left side of the button text */
   leftIcon?: React.ReactNode;
@@ -276,6 +279,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           setIsHover(false);
         }}
         onMouseEnter={() => setIsHover(true)}
+        aria-busy={loading ? true : undefined}
         style={{
           ...baseStyles,
           backgroundColor: dynamicBackground,

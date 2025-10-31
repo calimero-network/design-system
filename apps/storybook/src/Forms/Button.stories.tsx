@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Button } from "@calimero-network/mero-ui";
+import { Button, Spinner } from "@calimero-network/mero-ui";
 import { cssVariables } from "@calimero-network/mero-tokens";
 
 const withTokens = (Story: any) => (
@@ -18,7 +18,7 @@ const meta: Meta<typeof Button> = {
     docs: {
       description: {
         component:
-          "A versatile, accessible button component with multiple variants, sizes, and states. Supports loading states, icons, full-width layout, and border radius control.",
+          "A versatile, accessible button component with multiple variants, sizes, and states. Supports loading states, icons, full-width layout, and border radius control. Prefer composing custom loading content with Spinner + disabled; the `loading` prop is deprecated and kept for compatibility.",
       },
     },
   },
@@ -154,6 +154,25 @@ export const FullWidth: Story = {
   render: () => (
     <div style={{ width: 360 }}>
       <Button fullWidth>Full width button</Button>
+    </div>
+  ),
+};
+
+/**
+ * Composed loading pattern using Spinner and disabled state.
+ * Prefer this approach over the deprecated `loading` prop.
+ */
+export const ComposedLoading: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+      <Button disabled aria-busy>
+        <Spinner />
+        Saving...
+      </Button>
+      <Button variant="secondary" disabled aria-busy>
+        <Spinner />
+        Loading data
+      </Button>
     </div>
   ),
 };
