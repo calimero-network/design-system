@@ -108,7 +108,7 @@ export interface ButtonProps extends React.PropsWithChildren {
  */
 
 export const Button = React.forwardRef<
-  HTMLButtonElement,
+  HTMLElement,
   ButtonProps
 >(
   (
@@ -275,7 +275,7 @@ export const Button = React.forwardRef<
     const isButton = Component === "button";
     
     const componentProps: any = {
-      ref: isButton ? ref : undefined,
+      ref, // Always forward ref for polymorphic support
       style: {
         ...baseStyles,
         backgroundColor: dynamicBackground,
