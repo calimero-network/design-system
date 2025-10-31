@@ -40,11 +40,6 @@ export interface ButtonProps extends React.PropsWithChildren {
   variant?: ButtonVariant;
   /** Size of the button */
   size?: ButtonSize;
-  /**
-   * Show loading spinner and disable interactions
-   * @deprecated Prefer composing with <Spinner /> in children and using disabled + aria-busy
-   */
-  loading?: boolean;
   /** Icon to display on the left side of the button text */
   leftIcon?: React.ReactNode;
   /** Icon to display on the right side of the button text */
@@ -72,11 +67,12 @@ export interface ButtonProps extends React.PropsWithChildren {
  * Button Component
  * 
  * A versatile, accessible button component with multiple variants, sizes, and states.
- * Supports loading states, icons, full-width layout, and border radius control.
+ * Supports icons, full-width layout, and border radius control.
+ * For loading states, compose with <Spinner /> in children and use disabled + aria-busy.
  * 
  * @example
  * ```tsx
- * import { Button } from '@calimero-network/mero-ui';
+ * import { Button, Spinner } from '@calimero-network/mero-ui';
  * 
  * // Basic usage
  * <Button onClick={() => console.log('clicked')}>
@@ -88,8 +84,11 @@ export interface ButtonProps extends React.PropsWithChildren {
  *   Large Secondary Button
  * </Button>
  * 
- * // With loading state
- * <Button loading>Processing...</Button>
+ * // With loading state (composed pattern)
+ * <Button disabled aria-busy>
+ *   <Spinner size="xs" color="current" thickness="thin" style={{ marginRight: 8 }} />
+ *   Processing...
+ * </Button>
  * 
  * // With icons
  * <Button leftIcon={<Icon />} rightIcon={<Arrow />}>
@@ -117,7 +116,6 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       type = "button",
       variant = "primary",
       size = "md",
-      loading = false,
       leftIcon,
       rightIcon,
       fullWidth = false,
@@ -144,7 +142,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       fontFamily: "var(--font-body)",
       fontSize: `${baseFontSize[size]}px`,
       fontWeight: 700,
-      cursor: disabled || loading ? "not-allowed" : "pointer",
+      cursor: disabled ? "not-allowed" : "pointer",
       userSelect: "none",
       transition:
         "background-color 120ms ease, border-color 120ms ease, transform 60ms ease, box-shadow 120ms ease",
@@ -254,7 +252,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     let dynamicBackground = palette.base as string;
     let dynamicBorder = palette.border as string;
     let dynamicTextColor = palette.text as string;
-    if (!disabled && !loading) {
+    if (!disabled) {
       if (isActive) {
         dynamicBackground = palette.active as string;
         dynamicBorder = palette.borderActive as string;
@@ -270,7 +268,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         type={type}
-        disabled={disabled || loading}
+        disabled={disabled}
         onClick={onClick}
         onMouseDown={() => setIsActive(true)}
         onMouseUp={() => setIsActive(false)}
@@ -279,14 +277,13 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           setIsHover(false);
         }}
         onMouseEnter={() => setIsHover(true)}
-        aria-busy={loading ? true : undefined}
         style={{
           ...baseStyles,
           backgroundColor: dynamicBackground,
           borderColor: isSecondary || variant === "outline" ? dynamicBorder : "transparent",
           color: isPrimary ? "#000000" : dynamicTextColor,
           boxShadow:
-            variant === "primary" && isHover && !disabled && !loading
+            variant === "primary" && isHover && !disabled
               ? "0 0 20px rgba(165, 255, 17, 0.25)"
               : undefined,
           ...style,
@@ -296,31 +293,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         aria-current={ariaCurrent}
         title={title}
       >
-        {loading && (
-          <svg
-            className="animate-spin -ml-1 mr-2 h-4 w-4"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            />
-          </svg>
-        )}
-        {!loading && leftIcon && <span style={{ marginRight: 8 }}>{leftIcon}</span>}
+        {leftIcon && <span style={{ marginRight: 8 }}>{leftIcon}</span>}
         {children}
-        {!loading && rightIcon && <span style={{ marginLeft: 8 }}>{rightIcon}</span>}
+        {rightIcon && <span style={{ marginLeft: 8 }}>{rightIcon}</span>}
       </button>
     );
   }

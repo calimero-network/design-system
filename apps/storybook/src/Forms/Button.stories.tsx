@@ -18,7 +18,7 @@ const meta: Meta<typeof Button> = {
     docs: {
       description: {
         component:
-          "A versatile, accessible button component with multiple variants, sizes, and states. Supports loading states, icons, full-width layout, and border radius control. Prefer composing custom loading content with Spinner + disabled; the `loading` prop is deprecated and kept for compatibility.",
+          "A versatile, accessible button component with multiple variants, sizes, and states. Supports icons, full-width layout, and border radius control. For loading states, compose with Spinner + disabled + aria-busy.",
       },
     },
   },
@@ -33,10 +33,6 @@ const meta: Meta<typeof Button> = {
       control: "select",
       options: ["sm", "md", "lg", "xl"],
       description: "Size of the button",
-    },
-    loading: {
-      control: "boolean",
-      description: "Show loading spinner and disable interactions",
     },
     disabled: {
       control: "boolean",
@@ -64,7 +60,7 @@ export default meta;
 type Story = StoryObj<typeof Button>;
 
 /**
- * Primary button states: default, disabled, and loading.
+ * Primary button states: default and disabled.
  * The primary variant uses the brand color with black text.
  */
 export const Primary: Story = {
@@ -72,7 +68,6 @@ export const Primary: Story = {
     <div style={{ display: "flex", gap: 16 }}>
       <Button>Click me</Button>
       <Button disabled>Disabled</Button>
-      <Button loading>Loading</Button>
     </div>
   ),
 };
@@ -129,7 +124,6 @@ const Icon = () => (
 
 /**
  * Buttons with icons on the left or right side.
- * Icons are automatically hidden when the button is in loading state.
  */
 export const WithIcons: Story = {
   render: () => (
