@@ -141,7 +141,7 @@ export const Button = React.forwardRef<
       display: "inline-flex",
       alignItems: "center",
       justifyContent: "center",
-      gap: "8px",
+      gap: 0, // Icons have their own margins, so gap is 0
       height: `${baseHeight[size]}px`,
       padding: `0 ${basePaddingX[size]}px`,
       borderRadius: rounded ? "12px" : "0px",
