@@ -311,8 +311,8 @@ export const Button = React.forwardRef<
       }
     }
 
-    // Only add mouse event handlers for button elements
-    if (isButton) {
+    // Add mouse event handlers for interactive elements (buttons and links)
+    if (!disabled) {
       componentProps.onMouseDown = () => setIsActive(true);
       componentProps.onMouseUp = () => setIsActive(false);
       componentProps.onMouseLeave = () => {
