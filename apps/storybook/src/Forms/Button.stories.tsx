@@ -15,14 +15,58 @@ const meta: Meta<typeof Button> = {
   decorators: [withTokens],
   parameters: {
     layout: "centered",
+    docs: {
+      description: {
+        component:
+          "A versatile, accessible button component with multiple variants, sizes, and states. Supports loading states, icons, full-width layout, and border radius control.",
+      },
+    },
   },
   tags: ["autodocs"],
+  argTypes: {
+    variant: {
+      control: "select",
+      options: ["primary", "secondary", "success", "warning", "error", "info", "outline", "ghost", "destructive"],
+      description: "Visual style variant of the button",
+    },
+    size: {
+      control: "select",
+      options: ["sm", "md", "lg", "xl"],
+      description: "Size of the button",
+    },
+    loading: {
+      control: "boolean",
+      description: "Show loading spinner and disable interactions",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Whether the button is disabled",
+    },
+    fullWidth: {
+      control: "boolean",
+      description: "Make button span full width of container",
+    },
+    rounded: {
+      control: "boolean",
+      description: "Whether button has rounded corners (default: true, 12px radius)",
+    },
+    leftIcon: {
+      description: "Icon to display on the left side of the button text",
+    },
+    rightIcon: {
+      description: "Icon to display on the right side of the button text",
+    },
+  },
 };
 
 export default meta;
 
 type Story = StoryObj<typeof Button>;
 
+/**
+ * Primary button states: default, disabled, and loading.
+ * The primary variant uses the brand color with black text.
+ */
 export const Primary: Story = {
   render: () => (
     <div style={{ display: "flex", gap: 16 }}>
@@ -33,6 +77,10 @@ export const Primary: Story = {
   ),
 };
 
+/**
+ * All available button variants with their disabled states.
+ * Includes semantic variants (success, warning, error, info) and style variants (outline, ghost, destructive).
+ */
 export const States: Story = {
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -59,6 +107,9 @@ export const States: Story = {
   ),
 };
 
+/**
+ * All available button sizes: sm (32px), md (40px), lg (48px), and xl (56px).
+ */
 export const Sizes: Story = {
   render: () => (
     <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -76,6 +127,10 @@ const Icon = () => (
   </svg>
 );
 
+/**
+ * Buttons with icons on the left or right side.
+ * Icons are automatically hidden when the button is in loading state.
+ */
 export const WithIcons: Story = {
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -91,6 +146,10 @@ export const WithIcons: Story = {
   ),
 };
 
+/**
+ * Full-width button that spans the entire width of its container.
+ * Useful for forms and modal actions.
+ */
 export const FullWidth: Story = {
   render: () => (
     <div style={{ width: 360 }}>
@@ -99,6 +158,10 @@ export const FullWidth: Story = {
   ),
 };
 
+/**
+ * Border radius control: rounded (default, 12px) vs not rounded (0px, sharp corners).
+ * The rounded prop allows you to control the corner styling of buttons.
+ */
 export const BorderRadius: Story = {
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>

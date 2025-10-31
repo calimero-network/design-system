@@ -1,5 +1,7 @@
 export { Card, CardHeader, CardTitle, CardContent } from "./Card";
+export type { CardProps, CardHeaderProps, CardTitleProps, CardContentProps } from "./Card";
 export { Button } from "./Button";
+export type { ButtonProps, ButtonSize, ButtonVariant } from "./Button";
 export { Input } from "./Input";
 export { List } from "./List";
 export { Table, DataTable, EditableTable } from "./Table";
@@ -96,6 +98,7 @@ export { Tree } from "./Tree";
 export { StatCard } from "./StatCard";
 export { TreeTable } from "./TreeTable";
 export { MetricCard } from "./MetricCard";
+export { DataList } from "./DataList";
 
 // Advanced Form Components
 export { DatePicker } from "./DatePicker";

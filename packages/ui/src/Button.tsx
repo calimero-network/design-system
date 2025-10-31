@@ -1,31 +1,58 @@
 import React from "react";
 
-type Size = "sm" | "md" | "lg" | "xl";
-type Variant =
-  | "primary"
-  | "secondary"
-  | "success"
-  | "warning"
-  | "error"
-  | "info"
-  | "outline"
-  | "ghost"
-  | "destructive";
+/**
+ * Button size variants
+ * @public
+ */
+export type ButtonSize = "sm" | "md" | "lg" | "xl";
 
-type ButtonProps = React.PropsWithChildren<{
+/**
+ * Button style variants
+ * @public
+ */
+export type ButtonVariant =
+  | "primary"        // Brand color with black text (default)
+  | "secondary"      // Dark background with white text and border
+  | "success"        // Green semantic color
+  | "warning"        // Orange semantic color
+  | "error"          // Red semantic color (same as destructive)
+  | "info"           // Blue semantic color
+  | "outline"        // Transparent with border
+  | "ghost"          // Transparent without border
+  | "destructive";   // Red semantic color (same as error)
+
+/**
+ * Button component props
+ * @public
+ */
+export interface ButtonProps extends React.PropsWithChildren {
+  /** Click handler function */
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  /** Whether the button is disabled */
   disabled?: boolean;
+  /** Additional CSS class name */
   className?: string;
+  /** Inline styles */
   style?: React.CSSProperties;
+  /** HTML button type */
   type?: "button" | "submit" | "reset";
-  variant?: Variant;
-  size?: Size;
+  /** Visual variant/style of the button */
+  variant?: ButtonVariant;
+  /** Size of the button */
+  size?: ButtonSize;
+  /** Show loading spinner and disable interactions */
   loading?: boolean;
+  /** Icon to display on the left side of the button text */
   leftIcon?: React.ReactNode;
+  /** Icon to display on the right side of the button text */
   rightIcon?: React.ReactNode;
+  /** Make button span full width of container */
   fullWidth?: boolean;
+  /** Whether button has rounded corners (default: true, 12px radius). When false, uses 0px (sharp corners) */
   rounded?: boolean;
+  /** Accessibility: aria-label for screen readers */
   "aria-label"?: string;
+  /** Accessibility: aria-current attribute */
   "aria-current"?:
     | "page"
     | "step"
@@ -34,8 +61,47 @@ type ButtonProps = React.PropsWithChildren<{
     | "time"
     | "true"
     | "false";
+  /** HTML title attribute for tooltip */
   title?: string;
-}>;
+}
+
+/**
+ * Button Component
+ * 
+ * A versatile, accessible button component with multiple variants, sizes, and states.
+ * Supports loading states, icons, full-width layout, and border radius control.
+ * 
+ * @example
+ * ```tsx
+ * import { Button } from '@calimero-network/mero-ui';
+ * 
+ * // Basic usage
+ * <Button onClick={() => console.log('clicked')}>
+ *   Click me
+ * </Button>
+ * 
+ * // With variant and size
+ * <Button variant="secondary" size="lg">
+ *   Large Secondary Button
+ * </Button>
+ * 
+ * // With loading state
+ * <Button loading>Processing...</Button>
+ * 
+ * // With icons
+ * <Button leftIcon={<Icon />} rightIcon={<Arrow />}>
+ *   With Icons
+ * </Button>
+ * 
+ * // Full width
+ * <Button fullWidth>Full Width Button</Button>
+ * 
+ * // Sharp corners (not rounded)
+ * <Button rounded={false}>Sharp Button</Button>
+ * ```
+ * 
+ * @public
+ */
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -59,9 +125,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const baseHeight: Record<Size, number> = { sm: 32, md: 40, lg: 48, xl: 56 };
-    const basePaddingX: Record<Size, number> = { sm: 12, md: 16, lg: 20, xl: 24 };
-    const baseFontSize: Record<Size, number> = { sm: 12, md: 14, lg: 16, xl: 18 };
+    const baseHeight: Record<ButtonSize, number> = { sm: 32, md: 40, lg: 48, xl: 56 };
+    const basePaddingX: Record<ButtonSize, number> = { sm: 12, md: 16, lg: 20, xl: 24 };
+    const baseFontSize: Record<ButtonSize, number> = { sm: 12, md: 14, lg: 16, xl: 18 };
 
     const baseStyles: React.CSSProperties = {
       display: "inline-flex",
