@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CopyToClipboard, useCopyToClipboard } from "@calimero-network/mero-ui";
 import { Icon } from "@calimero-network/mero-ui";
 import { useState } from "react";

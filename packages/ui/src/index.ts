@@ -1,5 +1,7 @@
 export { Card, CardHeader, CardTitle, CardContent } from "./Card";
+export type { CardProps, CardHeaderProps, CardTitleProps, CardContentProps } from "./Card";
 export { Button } from "./Button";
+export type { ButtonProps, ButtonSize, ButtonVariant } from "./Button";
 export { Input } from "./Input";
 export { List } from "./List";
 export { Table, DataTable, EditableTable } from "./Table";

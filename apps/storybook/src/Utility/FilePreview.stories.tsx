@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FilePreview } from "@calimero-network/mero-ui";
 
 // Mock files for stories

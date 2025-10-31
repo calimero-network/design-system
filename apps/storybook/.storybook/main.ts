@@ -1,49 +1,47 @@
-import type { StorybookConfig } from "@storybook/react-vite";
-import { mergeConfig } from "vite";
+import type { StorybookConfig } from '@storybook/react-vite';
+import { mergeConfig } from 'vite';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Get the project root directory
+// When Storybook runs, process.cwd() is the project root
+// But if running from apps/storybook, we need to go up 2 levels
+let rootDir = process.cwd();
+if (rootDir.endsWith('/apps/storybook') || rootDir.endsWith('\\apps\\storybook')) {
+  rootDir = path.resolve(rootDir, '../..');
+}
+
+// Fallback: try to get dirname from import.meta.url if available
+if (typeof import.meta.url !== 'undefined') {
+  try {
+    const configDir = path.dirname(fileURLToPath(import.meta.url));
+    // Config is in .storybook, so go up 3 levels to get to project root
+    rootDir = path.resolve(configDir, '../../..');
+  } catch {
+    // Use process.cwd() fallback
+  }
+}
 
 const config: StorybookConfig = {
-  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
-  addons: ["@storybook/addon-a11y"],
+  stories: ['../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  addons: [
+    '@storybook/addon-onboarding',
+    '@storybook/addon-docs',
+    '@storybook/addon-a11y',
+  ],
   framework: {
-    name: "@storybook/react-vite",
+    name: '@storybook/react-vite',
     options: {},
   },
-  viteFinal: async (config) => {
+  async viteFinal(config) {
     return mergeConfig(config, {
-      optimizeDeps: {
-        include: [
-          "@tiptap/react",
-          "@tiptap/starter-kit",
-          "@tiptap/extension-text-style",
-          "@tiptap/extension-color",
-          "@tiptap/extension-text-align",
-          "@tiptap/extension-underline",
-          "@tiptap/extension-link",
-          "react",
-          "react-dom",
-        ],
-      },
-      build: {
-        commonjsOptions: {
-          include: [/node_modules/],
-        },
-        rollupOptions: {
-          external: [],
-        },
-      },
       resolve: {
-        dedupe: ["@tiptap/react", "@tiptap/core", "react", "react-dom"],
         alias: {
-          react: "react",
-          "react-dom": "react-dom",
-          "use-sync-external-store/shim":
-            "use-sync-external-store/shim/index.js",
+          '@calimero-network/mero-ui': path.resolve(rootDir, 'packages/ui/src'),
+          '@calimero-network/mero-tokens': path.resolve(rootDir, 'packages/tokens/src'),
+          '@calimero-network/mero-charts': path.resolve(rootDir, 'packages/charts/src'),
+          '@calimero-network/mero-icons': path.resolve(rootDir, 'packages/icons/src'),
         },
-      },
-      define: {
-        "process.env.NODE_ENV": JSON.stringify(
-          process.env.NODE_ENV || "production",
-        ),
       },
     });
   },

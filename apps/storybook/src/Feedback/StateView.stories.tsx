@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ErrorView, EmptyView, NotFoundView } from "@calimero-network/mero-ui";
 
 const meta: Meta<typeof ErrorView> = {

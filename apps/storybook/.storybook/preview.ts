@@ -20,18 +20,8 @@ style.textContent =
     color: #FFFFFF;
   }
   
-  /* Ensure Storybook canvas has dark background */
-  .sb-show-main {
-    background: var(--color-background-brand) !important;
-  }
-  
-  /* Dark theme for Storybook UI */
+  /* Dark theme for Storybook UI (sidebar) */
   .os-content {
-    background: var(--color-background-brand) !important;
-  }
-  
-  /* Only override elements that don't have proper component styling */
-  .sb-show-main > div {
     background: var(--color-background-brand) !important;
   }
   
@@ -106,22 +96,22 @@ const preview: Preview = {
     },
     backgrounds: {
       options: {
-        // 👇 Calimero brand theme options - exact brand colors
+        // 👇 Calimero brand theme options - exact brand colors (hex values, not CSS vars)
         brand: {
-          name: "Brand Gradient",
-          value: "var(--color-background-brand)",
+          name: "Brand",
+          value: "#1F2A15",
         },
-        primary: { name: "Primary", value: "var(--color-background-primary)" },
+        primary: { name: "Primary", value: "#1A1A1A" },
         secondary: {
           name: "Secondary",
-          value: "var(--color-background-secondary)",
+          value: "#2A2A2A",
         },
         tertiary: {
           name: "Tertiary",
-          value: "var(--color-background-tertiary)",
+          value: "#3A3A3A",
         },
-        accent: { name: "Brand Accent", value: "var(--color-brand-600)" },
-        neutral: { name: "Neutral 900", value: "var(--color-neutral-900)" },
+        accent: { name: "Brand Accent", value: "#A5FF11" },
+        neutral: { name: "Neutral 900", value: "#131215" },
         light: { name: "Light", value: "#FFFFFF" },
       },
     },

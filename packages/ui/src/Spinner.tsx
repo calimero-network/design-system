@@ -59,6 +59,9 @@ export const Spinner: React.FC<SpinnerProps> = ({
     ...style,
   };
 
+  const centerX = spinnerSize / 2;
+  const centerY = spinnerSize / 2;
+
   const circleStyle = {
     fill: "none",
     stroke: colorMap[color],
@@ -66,7 +69,11 @@ export const Spinner: React.FC<SpinnerProps> = ({
     strokeLinecap: "round" as const,
     strokeDasharray: circumference,
     strokeDashoffset: circumference * 0.25,
+  };
+
+  const groupStyle = {
     animation: "spinner-rotate 1s linear infinite",
+    transformOrigin: `${centerX}px ${centerY}px`,
   };
 
   return (
@@ -89,12 +96,14 @@ export const Spinner: React.FC<SpinnerProps> = ({
         viewBox={`0 0 ${spinnerSize} ${spinnerSize}`}
         xmlns="http://www.w3.org/2000/svg"
       >
-        <circle
-          cx={spinnerSize / 2}
-          cy={spinnerSize / 2}
-          r={radius}
-          style={circleStyle}
-        />
+        <g style={groupStyle}>
+          <circle
+            cx={centerX}
+            cy={centerY}
+            r={radius}
+            style={circleStyle}
+          />
+        </g>
       </svg>
     </>
   );

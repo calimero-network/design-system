@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Progress, CircularProgress, Text } from "@calimero-network/mero-ui";
 
 const meta: Meta = {
