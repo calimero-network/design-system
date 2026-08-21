@@ -248,6 +248,9 @@ importers:
       '@tiptap/extension-underline':
         specifier: ^3.6.2
         version: 3.6.2(@tiptap/core@3.6.2(@tiptap/pm@3.6.2))
+      '@tiptap/extensions':
+        specifier: ^3.6.2
+        version: 3.6.2(@tiptap/core@3.6.2(@tiptap/pm@3.6.2))(@tiptap/pm@3.6.2)
       '@tiptap/react':
         specifier: ^3.6.2
         version: 3.6.2(@floating-ui/dom@1.7.4)(@tiptap/core@3.6.2(@tiptap/pm@3.6.2))(@tiptap/pm@3.6.2)(@types/react-dom@19.2.0(@types/react@19.2.0))(@types/react@19.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
