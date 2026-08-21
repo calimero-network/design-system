@@ -36,17 +36,16 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          # Node 24 bundles an npm new enough for trusted publishing
+          # (>= 11.5.1). Node 20 ships npm 10 and cannot do the OIDC
+          # exchange. Matches mero-js and mero-react.
+          node-version: "24"
           cache: "pnpm"
           registry-url: "https://registry.npmjs.org"
-
-      # Node 20 ships npm 10, which predates trusted publishing. The OIDC
-      # exchange is implemented in the npm CLI itself, so the bundled version
-      # is what matters here -- not the Node version.
-      - name: Upgrade npm for trusted publishing
-        run: |
-          npm install -g npm@latest
-          npm --version
+          scope: "@calimero-network"
+          # Do not write an _authToken into .npmrc: a token there takes
+          # precedence over the OIDC credential and reintroduces the 404.
+          token: false
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -68,6 +67,14 @@ jobs:
       - name: Publish packages
         if: github.event.inputs.dry_run != 'true'
         run: pnpm release
+        env:
+          # changesets shells out to `npm publish`, which reads this rather
+          # than a --provenance flag. mero-js and mero-react pass
+          # `--provenance` directly because they call npm publish themselves;
+          # this repo publishes through changesets, so the env var is the
+          # equivalent. Provenance attestation requires the same id-token
+          # permission the OIDC exchange already needs.
+          NPM_CONFIG_PROVENANCE: true
 
       - name: Dry run summary
         if: github.event.inputs.dry_run == 'true'
