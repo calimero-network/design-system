@@ -15,6 +15,13 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      # npm trusted publishing exchanges this OIDC token for a short-lived
+      # registry credential -- without it the publish 404s, which is npm's
+      # response to an unauthorised write rather than a missing package.
+      id-token: write
+      # The "Create GitHub Release" step below needs to write a release.
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,6 +40,14 @@ jobs:
           cache: "pnpm"
           registry-url: "https://registry.npmjs.org"
 
+      # Node 20 ships npm 10, which predates trusted publishing. The OIDC
+      # exchange is implemented in the npm CLI itself, so the bundled version
+      # is what matters here -- not the Node version.
+      - name: Upgrade npm for trusted publishing
+        run: |
+          npm install -g npm@latest
+          npm --version
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -43,11 +58,9 @@ jobs:
           pnpm --filter=@calimero-network/mero-ui build
           pnpm --filter=@calimero-network/mero-charts build
 
-      - name: Setup NPM authentication
-        if: github.event.inputs.dry_run != 'true'
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-          echo "@calimero-network:registry=https://registry.npmjs.org/" >> ~/.npmrc
+      # No .npmrc token step: authentication comes from the OIDC exchange
+      # above. A stale `_authToken` would take precedence over it, so the file
+      # is deliberately not written.
 
       - name: Version packages
         run: pnpm version-packages
@@ -55,8 +68,6 @@ jobs:
       - name: Publish packages
         if: github.event.inputs.dry_run != 'true'
         run: pnpm release
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Dry run summary
         if: github.event.inputs.dry_run == 'true'
