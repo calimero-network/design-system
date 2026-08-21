@@ -4,6 +4,11 @@
     "access": "public"
   },
   "version": "0.0.17",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/calimero-network/design-system.git",
+    "directory": "packages/charts"
+  },
   "description": "Chart components for Calimero design system",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
