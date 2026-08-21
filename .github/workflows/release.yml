@@ -15,6 +15,13 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      # npm trusted publishing exchanges this OIDC token for a short-lived
+      # registry credential -- without it the publish 404s, which is npm's
+      # response to an unauthorised write rather than a missing package.
+      id-token: write
+      # The "Create GitHub Release" step below needs to write a release.
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,9 +36,16 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          # Node 24 bundles an npm new enough for trusted publishing
+          # (>= 11.5.1). Node 20 ships npm 10 and cannot do the OIDC
+          # exchange. Matches mero-js and mero-react.
+          node-version: "24"
           cache: "pnpm"
           registry-url: "https://registry.npmjs.org"
+          scope: "@calimero-network"
+          # Do not write an _authToken into .npmrc: a token there takes
+          # precedence over the OIDC credential and reintroduces the 404.
+          token: false
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -43,11 +57,9 @@ jobs:
           pnpm --filter=@calimero-network/mero-ui build
           pnpm --filter=@calimero-network/mero-charts build
 
-      - name: Setup NPM authentication
-        if: github.event.inputs.dry_run != 'true'
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-          echo "@calimero-network:registry=https://registry.npmjs.org/" >> ~/.npmrc
+      # No .npmrc token step: authentication comes from the OIDC exchange
+      # above. A stale `_authToken` would take precedence over it, so the file
+      # is deliberately not written.
 
       - name: Version packages
         run: pnpm version-packages
@@ -56,7 +68,13 @@ jobs:
         if: github.event.inputs.dry_run != 'true'
         run: pnpm release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # changesets shells out to `npm publish`, which reads this rather
+          # than a --provenance flag. mero-js and mero-react pass
+          # `--provenance` directly because they call npm publish themselves;
+          # this repo publishes through changesets, so the env var is the
+          # equivalent. Provenance attestation requires the same id-token
+          # permission the OIDC exchange already needs.
+          NPM_CONFIG_PROVENANCE: true
 
       - name: Dry run summary
         if: github.event.inputs.dry_run == 'true'
