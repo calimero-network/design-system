@@ -13,6 +13,7 @@ import { Color } from "@tiptap/extension-color";
 import { TextAlign } from "@tiptap/extension-text-align";
 import { Underline } from "@tiptap/extension-underline";
 import { Link } from "@tiptap/extension-link";
+import { Placeholder } from "@tiptap/extensions";
 // Using default Tiptap icons instead of custom ones
 
 export interface RichTextEditorProps {
@@ -84,6 +85,12 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
       value || defaultValue || "",
     );
     const lastSelectionRef = useRef<{ from: number; to: number } | null>(null);
+    // Read by the Placeholder extension through a callback so a changed
+    // `placeholder` prop takes effect without tearing down the editor (which
+    // would drop selection and undo history). `useEditor` captures its options
+    // once, so the value has to be reached indirectly.
+    const placeholderRef = useRef(placeholder);
+    placeholderRef.current = placeholder;
 
     // Function to clean up empty content
     const cleanEmptyContent = (html: string): string => {
@@ -121,6 +128,13 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
     const editor = useEditor({
       extensions: [
         StarterKit,
+        // The `p.is-editor-empty:first-child::before` rule below has always
+        // been here, but nothing ever emitted `data-placeholder` for it to
+        // read — the extension was never registered, so `placeholder` was
+        // accepted and silently ignored.
+        Placeholder.configure({
+          placeholder: () => placeholderRef.current ?? "",
+        }),
         TextStyle,
         Color,
         TextAlign.configure({
@@ -260,6 +274,14 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
         setCurrentValue(cleanEmptyContent(value));
       }
     }, [value]);
+
+    // Placeholder decorations are recomputed on transactions, not on React
+    // renders. Changing the prop alone would leave the previous text on screen
+    // until the user next typed, so nudge the editor with an empty transaction.
+    useEffect(() => {
+      if (!editor || editor.isDestroyed) return;
+      editor.view.dispatch(editor.state.tr);
+    }, [placeholder, editor]);
 
 
     const sizeStyles = {
