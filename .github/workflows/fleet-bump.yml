@@ -182,24 +182,48 @@ jobs:
         id: pnpm
         run: |
           set -euo pipefail
+
+          # Every probe below is allowed to find nothing, and saying so must not
+          # be fatal. `grep` exits 1 on no match, `xargs` reports that as 123,
+          # and `head -1` can SIGPIPE its producer into 141 — so under
+          # `set -euo pipefail` a repository that simply does not declare
+          # `packageManager` killed this step at exit 123 before either fallback
+          # below could run. That is not hypothetical: it took out 7 of the 12
+          # consumers on the 13.2.4 release, and the `version=9` floor has never
+          # once been reached. Hence `|| true` on each probe: absence is an
+          # answer, and only the last resort decides.
+
           # Shallowest first, and never inside node_modules: a vendored
           # dependency's own `packageManager` is not this repository's.
-          version=$(find consumer -name package.json \
-                      -not -path '*/node_modules/*' -not -path '*/.git/*' 2>/dev/null \
-                    | awk -F/ '{print NF"\t"$0}' | sort -n | cut -f2- \
-                    | xargs grep -hoE '"packageManager"[[:space:]]*:[[:space:]]*"pnpm@[^"]+"' 2>/dev/null \
-                    | head -1 | sed 's/.*pnpm@//; s/"$//')
+          declared() {
+            find consumer -name package.json \
+                 -not -path '*/node_modules/*' -not -path '*/.git/*' 2>/dev/null \
+              | awk -F/ '{print NF"\t"$0}' | sort -n | cut -f2- \
+              | tr '\n' '\0' \
+              | xargs -0 --no-run-if-empty \
+                  grep -hoE '"packageManager"[[:space:]]*:[[:space:]]*"pnpm@[^"]+"' 2>/dev/null \
+              | sed -n '1s/.*pnpm@//;1s/"$//;1p'
+          }
+
+          # What the repository's own CI installs. `version:` sits a line or two
+          # under the `uses:`, so keep a little context and take the first hit.
+          from_ci() {
+            grep -rhA3 'pnpm/action-setup' consumer/.github/workflows 2>/dev/null \
+              | grep -oE 'version:[[:space:]]*[0-9][0-9.]*' \
+              | sed -n '1s/version:[[:space:]]*//;1p'
+          }
+
+          version=$(declared || true)
           source="packageManager"
           if [ -z "$version" ]; then
-            version=$(grep -rhA3 'pnpm/action-setup' consumer/.github/workflows 2>/dev/null \
-                      | grep -oE 'version:[[:space:]]*[0-9][0-9.]*' | head -1 \
-                      | sed 's/version:[[:space:]]*//')
+            version=$(from_ci || true)
             source="its own CI"
           fi
           if [ -z "$version" ]; then
             version=9
             source="fallback"
           fi
+
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "::notice::${{ matrix.repo }} uses pnpm $version (from $source)"
 
