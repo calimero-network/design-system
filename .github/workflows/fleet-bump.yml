@@ -163,13 +163,50 @@ jobs:
         with:
           node-version: "24"
 
-      # Corepack, not a pinned pnpm: consumers pin their own pnpm through
-      # `packageManager` (8.15.0 through 11.20.0 across this fleet), and a
-      # lockfile written by the wrong major is a diff nobody wants to review.
-      - name: Enable corepack
-        env:
-          COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
-        run: corepack enable
+      # Which pnpm this repository actually uses — not whichever one corepack
+      # happens to default to.
+      #
+      # Relying on the default silently rewrote lockfiles under pnpm 10+ for
+      # repositories whose CI pins pnpm 9. pnpm 10 dropped support for the
+      # top-level `resolutions` field, so a bump run under it wrote a lockfile
+      # with no `overrides:` block, and the repository's own
+      # `pnpm install --frozen-lockfile` then failed with
+      # ERR_PNPM_LOCKFILE_CONFIG_MISMATCH. Three repositories in this fleet use
+      # `resolutions`, and all three broke; the rest were fine only because they
+      # do not.
+      #
+      # Precedence is declared truth first: `packageManager` if the repository
+      # states one, otherwise whatever its own CI installs. The 9 fallback is
+      # the floor every unpinned repository here is already on.
+      - name: Decide which pnpm this repository uses
+        id: pnpm
+        run: |
+          set -euo pipefail
+          # Shallowest first, and never inside node_modules: a vendored
+          # dependency's own `packageManager` is not this repository's.
+          version=$(find consumer -name package.json \
+                      -not -path '*/node_modules/*' -not -path '*/.git/*' 2>/dev/null \
+                    | awk -F/ '{print NF"\t"$0}' | sort -n | cut -f2- \
+                    | xargs grep -hoE '"packageManager"[[:space:]]*:[[:space:]]*"pnpm@[^"]+"' 2>/dev/null \
+                    | head -1 | sed 's/.*pnpm@//; s/"$//')
+          source="packageManager"
+          if [ -z "$version" ]; then
+            version=$(grep -rhA3 'pnpm/action-setup' consumer/.github/workflows 2>/dev/null \
+                      | grep -oE 'version:[[:space:]]*[0-9][0-9.]*' | head -1 \
+                      | sed 's/version:[[:space:]]*//')
+            source="its own CI"
+          fi
+          if [ -z "$version" ]; then
+            version=9
+            source="fallback"
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "::notice::${{ matrix.repo }} uses pnpm $version (from $source)"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ steps.pnpm.outputs.version }}
 
       - name: Rewrite the dependency ranges
         id: bump
