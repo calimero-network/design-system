@@ -11,8 +11,6 @@ import StarterKit from "@tiptap/starter-kit";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import { TextAlign } from "@tiptap/extension-text-align";
-import { Underline } from "@tiptap/extension-underline";
-import { Link } from "@tiptap/extension-link";
 import { Placeholder } from "@tiptap/extensions";
 // Using default Tiptap icons instead of custom ones
 
@@ -127,7 +125,28 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
 
     const editor = useEditor({
       extensions: [
-        StarterKit,
+        // `link` and `underline` are configured THROUGH StarterKit, not
+        // registered beside it.
+        //
+        // StarterKit already bundles both. Adding `Underline` and `Link` to
+        // this array as well registered a second, different instance of each,
+        // and ProseMirror rejects that outright:
+        //
+        //   [tiptap warn]: Duplicate extension names found: ['link','underline']
+        //   RangeError: Adding different instances of a keyed plugin (plugin$)
+        //
+        // The RangeError is thrown while the editor is being constructed, so
+        // the whole component fails to mount — it surfaces to the app as a
+        // bare React error #520 with no mention of tiptap, which is why this
+        // sat unexplained.
+        StarterKit.configure({
+          link: {
+            openOnClick: false,
+            HTMLAttributes: {
+              class: "rich-text-link",
+            },
+          },
+        }),
         // The `p.is-editor-empty:first-child::before` rule below has always
         // been here, but nothing ever emitted `data-placeholder` for it to
         // read — the extension was never registered, so `placeholder` was
@@ -139,13 +158,6 @@ export const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>
         Color,
         TextAlign.configure({
           types: ["heading", "paragraph"],
-        }),
-        Underline,
-        Link.configure({
-          openOnClick: false,
-          HTMLAttributes: {
-            class: "rich-text-link",
-          },
         }),
       ],
       content: currentValue,
