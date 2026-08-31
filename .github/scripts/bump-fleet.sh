@@ -8,8 +8,12 @@
 # any local checkout — which is the only honest way to see what a bump would do
 # before it lands as ten pull requests.
 #
-#   bump-fleet.sh --surface cargo --version 0.11.0-rc.26 --dir ../mero-design --no-lock --dry-run
+#   bump-fleet.sh --surface cargo --version 0.11.0-rc.26 --dir ../apps --no-lock --dry-run
 #   bump-fleet.sh --surface npm --pkg @calimero-network/mero-ui=1.5.1 --dir ../mero-meet --no-lock --dry-run
+#
+# Fixture tests, no runner or network needed:
+#
+#   bash .github/scripts/tests/bump-fleet.test.sh
 #
 # Exit status is the contract with the caller:
 #
@@ -114,16 +118,210 @@ fi
 #                       min-runtime-version — the floor a node checks before it
 #                       will accept the bundle at all. Not decoration.
 #
-# The git URL is spelled ".../core" in most repos and ".../core.git" in merraria
-# and mero-blocks, so the matcher tolerates both.
+# The git URL is spelled ".../core" in some manifests and ".../core.git" in
+# others, so the matcher tolerates both.
 
-bump_cargo() {
-  local manifest="$DIR/logic/Cargo.toml"
+# The monorepo lays the same surface out differently, so `cargo` means one of
+# two shapes and the script decides which by looking rather than by being told.
+#
+#   standalone   logic/Cargo.toml            one contract, its own pins
+#   workspace    Cargo.toml [workspace]      apps/*/logic, one shared pin
+#
+# calimero-network/apps is the second: nine contracts whose SDK tag lives once,
+# in [workspace.dependencies]. That is the whole reason the monorepo exists —
+# "a core release is ONE edit", per its root Cargo.toml — but a release is still
+# more than the three tag lines, because the repo enforces two derived values in
+# CI (scripts/check-app-metadata.sh):
+#
+#   min-runtime-version   the workspace value, AND a copy in every app, because
+#                         [package.metadata] is not on cargo's inheritable list
+#   merod-image           the workspace value, AND the image every merobox
+#                         scenario starts its node from
+#
+# Miss either and the bump PR is red on a check that names the drift precisely.
+# So the rewrite covers all of it, and then re-reads to assert what that script
+# asserts — a bump should not be able to open a PR that fails a check this
+# script could have run itself.
 
-  if [ ! -f "$manifest" ]; then
-    note "no logic/Cargo.toml — this repository has no contract to bump"
+# The tag any calimero-network/core git dependency is pinned to, first match.
+core_tag_in() {
+  perl -ne '
+    if (m{git\s*=\s*"https://github\.com/calimero-network/core(?:\.git)?"}
+        && m{tag\s*=\s*"([^"]*)"}) { print "$1\n"; exit }
+  ' "$1"
+}
+
+# Every apps/*/logic/Cargo.toml. Deliberately not */logic/crates/*/Cargo.toml —
+# a shared crate carries no [package.metadata.calimero] and the checker treats
+# it as a crate, not an app.
+app_manifests() {
+  find "$DIR/apps" -type f -path '*/logic/Cargo.toml' 2>/dev/null | sort
+}
+
+# Every merobox scenario. The checker globs apps/*/logic/workflows/*.yml, one
+# level; this recurses, so the probes/ subdirectories that carry the same image
+# and that the checker never looks at do not quietly rot.
+scenario_files() {
+  find "$DIR/apps" -type f -path '*/logic/workflows/*' \
+       \( -name '*.yml' -o -name '*.yaml' \) 2>/dev/null | sort
+}
+
+bump_cargo_workspace() {
+  local root="$DIR/Cargo.toml"
+
+  local current
+  current=$(core_tag_in "$root")
+  if [ -z "$current" ]; then
+    note "Cargo.toml pins no calimero-network/core git dependency"
     exit 3
   fi
+
+  head_note "cargo (workspace): $current -> $VERSION"
+
+  if [ "$current" = "$VERSION" ]; then
+    note "already pinned to $VERSION"
+    exit 4
+  fi
+
+  # ── the workspace root: dependency tags, the floor, and the node image ────
+  NEW="$VERSION" perl -i -pe '
+    if (m{git\s*=\s*"https://github\.com/calimero-network/core(?:\.git)?"}
+        && m{tag\s*=\s*"}) {
+      s{(tag\s*=\s*")[^"]*(")}{$1$ENV{NEW}$2};
+    }
+    s{^(\s*min-runtime-version\s*=\s*")[^"]*(")}{$1$ENV{NEW}$2};
+    s{(ghcr\.io/calimero-network/merod:)[A-Za-z0-9._-]+}{$1$ENV{NEW}};
+  ' "$root"
+  record_change "Cargo.toml"
+
+  local n
+  n=$(NEW="$VERSION" perl -ne '
+    if (m{git\s*=\s*"https://github\.com/calimero-network/core(?:\.git)?"}
+        && m{tag\s*=\s*"\Q$ENV{NEW}\E"}) { $n++ }
+    END { print $n + 0 }
+  ' "$root")
+  [ "$n" -gt 0 ] || die "rewrote no dependency lines in Cargo.toml — not shaped as expected"
+  note "Cargo.toml: $n dependency line(s) now pin $VERSION"
+
+  # ── every app's copy of the floor ────────────────────────────────────────
+  local apps=0
+  local m
+  for m in $(app_manifests); do
+    grep -q 'min-runtime-version' "$m" || continue
+    NEW="$VERSION" perl -i -pe '
+      s{^(\s*min-runtime-version\s*=\s*")[^"]*(")}{$1$ENV{NEW}$2};
+    ' "$m"
+    record_change "${m#$DIR/}"
+    apps=$((apps + 1))
+  done
+  note "min-runtime-version rewritten in $apps app manifest(s)"
+
+  # ── every merobox scenario's node image ──────────────────────────────────
+  local scen=0
+  local f
+  for f in $(scenario_files); do
+    grep -q 'ghcr\.io/calimero-network/merod:' "$f" || continue
+    NEW="$VERSION" perl -i -pe '
+      s{(ghcr\.io/calimero-network/merod:)[A-Za-z0-9._-]+}{$1$ENV{NEW}}g;
+    ' "$f"
+    record_change "${f#$DIR/}"
+    scen=$((scen + 1))
+  done
+  note "merod image rewritten in $scen scenario file(s)"
+
+  # ── the toolchain that builds the bundles ────────────────────────────────
+  # cargo-mero is installed from a core tag, and its action says to keep that
+  # matched to the SDK. Nothing enforces it, which is exactly why it drifts.
+  local action="$DIR/.github/actions/install-cargo-mero/action.yml"
+  if [ -f "$action" ] && grep -q 'default:' "$action"; then
+    NEW="$VERSION" perl -i -pe '
+      s{^(\s*default:\s*")[^"]*(")}{$1$ENV{NEW}$2};
+    ' "$action"
+    record_change ".github/actions/install-cargo-mero/action.yml"
+    note "install-cargo-mero default now $VERSION"
+  fi
+
+  verify_workspace_consistency
+
+  if [ "$NO_LOCK" -eq 1 ]; then
+    note "skipping Cargo.lock refresh (--no-lock)"
+    return 0
+  fi
+
+  command -v cargo >/dev/null 2>&1 || die "cargo is not installed; re-run with --no-lock to edit manifests only"
+
+  # One lockfile for the whole workspace. `cargo update -p` per crate would be
+  # nine resolutions of the same graph; the workspace root resolves once.
+  note "refreshing Cargo.lock"
+  ( cd "$DIR" && cargo update --quiet )
+  record_change "Cargo.lock"
+}
+
+# Re-read what was just written and assert the two invariants
+# scripts/check-app-metadata.sh asserts in CI. Checking the rewrite rather than
+# trusting it is the same reason bump_cargo_app re-reads: a regex that matched
+# nothing fails silently, and the cost of finding out is a red PR per release.
+verify_workspace_consistency() {
+  local root="$DIR/Cargo.toml"
+  local stale
+
+  stale=$(NEW="$VERSION" perl -ne '
+    if (m{git\s*=\s*"https://github\.com/calimero-network/core(?:\.git)?"}
+        && m{tag\s*=\s*"([^"]*)"} && $1 ne $ENV{NEW}) { print "    line $.: $_" }
+  ' "$root")
+  [ -z "$stale" ] || die "Cargo.toml still pins another core tag:
+$stale"
+
+  local want_min
+  want_min=$(perl -ne 'if (m{^\s*min-runtime-version\s*=\s*"([^"]*)"}) { print "$1\n"; exit }' "$root")
+  [ "$want_min" = "$VERSION" ] \
+    || die "workspace min-runtime-version is '${want_min:-<unset>}', expected '$VERSION'"
+
+  local want_image
+  want_image=$(perl -ne 'if (m{^\s*merod-image\s*=\s*"([^"]*)"}) { print "$1\n"; exit }' "$root")
+  [ -n "$want_image" ] \
+    || die "[workspace.metadata.mero-apps].merod-image is not set — the scenario check reads it"
+  case "$want_image" in
+    *":$VERSION") ;;
+    *) die "workspace merod-image is '$want_image', expected it to end with ':$VERSION'" ;;
+  esac
+
+  local m got
+  for m in $(app_manifests); do
+    # Not a warning. check-app-metadata.sh rejects an app under apps/*/logic
+    # with no floor, so continuing here would open a pull request that is red
+    # for a reason this script already knows.
+    grep -q 'min-runtime-version' "$m" \
+      || die "${m#$DIR/} declares no min-runtime-version — the metadata check rejects that"
+    got=$(perl -ne 'if (m{^\s*min-runtime-version\s*=\s*"([^"]*)"}) { print "$1\n"; exit }' "$m")
+    [ "$got" = "$VERSION" ] \
+      || die "${m#$DIR/}: min-runtime-version is '$got', workspace says '$VERSION'"
+  done
+
+  local f img
+  for f in $(scenario_files); do
+    for img in $(grep -oE 'ghcr\.io/calimero-network/merod:[A-Za-z0-9._-]+' "$f" | sort -u); do
+      [ "$img" = "$want_image" ] \
+        || die "${f#$DIR/}: runs $img, workspace declares $want_image"
+    done
+  done
+
+  note "workspace, apps and scenarios all agree on $VERSION"
+}
+
+bump_cargo() {
+  if [ -f "$DIR/logic/Cargo.toml" ]; then
+    bump_cargo_app
+  elif [ -f "$DIR/Cargo.toml" ] && grep -q 'calimero-network/core' "$DIR/Cargo.toml"; then
+    bump_cargo_workspace
+  else
+    note "no logic/Cargo.toml, and no workspace root pinning calimero-network/core"
+    exit 3
+  fi
+}
+
+bump_cargo_app() {
+  local manifest="$DIR/logic/Cargo.toml"
 
   local current
   current=$(perl -ne '
@@ -302,8 +500,9 @@ bump_tauri() {
 # drifts silently. Instead: find every package.json that actually declares the
 # dependency, and for each, walk up to the nearest lockfile to find the install
 # root. That covers the standalone app/ repos, the pnpm workspaces (tauri-app,
-# app-registry, mero-issue-tracker), and anything added later, without being
-# told about any of them.
+# app-registry, apps), and anything added later, without being told about any of
+# them. A workspace that resolves its versions through a pnpm CATALOG declares
+# them nowhere near a package.json, so that is handled separately below.
 
 find_lock_root() {
   local d="$1"
@@ -314,18 +513,187 @@ find_lock_root() {
   done
 }
 
+# The manifests a pnpm workspace actually installs: the root one, plus every
+# directory its `packages:` globs match.
+#
+# Anything else is a package.json pnpm never reads, and calimero-network/apps
+# has five of them — pre-migration leftovers at apps/<app>/package.json, from
+# when each app was its own repository with its own root manifest. Its workspace
+# is `apps/*/app`, so those are outside it.
+#
+# They matter because they are not merely inert. meropass/package.json still
+# declares mero-ui ^0.3.4; rewriting it stages a change to a file no install
+# reads, and because the version is majors behind, it also fills the
+# skipped-major report with warnings about apps that are perfectly fine. Both
+# make the run harder to read for no gain, so members are the unit and the
+# leftovers are reported instead.
+#
+# Verified against every npm consumer before switching to this: tauri-app
+# (`apps/*`) and app-registry (`packages/*` + `shared`) have no manifest outside
+# their globs, and mero-chat-pwa has no workspace file at all and so still takes
+# the `find` path below.
+workspace_manifests() {
+  local ws="$1" glob d
+  [ -f "$DIR/package.json" ] && printf '%s\n' "$DIR/package.json"
+  for glob in $(perl -ne '
+      if (m/^packages:\s*$/) { $in = 1; next }
+      if ($in) {
+        last if m/^\S/;
+        if (m/^\s*-\s*["\x27]?([^"\x27#\s]+)/) { print "$1\n" }
+      }
+    ' "$ws"); do
+    for d in $DIR/$glob; do
+      [ -f "$d/package.json" ] && printf '%s\n' "$d/package.json"
+    done
+  done
+}
+
+# A pnpm CATALOG is the npm half of what [workspace.dependencies] is to cargo,
+# and calimero-network/apps uses it: every app writes
+#
+#     "@calimero-network/mero-js": "catalog:"
+#
+# and the real range lives once, in pnpm-workspace.yaml. Rewriting package.json
+# there changes nothing, and — worse — the literal string "catalog:" carries no
+# digits, so the numeric guard below skips it and the run reports "everything is
+# already at the requested version" and exits 4. A repository that silently
+# stops receiving bumps while reporting success is the exact failure the exit
+# codes exist to prevent, so the catalog is handled first and explicitly.
+#
+# Matching is not restricted to the default `catalog:` block. A named catalog
+# under `catalogs:` has the same shape, and in pnpm-workspace.yaml a
+# `name: version` line can only be a catalog entry — `packages:` and
+# `onlyBuiltDependencies:` are sequences, not maps.
+catalog_version_of() {
+  NAME="$1" perl -ne '
+    if (m{^\s*"?\Q$ENV{NAME}\E"?\s*:\s*"?([^"\s#]+)"?}) { print "$1\n"; exit }
+  ' "$2"
+}
+
+# Rewrite one package in the catalog. Echoes the outcome as a single word so the
+# caller can account for it: changed / same / absent / major / opaque.
+catalog_bump() {
+  local name="$1" ver="$2" ws="$3"
+
+  local current
+  current=$(catalog_version_of "$name" "$ws")
+  [ -n "$current" ] || { printf 'absent\n'; return 0; }
+
+  local prefix current_digits current_major
+  prefix=$(printf '%s' "$current" | sed 's/[0-9].*$//')
+  current_digits=$(printf '%s' "$current" | sed 's/^[^0-9]*//')
+  current_major="${current_digits%%.*}"
+
+  case "$current_major" in
+    ''|*[!0-9]*) printf 'opaque\n'; return 0 ;;
+  esac
+
+  if [ "$current" = "$prefix$ver" ]; then printf 'same\n'; return 0; fi
+
+  if [ "$current_major" != "${ver%%.*}" ] && [ "$ALLOW_MAJOR" -eq 0 ]; then
+    printf 'major\n'; return 0
+  fi
+
+  NAME="$name" VAL="$prefix$ver" perl -i -pe '
+    s{^(\s*"?\Q$ENV{NAME}\E"?\s*:\s*)"?[^"\s#]+"?(\s*(?:#.*)?)$}{$1$ENV{VAL}$2};
+  ' "$ws"
+
+  local now
+  now=$(catalog_version_of "$name" "$ws")
+  [ "$now" = "$prefix$ver" ] || die "pnpm-workspace.yaml: $name is '$now' after the rewrite, expected '$prefix$ver'"
+
+  printf 'changed\n'
+}
+
+# Two things an npm bump recognises, does not fix, and would otherwise leave
+# invisible behind a successful run.
+#
+# This exists because "the release went out" and "every consumer received it"
+# are different claims, and only the first one was ever printed. In
+# calimero-network/apps, five of the sixteen apps declare a Calimero package
+# literally rather than through the catalog, three of them majors behind — so a
+# release moved the catalog, reported success, and reached thirteen apps.
+#
+# Reads `catalog_optout` and `skipped_major` from its caller.
+report_npm_unclaimed() {
+  local body="" s
+
+  if [ -n "$catalog_optout" ]; then
+    body="$body
+NOT REACHED BY THE CATALOG — these manifests declare a version of their own for
+a package the catalog also carries, so rewriting the catalog does not move them.
+Where that version is majors behind, the major guard then skips them as well and
+the app sits out the release entirely. Putting an app on \`catalog:\` is a
+migration with its own CI run, not something a release should do unasked:$catalog_optout
+"
+  fi
+
+  if [ -n "$orphans" ]; then
+    local o rels=""
+    for o in $orphans; do
+      grep -q '@calimero-network/' "$o" 2>/dev/null || continue
+      rels="$rels
+  ${o#$DIR/}"
+    done
+    if [ -n "$rels" ]; then
+      body="$body
+OUTSIDE THE WORKSPACE — these declare a Calimero package but sit outside every
+\`packages:\` glob, so pnpm never installs them and this bump does not touch
+them. In calimero-network/apps they are pre-migration leftovers from when each
+app was its own repository. Delete them, or fold what they still carry into the
+app they belong to:$rels
+"
+    fi
+  fi
+
+  if [ -n "$skipped_major" ]; then
+    body="$body
+SKIPPED, MAJOR JUMP — a major is a migration, not a bump: opened automatically
+it produces a pull request that cannot pass CI, every release, forever. Re-run
+with --allow-major when someone is deliberately doing the migration:"
+    for s in $skipped_major; do body="$body
+  $s"; done
+    body="$body
+"
+  fi
+
+  if [ -n "$body" ]; then
+    head_note ""
+    head_note "── what this bump did NOT move ──────────────────────────────────"
+    printf '%s\n' "$body" >&2
+  fi
+
+  if [ -n "${UNCLAIMED_OUT:-}" ]; then
+    printf '%s' "$body" > "$UNCLAIMED_OUT"
+  fi
+}
+
 bump_npm() {
   [ -n "$PKGS" ] || die "--surface npm needs at least one --pkg name=version"
 
-  local manifests
-  manifests=$(find "$DIR" -name package.json \
+  # Resolved before the manifest list, because in a workspace the workspace
+  # file is what decides which manifests count.
+  local workspace_yaml="$DIR/pnpm-workspace.yaml"
+  [ -f "$workspace_yaml" ] || workspace_yaml=""
+
+  local manifests all_manifests orphans=""
+  all_manifests=$(find "$DIR" -name package.json \
     -not -path '*/node_modules/*' -not -path '*/.git/*' | sort)
+  if [ -n "$workspace_yaml" ]; then
+    manifests=$(workspace_manifests "$workspace_yaml" | sort -u)
+    # Every manifest the workspace does not include, kept only to report.
+    orphans=$(printf '%s\n' "$all_manifests" | grep -vxF -f <(printf '%s\n' "$manifests") || true)
+  else
+    manifests="$all_manifests"
+  fi
   [ -n "$manifests" ] || { note "no package.json anywhere — nothing to bump"; exit 3; }
 
   local changed_manifests=""
   local touched=0
   local applicable=0
   local skipped_major=""
+  local catalog_changed=0
+  local catalog_optout=
 
   for spec in $PKGS; do
     local name="${spec%%=*}"
@@ -334,6 +702,29 @@ bump_npm() {
       || die "--pkg expects name=version, got '$spec'"
 
     local new_major="${ver%%.*}"
+
+    if [ -n "$workspace_yaml" ]; then
+      local verdict
+      verdict=$(catalog_bump "$name" "$ver" "$workspace_yaml")
+      case "$verdict" in
+        changed)
+          applicable=1
+          touched=$((touched + 1))
+          catalog_changed=1
+          record_change "pnpm-workspace.yaml"
+          note "pnpm-workspace.yaml: $name -> $ver (catalog)" ;;
+        same)
+          applicable=1
+          note "pnpm-workspace.yaml: $name already $ver (catalog)" ;;
+        major)
+          applicable=1
+          note "pnpm-workspace.yaml: $name crosses a major to $ver — skipped (use --allow-major)"
+          skipped_major="$skipped_major $name->$ver" ;;
+        opaque)
+          note "pnpm-workspace.yaml: $name is not a version this script will interpret — skipped" ;;
+        absent) ;;
+      esac
+    fi
 
     printf '%s\n' "$manifests" | while IFS= read -r m; do
       [ -n "$m" ] || continue
@@ -365,6 +756,25 @@ bump_npm() {
       current_digits=$(printf '%s' "$current" | sed 's/^[^0-9]*//')
       local current_major="${current_digits%%.*}"
 
+      case "$current" in
+        catalog:*|workspace:*)
+          # The version lives in pnpm-workspace.yaml and was handled above.
+          continue ;;
+      esac
+
+      # A literal version for a package the catalog ALSO carries. The catalog
+      # edit does not reach this manifest, and if its version is majors behind
+      # the guard below skips it too — so the app sits out the release while the
+      # run reports success. Recorded, and reported at the end.
+      if [ -n "$workspace_yaml" ]; then
+        local in_catalog
+        in_catalog=$(catalog_version_of "$name" "$workspace_yaml")
+        if [ -n "$in_catalog" ]; then
+          catalog_optout="$catalog_optout
+  $rel: $name is $current, catalog says $in_catalog"
+        fi
+      fi
+
       case "$current_major" in
         ''|*[!0-9]*)
           note "$rel: $name is '$current', which this script will not try to interpret — skipped"
@@ -395,6 +805,8 @@ bump_npm() {
     rm -f "$TMPDIR_RUN/hits.$$"
   done
 
+  report_npm_unclaimed
+
   if [ "$applicable" -eq 0 ]; then
     note "no package.json declares any of the requested packages"
     exit 3
@@ -417,6 +829,9 @@ bump_npm() {
   command -v pnpm >/dev/null 2>&1 || die "pnpm is not installed; re-run with --no-lock to edit manifests only"
 
   local roots=""
+  if [ "$catalog_changed" -eq 1 ]; then
+    roots=" $DIR"
+  fi
   for m in $changed_manifests; do
     local root
     if root=$(find_lock_root "$(dirname "$m")"); then
@@ -438,7 +853,7 @@ bump_npm() {
     #
     #   fatal: pathspec 'home/runner/work/.../pnpm-lock.yaml' did not match any files
     #
-    # tauri-app, app-registry and mero-issue-tracker are all shaped that way.
+    # tauri-app, app-registry and the apps monorepo are all shaped that way.
     local rel="${root#$DIR}"; rel="${rel#/}"
     local lock="${rel:+$rel/}pnpm-lock.yaml"
 
