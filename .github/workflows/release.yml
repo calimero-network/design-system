@@ -15,6 +15,9 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.published.outputs.packages }}
+      ui: ${{ steps.published.outputs.ui }}
     permissions:
       # npm trusted publishing exchanges this OIDC token for a short-lived
       # registry credential -- without it the publish 404s, which is npm's
@@ -76,6 +79,31 @@ jobs:
           # permission the OIDC exchange already needs.
           NPM_CONFIG_PROVENANCE: true
 
+      # `pnpm version-packages` above rewrites each package.json on the runner and
+      # that commit is never pushed back, so this repository's git tree is behind
+      # npm by design. The tree is nevertheless the right thing to read here: it is
+      # exactly what `pnpm release` just published.
+      #
+      # All four packages are reported, not just mero-ui. A consumer that declares
+      # none of them is skipped by the bump script, so naming them all costs
+      # nothing and means mero-icons or mero-charts moving is not silently ignored.
+      - name: Read the published versions
+        id: published
+        if: github.event.inputs.dry_run != 'true'
+        run: |
+          set -euo pipefail
+          pkgs=""
+          for dir in packages/*/; do
+            name=$(node -p "require('./${dir}package.json').name")
+            version=$(node -p "require('./${dir}package.json').version")
+            case "$name" in
+              @calimero-network/*) pkgs="$pkgs $name=$version" ;;
+            esac
+          done
+          echo "packages=${pkgs# }" >> "$GITHUB_OUTPUT"
+          echo "ui=$(node -p "require('./packages/ui/package.json').version")" >> "$GITHUB_OUTPUT"
+          echo "::notice::published${pkgs}"
+
       - name: Dry run summary
         if: github.event.inputs.dry_run == 'true'
         run: |
@@ -124,3 +152,18 @@ jobs:
             - Comprehensive Storybook documentation
           draft: false
           prerelease: false
+
+  # Opens the pull request that moves every consumer in .github/fleet.json onto
+  # the versions just published. Majors are skipped by default -- see the header
+  # of fleet-bump.yml for why.
+  fleet-bump:
+    name: Open dependency bump PRs
+    needs: release
+    if: github.event.inputs.dry_run != 'true' && needs.release.outputs.packages != ''
+    uses: ./.github/workflows/fleet-bump.yml
+    with:
+      packages: ${{ needs.release.outputs.packages }}
+      label: design-system-${{ needs.release.outputs.ui }}
+    # GH_APP_PRIVATE_KEY, which the called workflow uses to mint a
+    # per-repository installation token.
+    secrets: inherit
