@@ -239,6 +239,13 @@ jobs:
           ALLOW_MAJOR: ${{ inputs.allow_major }}
           COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
           CHANGED_FILES_OUT: ${{ runner.temp }}/changed.txt
+          # What the bump recognised and did NOT move, with the reason: a
+          # member declaring its own version for a catalogued package, a
+          # manifest outside every `packages:` glob, a skipped major. Surfaced
+          # in the run summary and the pull request body, because "the release
+          # went out" and "every consumer received it" are different claims and
+          # only the first one used to be printed.
+          UNCLAIMED_OUT: ${{ runner.temp }}/unclaimed.txt
         run: |
           set -euo pipefail
           args=""
@@ -266,6 +273,18 @@ jobs:
         if: steps.bump.outputs.code == '0'
         working-directory: consumer
         run: git --no-pager diff --stat
+
+      - name: Report what the bump did not move
+        if: always() && hashFiles(format('{0}/unclaimed.txt', runner.temp)) != ''
+        run: |
+          set -euo pipefail
+          {
+            echo "### ${{ matrix.repo }}: not moved by this bump"
+            echo
+            echo '```'
+            cat "$RUNNER_TEMP/unclaimed.txt"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Identify the app
         if: steps.bump.outputs.code == '0' && inputs.dry_run != true
@@ -345,8 +364,27 @@ jobs:
           hard pin would stop the repository ever seeing another patch release.
 
           Dependencies that would have crossed a major version were **skipped**;
-          the job log lists them. Those are migrations, not bumps.
+          the section below lists them. Those are migrations, not bumps.
+
+          In \`calimero-network/apps\` the versions live once in
+          \`pnpm-workspace.yaml\`'s \`catalog:\` and fan out to every app under
+          \`apps/*/app\`, so one line there is the whole bump — this single pull
+          request replaces the fifteen that used to be opened against fifteen
+          separate app repositories. Manifests outside the workspace globs are
+          left alone; pnpm never installs them.
           PR_BODY
+
+          # Attached rather than left in the log. A reviewer looking at a green
+          # bump should be able to see, without opening the run, which consumers
+          # it did not actually reach.
+          if [ -s "$RUNNER_TEMP/unclaimed.txt" ]; then
+            {
+              printf '\n<details><summary>What this bump did <b>not</b> move</summary>\n\n'
+              printf '```\n'
+              cat "$RUNNER_TEMP/unclaimed.txt"
+              printf '```\n\n</details>\n'
+            } >> "$RUNNER_TEMP/pr-body.md"
+          fi
 
           gh pr create \
             --repo "$REPO" \
