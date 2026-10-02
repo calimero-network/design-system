@@ -1,5 +1,15 @@
 # @calimero-network/mero-ui
 
+## 1.5.1
+
+### Patch Changes
+
+- 09f7c52: RichTextEditor: render the `placeholder` prop. The Tiptap `Placeholder`
+  extension was never registered, so the prop was accepted and silently showed
+  nothing. (Published to npm on 2026-08-21; recorded here after the fact,
+  because the release job versions on the runner and never pushes that commit
+  back.)
+
 ## 1.5.0
 
 ### Minor Changes

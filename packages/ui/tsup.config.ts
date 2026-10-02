@@ -23,6 +23,7 @@ export default defineConfig({
     "@tiptap/extension-text-align",
     "@tiptap/extension-underline",
     "@tiptap/extension-link",
+    "@tiptap/extensions",
   ],
   outExtension({ format }) {
     return {
