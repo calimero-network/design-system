@@ -532,20 +532,27 @@ find_lock_root() {
 # (`apps/*`) and app-registry (`packages/*` + `shared`) have no manifest outside
 # their globs, and mero-chat-pwa has no workspace file at all and so still takes
 # the `find` path below.
+#
+# Each glob is read as a line, never word-split out of `$(...)`: unquoted, that
+# expanded `packages/*` against the directory the script was RUN from, so a run
+# from a checkout with a `packages/` of its own looked for its members in the
+# consumer. And every test is an `if`, so a last member without a package.json
+# is not the function's exit status, which under `set -e` ended the whole run
+# with 1 and no output.
 workspace_manifests() {
   local ws="$1" glob d
-  [ -f "$DIR/package.json" ] && printf '%s\n' "$DIR/package.json"
-  for glob in $(perl -ne '
+  if [ -f "$DIR/package.json" ]; then printf '%s\n' "$DIR/package.json"; fi
+  while IFS= read -r glob; do
+    for d in $DIR/$glob; do
+      if [ -f "$d/package.json" ]; then printf '%s\n' "$d/package.json"; fi
+    done
+  done < <(perl -ne '
       if (m/^packages:\s*$/) { $in = 1; next }
       if ($in) {
         last if m/^\S/;
         if (m/^\s*-\s*["\x27]?([^"\x27#\s]+)/) { print "$1\n" }
       }
-    ' "$ws"); do
-    for d in $DIR/$glob; do
-      [ -f "$d/package.json" ] && printf '%s\n' "$d/package.json"
-    done
-  done
+    ' "$ws")
 }
 
 # A pnpm CATALOG is the npm half of what [workspace.dependencies] is to cargo,
@@ -560,24 +567,43 @@ workspace_manifests() {
 # stops receiving bumps while reporting success is the exact failure the exit
 # codes exist to prevent, so the catalog is handled first and explicitly.
 #
-# Matching is not restricted to the default `catalog:` block. A named catalog
-# under `catalogs:` has the same shape, and in pnpm-workspace.yaml a
-# `name: version` line can only be a catalog entry — `packages:` and
-# `onlyBuiltDependencies:` are sequences, not maps.
-catalog_version_of() {
+# Every catalog is its own version line. calimero-network/apps keeps the v1
+# mero-js in the default `catalog:` and the 1.0 one in `catalogs.component`,
+# which `"catalog:component"` resolves through. Reading only the first match
+# took the v1 line for the whole repository: mero-js 29.7.0 was judged against
+# 26.11.0, skipped as a major, and the 1.0 line it belonged to was never moved
+# (apps#765). So each catalog is found, judged and rewritten on its own.
+#
+# Catalog entries are recognised only inside `catalog:` and `catalogs:`;
+# `overrides:` and the like are maps too, and are not ours to move.
+
+# The catalogs that carry a package, one per line: "<catalog>\t<version>".
+# <catalog> is "default" for `catalog:` and the name for `catalogs.<name>`.
+catalog_entries() {
   NAME="$1" perl -ne '
-    if (m{^\s*"?\Q$ENV{NAME}\E"?\s*:\s*"?([^"\s#]+)"?}) { print "$1\n"; exit }
+    next if /^\s*(#|$)/;
+    if (/^(\S[^:]*):\s*(#.*)?$/) {
+      $sec = $1; $sec =~ s/^["\x27]|["\x27]$//g; $cat = ""; $ind = -1; next;
+    }
+    if (/^\S/) { $sec = ""; next; }
+    if ($sec eq "catalogs" && /^(\s+)["\x27]?([^"\x27:]+)["\x27]?:\s*(#.*)?$/
+        && ($ind < 0 || length($1) <= $ind)) {
+      $ind = length($1); $cat = $2; next;
+    }
+    my $c = $sec eq "catalog" ? "default" : ($sec eq "catalogs" && $cat ne "") ? $cat : next;
+    if (m{^\s*["\x27]?\Q$ENV{NAME}\E["\x27]?\s*:\s*["\x27]?([^"\x27\s#]+)}) { print "$c\t$1\n" }
   ' "$2"
 }
 
-# Rewrite one package in the catalog. Echoes the outcome as a single word so the
-# caller can account for it: changed / same / absent / major / opaque.
-catalog_bump() {
-  local name="$1" ver="$2" ws="$3"
+# How a catalog is written in a package.json, for notes and reports.
+catalog_label() {
+  if [ "$1" = default ]; then printf 'catalog:\n'; else printf 'catalog:%s\n' "$1"; fi
+}
 
-  local current
-  current=$(catalog_version_of "$name" "$ws")
-  [ -n "$current" ] || { printf 'absent\n'; return 0; }
+# Rewrite one package in one catalog. Echoes the outcome as a single word so the
+# caller can account for it: changed / same / major / opaque.
+catalog_bump() {
+  local name="$1" ver="$2" ws="$3" cat="$4" current="$5"
 
   local prefix current_digits current_major
   prefix=$(printf '%s' "$current" | sed 's/[0-9].*$//')
@@ -594,15 +620,62 @@ catalog_bump() {
     printf 'major\n'; return 0
   fi
 
-  NAME="$name" VAL="$prefix$ver" perl -i -pe '
-    s{^(\s*"?\Q$ENV{NAME}\E"?\s*:\s*)"?[^"\s#]+"?(\s*(?:#.*)?)$}{$1$ENV{VAL}$2};
+  # The same section walk as catalog_entries, rewriting only inside $cat.
+  NAME="$name" VAL="$prefix$ver" CAT="$cat" perl -i -pe '
+    unless (/^\s*(#|$)/) {
+      if (/^(\S[^:]*):\s*(#.*)?$/) {
+        $sec = $1; $sec =~ s/^["\x27]|["\x27]$//g; $cat = ""; $ind = -1;
+      } elsif (/^\S/) {
+        $sec = "";
+      } elsif ($sec eq "catalogs" && /^(\s+)["\x27]?([^"\x27:]+)["\x27]?:\s*(#.*)?$/
+               && ($ind < 0 || length($1) <= $ind)) {
+        $ind = length($1); $cat = $2;
+      } else {
+        my $c = $sec eq "catalog" ? "default" : ($sec eq "catalogs" && $cat ne "") ? $cat : "";
+        if ($c ne "" && $c eq $ENV{CAT}) {
+          s{^(\s*(["\x27]?)\Q$ENV{NAME}\E\2\s*:\s*)(["\x27]?)[^"\x27\s#]+\3(\s*(?:#.*)?)$}{$1$3$ENV{VAL}$3$4};
+        }
+      }
+    }
   ' "$ws"
 
   local now
-  now=$(catalog_version_of "$name" "$ws")
-  [ "$now" = "$prefix$ver" ] || die "pnpm-workspace.yaml: $name is '$now' after the rewrite, expected '$prefix$ver'"
+  now=$(catalog_entries "$name" "$ws" | awk -F'\t' -v c="$cat" '$1 == c { print $2; exit }')
+  [ "$now" = "$prefix$ver" ] || die "pnpm-workspace.yaml: $name in $(catalog_label "$cat") is '$now' after the rewrite, expected '$prefix$ver'"
 
   printf 'changed\n'
+}
+
+# The versions a package.json declares for a package, one per distinct value,
+# leaving out peerDependencies: a peer range is a compatibility floor the
+# package states for its consumers, not a pin a release moves. apps#765 bumped
+# connect's `>=29.3.0` to `>=29.7.0`, which narrowed what it accepts for no
+# reason.
+manifest_versions_of() {
+  NAME="$1" perl -0777 -ne '
+    my @peer;
+    while (/"peerDependencies"\s*:\s*\{[^{}]*\}/g) { push @peer, [$-[0], $+[0]] }
+    my %seen;
+    while (/"\Q$ENV{NAME}\E"\s*:\s*"([^"]*)"/g) {
+      my $at = $-[0];
+      next if grep { $at >= $_->[0] && $at < $_->[1] } @peer;
+      print "$1\n" unless $seen{$1}++;
+    }
+  ' "$2"
+}
+
+# Rewrite every declaration of a package whose value is exactly OLD, outside
+# peerDependencies. Only that value: a manifest that also writes
+# "catalog:component" for the same package keeps it.
+manifest_rewrite() {
+  NAME="$1" OLD="$2" VAL="$3" perl -0777 -i -pe '
+    my @peer;
+    while (/"peerDependencies"\s*:\s*\{[^{}]*\}/g) { push @peer, [$-[0], $+[0]] }
+    s{("\Q$ENV{NAME}\E"\s*:\s*")\Q$ENV{OLD}\E(")}{
+      my $at = $-[0];
+      (grep { $at >= $_->[0] && $at < $_->[1] } @peer) ? $& : "$1$ENV{VAL}$2"
+    }ge;
+  ' "$4"
 }
 
 # Two things an npm bump recognises, does not fix, and would otherwise leave
@@ -704,36 +777,39 @@ bump_npm() {
     local new_major="${ver%%.*}"
 
     if [ -n "$workspace_yaml" ]; then
-      local verdict
-      verdict=$(catalog_bump "$name" "$ver" "$workspace_yaml")
-      case "$verdict" in
-        changed)
-          applicable=1
-          touched=$((touched + 1))
-          catalog_changed=1
-          record_change "pnpm-workspace.yaml"
-          note "pnpm-workspace.yaml: $name -> $ver (catalog)" ;;
-        same)
-          applicable=1
-          note "pnpm-workspace.yaml: $name already $ver (catalog)" ;;
-        major)
-          applicable=1
-          note "pnpm-workspace.yaml: $name crosses a major to $ver — skipped (use --allow-major)"
-          skipped_major="$skipped_major $name->$ver" ;;
-        opaque)
-          note "pnpm-workspace.yaml: $name is not a version this script will interpret — skipped" ;;
-        absent) ;;
-      esac
+      local cat current_cat verdict label
+      while IFS="$(printf '\t')" read -r cat current_cat; do
+        [ -n "${cat:-}" ] || continue
+        label=$(catalog_label "$cat")
+        verdict=$(catalog_bump "$name" "$ver" "$workspace_yaml" "$cat" "$current_cat")
+        case "$verdict" in
+          changed)
+            applicable=1
+            touched=$((touched + 1))
+            catalog_changed=1
+            record_change "pnpm-workspace.yaml"
+            note "pnpm-workspace.yaml ($label): $name $current_cat -> $ver" ;;
+          same)
+            applicable=1
+            note "pnpm-workspace.yaml ($label): $name already $ver" ;;
+          major)
+            applicable=1
+            note "pnpm-workspace.yaml ($label): $name $current_cat crosses a major to $ver — skipped (use --allow-major)"
+            skipped_major="$skipped_major $name:$current_cat->$ver($label)" ;;
+          opaque)
+            note "pnpm-workspace.yaml ($label): $name is '$current_cat', not a version this script will interpret — skipped" ;;
+        esac
+      done <<EOF
+$(catalog_entries "$name" "$workspace_yaml")
+EOF
     fi
 
     printf '%s\n' "$manifests" | while IFS= read -r m; do
       [ -n "$m" ] || continue
-      local current
-      current=$(NAME="$name" perl -ne '
-        if (m{"\Q$ENV{NAME}\E"\s*:\s*"([^"]*)"}) { print "$1\n"; exit }
-      ' "$m")
-      [ -n "$current" ] || continue
-      printf '%s\t%s\t%s\n' "$m" "$current" "$ver"
+      manifest_versions_of "$name" "$m" | while IFS= read -r current; do
+        [ -n "$current" ] || continue
+        printf '%s\t%s\t%s\n' "$m" "$current" "$ver"
+      done
     done > "$TMPDIR_RUN/hits.$$"
 
     while IFS="$(printf '\t')" read -r m current _; do
@@ -767,11 +843,14 @@ bump_npm() {
       # the guard below skips it too — so the app sits out the release while the
       # run reports success. Recorded, and reported at the end.
       if [ -n "$workspace_yaml" ]; then
+        # Every catalog that carries it, by name: with a v1 line and a
+        # component line, "catalog says X" alone named the wrong one.
         local in_catalog
-        in_catalog=$(catalog_version_of "$name" "$workspace_yaml")
+        in_catalog=$(catalog_entries "$name" "$workspace_yaml" \
+          | awk -F'\t' '{ printf "%s%s %s", sep, ($1 == "default" ? "catalog:" : "catalog:" $1), $2; sep = ", " }')
         if [ -n "$in_catalog" ]; then
           catalog_optout="$catalog_optout
-  $rel: $name is $current, catalog says $in_catalog"
+  $rel: $name is $current, $in_catalog"
         fi
       fi
 
@@ -791,9 +870,7 @@ bump_npm() {
         continue
       fi
 
-      NAME="$name" VAL="$prefix$ver" perl -i -pe '
-        s{("\Q$ENV{NAME}\E"\s*:\s*")[^"]*(")}{$1$ENV{VAL}$2}g;
-      ' "$m"
+      manifest_rewrite "$name" "$current" "$prefix$ver" "$m"
       note "$rel: $name $current -> $prefix$ver"
       record_change "$rel"
       touched=$((touched + 1))
