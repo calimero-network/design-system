@@ -240,6 +240,125 @@ echo "no surface at all"
 D=$(mkfixture bare); echo '{}' > "$D/package.json"; commit "$D"
 expect_exit 3 "no contract anywhere" bash "$BUMP" --surface cargo --version 0.11.0-rc.2 --dir "$D" --no-lock
 
+# ─────────────────────────────────────────────────────────────────────────────
+echo "named pnpm catalogs (calimero-network/apps: a v1 line and a component line)"
+# ─────────────────────────────────────────────────────────────────────────────
+# apps keeps two mero-js lines: the default `catalog:` is the v1 line, and
+# `catalogs.component` is the 1.0 line its component apps and packages/connect
+# use. mero-js 29.7.0 then opened apps#765: only the default catalog was read
+# (26.11.0, so 29.7.0 was "a major" and skipped), the component catalog was
+# never moved, and `catalog:component` in connect was rewritten to the peer
+# range ">=29.7.0" - off the catalog. The right bump was apps#766: one line in
+# catalogs.component and the lockfile.
+D=$(mkfixture named-catalogs); mkdir -p "$D/apps/v1/app" "$D/packages/connect"
+cat > "$D/pnpm-workspace.yaml" <<'EOF'
+packages:
+  - "apps/*/app"
+  - "packages/*"
+
+catalog:
+  # v1 line
+  "@calimero-network/mero-js": 26.11.0
+  typescript: ^5.6.0
+
+catalogs:
+  component:
+    # 1.0 line
+    "@calimero-network/mero-js": 29.6.0
+EOF
+cat > "$D/apps/v1/app/package.json" <<'EOF'
+{
+  "name": "v1",
+  "dependencies": {
+    "@calimero-network/mero-js": "catalog:"
+  }
+}
+EOF
+cat > "$D/packages/connect/package.json" <<'EOF'
+{
+  "name": "@calimero-apps/connect",
+  "peerDependencies": {
+    "@calimero-network/mero-js": ">=29.3.0"
+  },
+  "devDependencies": {
+    "@calimero-network/mero-js": "catalog:component"
+  }
+}
+EOF
+touch "$D/pnpm-lock.yaml"
+commit "$D"
+
+OUT="$ROOT/named-catalogs.out"
+CH="$ROOT/named-catalogs.changed"
+U="$ROOT/named-catalogs.unclaimed"
+CHANGED_FILES_OUT="$CH" UNCLAIMED_OUT="$U" bash "$BUMP" --surface npm \
+  --pkg @calimero-network/mero-js=29.7.0 --dir "$D" --no-lock > "$OUT" 2>&1
+expect_exit 0 "a release on the component line moves the component catalog" sh -c "exit $?"
+expect_file "$D/pnpm-workspace.yaml" '"@calimero-network/mero-js": 29.7.0' "  catalogs.component moved to 29.7.0"
+expect_file "$D/pnpm-workspace.yaml" '"@calimero-network/mero-js": 26.11.0' "  the default (v1) catalog is NOT moved"
+expect_absent "$D/pnpm-workspace.yaml" '29.6.0' "  no stale component pin left"
+expect_file "$OUT" '(catalog:): @calimero-network/mero-js 26.11.0 crosses a major' "  the skip names the default catalog it judged"
+expect_absent "$OUT" '(catalog:component): @calimero-network/mero-js 29.6.0 crosses' "  ...and not the component catalog"
+expect_file "$U" '@calimero-network/mero-js:26.11.0->29.7.0(catalog:)' "  SKIPPED, MAJOR JUMP names the catalog"
+expect_absent "$U" 'NOT REACHED BY THE CATALOG' "  connect is on a catalog, so it is not 'not reached'"
+P="$D/packages/connect/package.json"
+expect_file "$P" '"@calimero-network/mero-js": "catalog:component"' "  catalog:component specifier left alone"
+expect_file "$P" '"@calimero-network/mero-js": ">=29.3.0"' "  peer range left alone"
+expect_absent "$P" '29.7.0' "  connect's package.json carries no 29.7.0"
+expect_file "$D/apps/v1/app/package.json" '"@calimero-network/mero-js": "catalog:"' "  v1 app's catalog: specifier left alone"
+expect_file "$CH" 'pnpm-workspace.yaml' "  the workspace file is staged"
+expect_absent "$CH" 'package.json' "  ...and no package.json is"
+expect_exit 4 "second run is a no-op" \
+  bash "$BUMP" --surface npm --pkg @calimero-network/mero-js=29.7.0 --dir "$D" --no-lock
+
+# Peer ranges are floors, not pins: a manifest that pins the package literally
+# moves, and its peer range beside it does not.
+D=$(mkfixture peer-range); mkdir -p "$D/lib"
+cat > "$D/lib/package.json" <<'EOF'
+{
+  "name": "lib",
+  "peerDependencies": {
+    "@calimero-network/mero-js": ">=29.3.0"
+  },
+  "devDependencies": {
+    "@calimero-network/mero-js": "^29.6.0"
+  }
+}
+EOF
+commit "$D"
+expect_exit 0 "a literal pin beside a peer range moves" \
+  bash "$BUMP" --surface npm --pkg @calimero-network/mero-js=29.7.0 --dir "$D" --no-lock
+expect_file "$D/lib/package.json" '"@calimero-network/mero-js": "^29.7.0"' "  devDependency moved, ^ kept"
+expect_file "$D/lib/package.json" '"@calimero-network/mero-js": ">=29.3.0"' "  peer range left alone"
+
+# A workspace's member globs are the consumer's, whatever directory the script
+# is run from. They used to be word-split out of `$(...)` unquoted, so
+# `packages/*` expanded against the CURRENT directory: run from a checkout with
+# a `packages/` of its own (design-system's), the members looked for were that
+# checkout's names inside the consumer. And a last member with no package.json
+# was the listing's exit status, which under `set -e` ended the run with 1 and
+# no output.
+D=$(mkfixture member-globs); mkdir -p "$D/packages/connect" "$D/packages/zz-no-manifest"
+cat > "$D/pnpm-workspace.yaml" <<'EOF'
+packages:
+  - "packages/*"
+EOF
+cat > "$D/packages/connect/package.json" <<'EOF'
+{
+  "name": "connect",
+  "dependencies": {
+    "@calimero-network/mero-js": "^29.6.0"
+  }
+}
+EOF
+touch "$D/pnpm-lock.yaml"
+commit "$D"
+CWD="$ROOT/elsewhere"; mkdir -p "$CWD/packages/ui"
+expect_exit 0 "member globs are expanded in the consumer, not the current directory" \
+  sh -c 'cd "$1" && shift && exec bash "$@"' _ "$CWD" "$BUMP" --surface npm \
+  --pkg @calimero-network/mero-js=29.7.0 --dir "$D" --no-lock
+expect_file "$D/packages/connect/package.json" '"@calimero-network/mero-js": "^29.7.0"' "  the member is moved"
+
 echo
 echo "$PASS passed, $FAIL failed"
 [ "$FAIL" -eq 0 ]
